@@ -111,3 +111,13 @@ a {
     color-scheme: dark;
   }
 }
+
+
+.parent{
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+}
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #50C878;
+}
