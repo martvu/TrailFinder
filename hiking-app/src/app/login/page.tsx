@@ -1,8 +1,29 @@
-import React from "react"
+'use client'
+
+import React, { useState } from "react"
 import Image from "next/image"
 import Header from './header';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
+import Link from "next/link";
 
 export default function login() {
+  //const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassowrd] = useState("");
+  const [error, setError] = useState("");
+
+  function login() {
+    setError("");
+    signInWithEmailAndPassword(auth, email, password).then(() => {
+      //navigate("/homepage")
+    }).catch((e: FirebaseError) => {
+      setError(e.message)
+    })
+
+  }
   return (
     
 
@@ -57,9 +78,11 @@ export default function login() {
                     </div>
                     <div className="mt-3 text-center text-sm text-gray-500">
                       Don't have an account?{" "}
-                      <a href="#" className="font-bold text-green-500 hover:text-green-700">
+                        <Link href='/login/signup' className="font-bold text-green-500 hover:text-green-700"> Sign-up
+                        </Link> 
+                      {/* <a href="#" className="font-bold text-green-500 hover:text-green-700">
                         Sign up
-                      </a>
+                      </a> */}
                     </div>
                   </div>
                 </div>
