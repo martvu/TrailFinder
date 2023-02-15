@@ -3,12 +3,8 @@
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from 'firebase/auth';
 import React, {useState} from 'react';
 import {auth, database, firestore} from "src/app/firebase";
-import firebase from "firebase/compat";
-import {BrowserRouter, useNavigate} from "react-router-dom";
-import FirebaseError = firebase.FirebaseError;
-import Link from 'next/link';
 import { setDoc, doc } from 'firebase/firestore';
-import Inputfield from './components/inputfield';
+import InputField from './components/inputfield';
 
 export default function Signup() {
   //const navigate = useNavigate();
@@ -48,11 +44,11 @@ export default function Signup() {
               Sign-up
             </h1>
           </div>
-          <Inputfield label="First Name" placeholder="Enter first name..." type="text" />
-          <Inputfield label="Last Name" placeholder="Enter last name..." type="text" />
-          <Inputfield label="Date of Birth" placeholder="Enter ..." type="date" />
-          <Inputfield label="E-mail" placeholder="Enter e-mail..." type="email" />
-          <Inputfield label="Password" placeholder="Enter password..." type="password" />
+          <InputField label="First Name" placeholder="Enter first name..." setInput={setFirstName} type="text" />
+          <InputField label="Last Name" placeholder="Enter last name..." setInput={setLastName} type="text" />
+          <InputField label="Date of Birth" placeholder="Enter ..." setInput={setBirthDate} type="date" />
+          <InputField label="E-mail" placeholder="Enter e-mail..." setInput={setEmail} type="email" />
+          <InputField label="Password" placeholder="Enter password..." setInput={setPassword} type="password" />
           <div className='mt-3'>
             <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md justify-center" onClick={signup}>Sign-up</button>
           </div>
