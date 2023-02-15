@@ -17,7 +17,7 @@ export default function login() {
 					alt="logo"
 					className="w-20 pb-5"
 				/>
-				<h1 className="text-3xl block text-center font-bold text-primary pb-5">
+				<h1 className="text-3xl block text-center font-bold text-secondary pb-5">
 					Welcome to TrailFinder!
 				</h1>
 				<Login />

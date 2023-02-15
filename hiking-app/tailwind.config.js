@@ -1,3 +1,5 @@
+const themes = require('daisyui/src/colors/themes')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: [
@@ -13,16 +15,15 @@ module.exports = {
 		themes: [
 			{
 				trailfinder_light: {
-					"primary": "#1EB854",
-          "secondary": "#a99502",
-					// "secondary": "#1FD65F",
-					"accent": "#D99330",
-          "neutral": "#f5f5f4",
-          "base-100": "#e7e5e4",
-					"info": "#3ABFF8",
-					"success": "#36D399",
-					"warning": "#FBBD23",
-					"error": "#F87272",
+          "primary": "#1eb854",
+          "secondary": "#40332e",
+          "accent": "#cba8a3",
+          "neutral": "#f9f7eb",
+          "base-100": "#f5f5f4",
+          "info": "#2563EB",
+          "success": "#16A34A",
+          "warning": "#D97706",
+          "error": "#DC2626",
 				},
 			},
 		],
