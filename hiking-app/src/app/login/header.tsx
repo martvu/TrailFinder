@@ -3,7 +3,7 @@ import React from 'react';
 const Header = () => {
   return (
     <header className="bg-gray-300 flex items-center justify-between p-4">
-      <img src="/logo.png" alt="Logo" className="w-20" />
+      <img src="/trailfinder_logo.svg" alt="Logo" className="w-10" />
       <form className="flex items-center">
         <div className="relative">
           <img src="/searchicon.png" alt="search" className="w-6 h-6 absolute top-0 left-0 mt-2 ml-2" />
