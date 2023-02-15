@@ -3,7 +3,7 @@ import React from 'react';
 const Pictures = () => {
     return (
         <div className="w-1/5 p-4">
-            <div className="font-sans font-medium text-lg p-1">
+            <div className="font-sans font-medium text-lg p-1 pb-3">
                 <p>Pictures</p>
             </div>
             <div className="grid grid-cols-3 gap-3 ">
