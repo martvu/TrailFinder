@@ -8,12 +8,12 @@ export default function Profile() {
     return (
         <>
             <Header />
-            <div className="flex w-full">
+            <div className="flex w-full p-4">
   <div className="w-4/5 p-4">
-    <div className="flex items-center mb-4 font-family: 'Open Sans', sans-serif;">
-      <img src="bruker.png" alt="User icon" className="w-28 h-28 mr-8" />
+    <div className="flex items-center mb-4 ml-10 font-inter; ">
+      <img src="bruker.png" alt="User icon" className="w-32 h-32 mr-8" />
       <div>
-        <h1 className="text-3xl pb-2">Kristine Eide Rapp</h1>
+        <div className="text-3xl pb-2 font-bold">Kristine Eide Rapp</div>
         <div className="mb-2">
           <p className="text-m">Krapp</p>
         </div>
