@@ -3,17 +3,20 @@ import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import InputField from "../signup/components/inputfield";
 
 export default function Login() {
 	const [error, setError] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const navigate = useNavigate();
+
 	function login() {
 		setError("");
 		signInWithEmailAndPassword(auth, email, password)
 			.then(() => {
-				//navigate("/homepage")
+				navigate('/home')
         console.log("Logged in")
 			})
 			.catch((e: FirebaseError) => {

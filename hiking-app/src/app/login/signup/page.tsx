@@ -5,6 +5,7 @@ import React, {useState} from 'react';
 import {auth, database, firestore} from "src/app/firebase";
 import { setDoc, doc } from 'firebase/firestore';
 import InputField from './components/inputfield';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
   //const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   function signup() {
     setError("");
@@ -25,7 +27,7 @@ export default function Signup() {
             .then((e) => console.log(e))
             .catch((error) => console.log(error))
             console.log('Document Added')
-        //navigate('/login')
+        navigate('/login')
     })
     .catch((error) => {
         const errorCode = error.code;
