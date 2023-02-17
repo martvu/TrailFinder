@@ -1,4 +1,4 @@
-const themes = require('daisyui/src/colors/themes')
+const themes = require("daisyui/src/colors/themes");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
           "secondary": "#40332e",
           "accent": "#cba8a3",
           "neutral": "#f9f7eb",
-          "base-100": "#f5f5f4",
+          "base-100": "#f5f5f5",
           "info": "#2563EB",
           "success": "#16A34A",
           "warning": "#D97706",
