@@ -50,7 +50,7 @@ export default function Signup() {
           <InputField label="E-mail" placeholder="Enter e-mail..." setInput={setEmail} type="email" />
           <InputField label="Password" placeholder="Enter password..." setInput={setPassword} type="password" />
           <div className='mt-3'>
-            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md justify-center" onClick={signup}>Sign-up</button>
+            <button className="btn btn-primary text-white font-bold py-2 px-4 rounded-md justify-center" type="submit" onClick={signup}>Sign-up</button>
           </div>
         </div>
       </div>
