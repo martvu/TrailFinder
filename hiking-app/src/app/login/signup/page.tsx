@@ -23,24 +23,23 @@ export default function Signup() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      //should always work if user is created and firebase is working
+      // Todo: check if all fields are filled in
       const userDoc = setDoc(doc(firestore,"users", user.uid), {
         firstname: firstName,
         lastname: lastName,
         birthdate: Timestamp.fromDate(new Date(birthDate)),
         username: username,
       });
+      // Todo: check if username is already taken
       const usernameDB = set(ref(db, 'users/' + username), email );
       await Promise.all([userDoc, usernameDB]);
+      router.push('/login');
     } catch (error) {
       console.log("Error: " + error);
-      setError("Sign-up failed, try again")
-      return;
+      setError("Sign-up failed. Try again.");
     }
-    router.push('/login');
   }
   return (
-    <div>
       <div className={"flex h-screen items-center justify-center"}>
         <div className={"w-96 max-h p-6 py-3 shadow-lg bg-white rounded-md gap-4"}>
           <div>
@@ -58,10 +57,13 @@ export default function Signup() {
             <InputField label="Username" placeholder="Enter username..." setInput={setUsername} type="text" />
             <InputField label="E-mail" placeholder="Enter e-mail..." setInput={setEmail} type="email" />
             <InputField label="Password" placeholder="Enter password..." setInput={setPassword} type="password" />
-            <button className="btn btn-primary text-white font-bold py-2 px-4 rounded-md justify-center" type="submit">Sign-up</button>
+            {error != "" ? <p className="text-red-500 mt-3">{error}</p> : null}
+            <div className="flex justify-between">
+              <button className="btn btn-secondary text-white font-bold py-2 px-4 mt-5 rounded-md justify-center" type="button" onClick={router.back}>Back</button>
+              <button className="btn btn-primary text-white font-bold py-2 px-4 mt-5 rounded-md justify-center" type="submit">Sign-up</button>
+            </div>
           </form>
         </div>
       </div>
-    </div>
   );
 };
