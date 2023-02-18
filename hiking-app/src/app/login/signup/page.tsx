@@ -18,7 +18,7 @@ export default function Signup() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  async function signup() {
+  async function signUp() {
     setError("");
     try {
       const userDBref = ref(db, 'users/' + username);
@@ -50,17 +50,16 @@ export default function Signup() {
   }
 
   return (
-      <div className={"inline-block "}>
-        <div className={"w-96 p-6 py-3 shadow-lg bg-white rounded-md gap-4"}>
-          <div>
+        <div className="flex flex-col justify-center items-center min-h-screen">
+          <form onSubmit={(e) => {
+              e.preventDefault(); // prevent default form submission behavior
+              signUp();
+            }}
+            className="w-full sm:w-96 p-6 space-y-4 bg-white rounded-lg shadow-lg"
+          >
             <h1 className="text-3xl block text-center font-bold text-green-500">
               Sign-up
             </h1>
-          </div>
-          <form onSubmit={(e) => {
-            e.preventDefault(); // prevent default form submission behavior
-            signup(); // call your signup function
-          }}>
             <InputField label="First Name" placeholder="Enter first name..." setInput={setFirstName} type="text" />
             <InputField label="Last Name" placeholder="Enter last name..." setInput={setLastName} type="text" />
             <InputField label="Date of Birth" placeholder="Enter ..." setInput={setBirthDate} type="date" />
@@ -74,6 +73,5 @@ export default function Signup() {
             </div>
           </form>
         </div>
-      </div>
   );
 };
