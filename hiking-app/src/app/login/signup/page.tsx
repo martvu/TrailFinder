@@ -1,9 +1,9 @@
 'use client'
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
 import React, { useState } from 'react';
 import { auth, db, firestore } from "src/app/firebase";
-import { setDoc, doc, addDoc, collection, Timestamp } from 'firebase/firestore';
+import { setDoc, doc, deleteDoc, addDoc, collection, Timestamp } from 'firebase/firestore';
 import InputField from './components/inputfield';
 import { useRouter } from 'next/navigation';
 import { ref, set } from 'firebase/database';
@@ -20,22 +20,34 @@ export default function Signup() {
 
   async function signup() {
     setError("");
+    let user = null;
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      await setDoc(doc(firestore,"users", user.uid), {
+      user = userCredential.user;
+    } catch (e) {
+      console.log("Error: " + e);
+      setError("A user with that email already exists")
+      return;
+    }
+    try {
+      const userDoc = setDoc(doc(firestore,"users", user.uid), {
         firstname: firstName,
         lastname: lastName,
         birthdate: Timestamp.fromDate(new Date(birthDate)),
         username: username,
       });
-      set(ref(db, 'users/' + username), email );
-      router.push('/login');
-    } catch (e) {
-      // delete created documents from potentially auth, firestore and realtime database
-      console.log("Error: " + e);
-      setError("Sign-up was not successful.. try again!")
+      const usernameCol = set(ref(db, 'users/' + username), email );
+      await Promise.all([userDoc, usernameCol]);
+    } catch (error) {
+      // delete user from auth using userId
+      await deleteUser(user)
+      // delete user from firestore using userId
+      await deleteDoc(doc(firestore, "users", user.uid));
+      console.log("Error: " + error);
+      setError("Sign-up failed, try again")
+      return;
     }
+    router.push('/login');
   }
   return (
     <div>
