@@ -20,29 +20,19 @@ export default function Signup() {
 
   async function signup() {
     setError("");
-    let user = null;
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      user = userCredential.user;
-    } catch (e) {
-      console.log("Error: " + e);
-      setError("A user with that email already exists")
-      return;
-    }
-    try {
+      const user = userCredential.user;
+      //should always work if user is created and firebase is working
       const userDoc = setDoc(doc(firestore,"users", user.uid), {
         firstname: firstName,
         lastname: lastName,
         birthdate: Timestamp.fromDate(new Date(birthDate)),
         username: username,
       });
-      const usernameCol = set(ref(db, 'users/' + username), email );
-      await Promise.all([userDoc, usernameCol]);
+      const usernameDB = set(ref(db, 'users/' + username), email );
+      await Promise.all([userDoc, usernameDB]);
     } catch (error) {
-      // delete user from auth using userId
-      await deleteUser(user)
-      // delete user from firestore using userId
-      await deleteDoc(doc(firestore, "users", user.uid));
       console.log("Error: " + error);
       setError("Sign-up failed, try again")
       return;
