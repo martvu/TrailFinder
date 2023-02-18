@@ -6,7 +6,7 @@ import { auth, db, firestore } from "src/app/firebase";
 import { setDoc, doc, deleteDoc, addDoc, collection, Timestamp } from 'firebase/firestore';
 import InputField from './components/inputfield';
 import { useRouter } from 'next/navigation';
-import { ref, set } from 'firebase/database';
+import { get, ref, set } from 'firebase/database';
 
 export default function Signup() {
   const [firstName, setFirstName] = useState("");
@@ -21,16 +21,22 @@ export default function Signup() {
   async function signup() {
     setError("");
     try {
+      const userDBref = ref(db, 'users/' + username);
+      const usernameDBsnap = await get(userDBref);
+      if (usernameDBsnap.exists()) {
+        setError("Username already taken.");
+        return;
+      }
+      
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
       const user = userCredential.user;
-      // Todo: check if all fields are filled in
       const userDoc = setDoc(doc(firestore,"users", user.uid), {
         firstname: firstName,
         lastname: lastName,
         birthdate: Timestamp.fromDate(new Date(birthDate)),
         username: username,
       });
-      // Todo: check if username is already taken
       const usernameDB = set(ref(db, 'users/' + username), email );
       await Promise.all([userDoc, usernameDB]);
       router.push('/login');
@@ -39,9 +45,13 @@ export default function Signup() {
       setError("Sign-up failed. Try again.");
     }
   }
+  function hasAllFieldsFilledOut(): boolean {
+    return firstName != "" && lastName != "" && birthDate != "" && email != "" && password != "" && username != "";
+  }
+
   return (
-      <div className={"flex h-screen items-center justify-center"}>
-        <div className={"w-96 max-h p-6 py-3 shadow-lg bg-white rounded-md gap-4"}>
+      <div className={"inline-block "}>
+        <div className={"w-96 p-6 py-3 shadow-lg bg-white rounded-md gap-4"}>
           <div>
             <h1 className="text-3xl block text-center font-bold text-green-500">
               Sign-up
@@ -60,7 +70,7 @@ export default function Signup() {
             {error != "" ? <p className="text-red-500 mt-3">{error}</p> : null}
             <div className="flex justify-between">
               <button className="btn btn-secondary text-white font-bold py-2 px-4 mt-5 rounded-md justify-center" type="button" onClick={router.back}>Back</button>
-              <button className="btn btn-primary text-white font-bold py-2 px-4 mt-5 rounded-md justify-center" type="submit">Sign-up</button>
+              <button className="btn btn-primary text-white font-bold py-2 px-4 mt-5 rounded-md justify-center" type="submit" disabled={!hasAllFieldsFilledOut()}>Sign-up</button>
             </div>
           </form>
         </div>
