@@ -1,11 +1,10 @@
-import { auth, db } from "@/app/firebase";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import InputField from "../signup/components/inputfield";
-import { DataSnapshot, get, ref } from "firebase/database";
+import InputField from "./Inputfield";
+import { auth } from "../firebase/firebase";
 
 export default function Login() {
   const [error, setError] = useState("");
@@ -13,22 +12,20 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  async function login() {
+  function login() {
     setError("");
-    let usernameDBsnap : DataSnapshot | null;
-    try {
-      usernameDBsnap = await get(ref(db, 'users/' + email));
-    } catch (error) {
-      usernameDBsnap = null;
+    if (!email || !password) {
+      setError('Please enter email and password');
+      return
     }
-    const userEmail = usernameDBsnap && usernameDBsnap.exists() ? usernameDBsnap.val() : email;
-    try {
-      await signInWithEmailAndPassword(auth, userEmail, password);
-      console.log("Logged in");
-      router.replace('/');
-    } catch (error) {
-      setError("Login failed. Try again.");
-    }
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        console.log("Logged in");
+        router.push('/home');
+      })
+      .catch((e: FirebaseError) => {
+        setError('Incorrect email or password');
+      });
   }
   return (
     <div className="w-96 max-h p-6 shadow-lg bg-white rounded-lg">
@@ -51,7 +48,7 @@ export default function Login() {
           placeholder="Enter password..."
           setInput={setPassword}
         />
-        {error != "" ? <p className="text-red-500 mt-3">{error}</p> : null}
+        {error && <div className='w-full max-w-[30ch] text-center border-rose-300 text-rose-300'>{error}</div>}
         <div className="mt-5 flex justify-center">
           <button
             className="btn btn-primary text-white mt-5 flex justify-center rounded-md"
@@ -64,7 +61,7 @@ export default function Login() {
 
       <div className="mt-3 text-center text-sm text-gray-500">
         No account?{" "}
-        <Link href="/login/signup" className="font-bold text-primary">
+        <Link href="/signup" className="font-bold text-primar duration-300 hover:opacity-40">
           Sign-up
         </Link>
       </div>

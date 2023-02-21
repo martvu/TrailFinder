@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import Login from "./components/login";
+import Login from "../components/Login";
 
-export default function login() {
+export default function LoginPage() {
 	return (
 		<div className="flex justify-center items-center h-screen">
 			<img
