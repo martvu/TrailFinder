@@ -5,6 +5,7 @@ import { addDoc, collection, doc, serverTimestamp, setDoc } from 'firebase/fires
 import React, { useState } from 'react'
 import useFetchUser from 'hooks/fetchUser';
 import { useRouter } from 'next/router';
+import StopDiv from './StopDiv';
 
 
 type Post = {
@@ -25,7 +26,7 @@ export default function CreatePostComponent() {
   const [title, setTitle] = useState("")
   const [route, setRoute] = useState([])
   const [numStops, setNumStops] = useState(0)
-  const [stops, setStops] = useState<string[]>([]) // array to hold the stop inputs
+  const [stops, setStops] = useState([stop]) // array to hold the stop inputs
   const { userData } = useFetchUser();
 
   const router = useRouter();
@@ -61,9 +62,10 @@ export default function CreatePostComponent() {
 
   };
 
-  function addStop(): void {
-    setStops((prevStops) => [...prevStops, ""]) // add an empty string to the stops array
-  }
+ /*  const addStop = () => {
+    const newStop = <div> Some stop </div>;
+    setStops([...stops, newStop]);
+  } */
 
   return (
     <div>
@@ -114,25 +116,10 @@ export default function CreatePostComponent() {
                   <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(5) }/>
                 </div>
               </div>
-              <div className="addStops">
+              <StopDiv></StopDiv>
+              {/* <div className="addStops">
                 Add stops: <button onClick={addStop} className="btn btn-xs rounded-full">+</button>
-              </div>
-              {/* {stops.map((stop, index) => (
-                <div key={index}>
-                  <label>Stop {index + 1}: </label>
-                  <input
-                    type='text'
-                    value={stop.location}
-                    onChange={(e) =>
-                      setStops((prevStops) =>
-                        prevStops.map((prevStop, i) =>
-                          i === index ? { ...prevStop, location: e.target.value } : prevStop
-                        )
-                      )
-                    }
-                  />
-                </div>
-              ))} */}
+              </div> */}
               <div className=''>
                 <label>Comments: </label>
                 <textarea
