@@ -27,11 +27,13 @@ const MyComponent: React.FC = () => {
   };
   return (
     <div>
-      Add stops: <button className="btn-primary btn-circle btn-solid btn-sm" onClick={addDiv}>+</button>
+      Add stops: <button className="btn-primary btn-circle btn-solid btn-xs" onClick={addDiv}>+</button>
       {state.divs.map((div) => (
+        <div className="flex flex-row items-center">
         <div key={div.id}>
           {div.content}
-          <button className="btn-secondary btn-circle btn-solid btn-sm" onClick={() => removeDiv(div.id)}>-</button>
+          <button className="btn-secondary btn-circle btn-solid btn-xs" onClick={() => removeDiv(div.id)}>-</button>
+        </div>
         </div>
       ))}
     </div>

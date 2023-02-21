@@ -77,7 +77,7 @@ export default function CreatePostComponent() {
           <div className="flex flex-row">
             <div className="flex flex-col w-2/5">
               <div className="flex flex-row place-items-center h-full">
-                <img src="images/bg_trailfinder.png" className="w-full h-full pr-10" /> {/*sett  inn profilbilde*/}
+                <img src="images/bg_trailfinder.png" className="w-full h-full pr-10 mx" /> {/*sett  inn profilbilde*/}
                 <div className="opprett-info p-1">
                   {/* importer navn på brukeren*/}
                 </div>
@@ -117,9 +117,6 @@ export default function CreatePostComponent() {
                 </div>
               </div>
               <StopDiv></StopDiv>
-              {/* <div className="addStops">
-                Add stops: <button onClick={addStop} className="btn btn-xs rounded-full">+</button>
-              </div> */}
               <div className=''>
                 <label>Comments: </label>
                 <textarea
