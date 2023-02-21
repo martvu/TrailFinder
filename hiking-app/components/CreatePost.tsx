@@ -100,13 +100,19 @@ export default function CreatePostComponent() {
               </div>
               <div className="flex">
                 <label>Rating: </label>
-                <input className="border mx-2 mb-1"
-                  onChange={(e) => setRating(parseInt(e.target.value))}
-                  type="number"
-                  min="1"
-                  max="5"
-                  placeholder='Rating'>
-                </input>
+                <div className="rating rating-lg rating-half">
+                  <input type="radio" name="rating-10" className="rating-hidden" />
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={()=> setRating(0.5) }/>
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(1) }/>
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={()=> setRating(1.5) }/>
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(2) }/>
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={()=> setRating(2.5) }/>
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(3) }/>
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={()=> setRating(3.5) }/>
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(4) }/>
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={()=> setRating(4.5) }/>
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(5) }/>
+                </div>
               </div>
               <div className="addStops">
                 Add stops: <button onClick={addStop} className="btn btn-xs rounded-full">+</button>
