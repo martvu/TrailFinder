@@ -1,10 +1,10 @@
-import { FirebaseError } from "firebase/app";
+import { auth, db } from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import InputField from "./Inputfield";
-import { auth } from "../firebase/firebase";
+import { DataSnapshot, get, ref } from "firebase/database";
 
 export default function Login() {
   const [error, setError] = useState("");
@@ -12,20 +12,22 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  function login() {
+  async function login() {
     setError("");
-    if (!email || !password) {
-      setError('Please enter email and password');
-      return
+    let usernameDBsnap : DataSnapshot | null;
+    try {
+      usernameDBsnap = await get(ref(db, 'users/' + email));
+    } catch (error) {
+      usernameDBsnap = null;
     }
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        console.log("Logged in");
-        router.push('/home');
-      })
-      .catch((e: FirebaseError) => {
-        setError('Incorrect email or password');
-      });
+    const userEmail = usernameDBsnap && usernameDBsnap.exists() ? usernameDBsnap.val() : email;
+    try {
+      await signInWithEmailAndPassword(auth, userEmail, password);
+      console.log("Logged in");
+      router.replace('/');
+    } catch (error) {
+      setError("Login failed. Try again.");
+    }
   }
   return (
     <div className="w-96 max-h p-6 shadow-lg bg-white rounded-lg">
@@ -48,10 +50,12 @@ export default function Login() {
           placeholder="Enter password..."
           setInput={setPassword}
         />
-        {error && <div className='w-full max-w-[30ch] text-center border-rose-300 text-rose-300'>{error}</div>}
+        <div className='w-full max-w-[30ch] h-3 pt-2 text-rose-500'>
+        {error && <p className="w-full">{error}</p>}
+        </div>
         <div className="mt-5 flex justify-center">
           <button
-            className="btn btn-primary text-white mt-5 flex justify-center rounded-md"
+            className="btn btn-primary text-white mt-2 flex justify-center rounded-md"
             type="submit"
           >
             Log in
@@ -61,7 +65,7 @@ export default function Login() {
 
       <div className="mt-3 text-center text-sm text-gray-500">
         No account?{" "}
-        <Link href="/signup" className="font-bold text-primar duration-300 hover:opacity-40">
+        <Link href="/signup" className="font-bold text-primary duration-300 hover:brightness-75">
           Sign-up
         </Link>
       </div>

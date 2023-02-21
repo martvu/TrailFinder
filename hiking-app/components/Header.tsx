@@ -6,14 +6,20 @@ import { useRouter } from 'next/navigation';
 const Header = () => {
   const router = useRouter();
 
-  return (
-    <header className="flex items-center justify-between p-4">
-      <div onClick={() => { router.push('/home') }} className='text-center flex flex-col items-center duration-300 hover:opacity-40 cursor-pointer'>
-        <img src="/images/trailfinder_logo_simple.png" alt="Logo" className="h-10 duration-100 hover:opacity-40" />
-        <p className=''>TrailFinder</p>
-      </div>
+  async function logout() {
+    await signOut(auth);
+    router.replace('/login'); 
+  }
 
-      {/* <form className="flex items-center">
+  return (
+    <header className="sm:p-4">
+      <div className='flex items-center justify-between '>
+        <div onClick={() => { router.push('/home') }} className='text-center flex flex-col items-center duration-300 hover:opacity-40 cursor-pointer'>
+          <img src="/images/trailfinder_logo_simple.png" alt="Logo" className="h-10 duration-100 hover:opacity-40" />
+          <p className=''>TrailFinder</p>
+        </div>
+
+        {/* <form className="flex items-center">
         <div className="relative">
           <img src="/searchicon.png" alt="search" className="w-6 h-6 absolute top-0 left-0 mt-2 ml-2" />
           <input
@@ -26,16 +32,17 @@ const Header = () => {
           Search
         </button>
       </form> */}
-      <div onClick={()=>{router.push('/home')}}className='flex items-center text-5xl font-extrabold duration-300 hover:opacity-40 cursor-pointer'>TrailFinder</div>
-      <div className='text-center flex flex-col items-center'>
-        <div className='duration-300 hover:opacity-40'>
-          <img onClick={() => { router.push('/profile') }} src="/profilbilde.jpg" alt="Profile" className="w-12 h-12 rounded-full cursor-pointer duration-300 hover:opacity-40'" />
-          <p className='text-sm'>profile</p>
+        <div onClick={() => { router.push('/home') }} className='flex items-center 
+      text-3xl sm:text-5xl font-extrabold duration-300 hover:opacity-40 cursor-pointer'>
+          TrailFinder</div>
+        <div className='text-center flex flex-col items-center'>
+          <div onClick={() => { router.push('/profile') }} className='cursor-pointer border rounded-full duration-300 hover:opacity-40 p-3'>
+            <i className="fa-solid fa-user"></i>
+            <p className='text-sm'>profile</p>
+          </div>
+          <button onClick={logout} className='btn btn-sm rounded-full bg-green-500 hover:opacity-40 duration-300 text-white'>Log out</button>
         </div>
-        <button onClick={() => { signOut(auth); router.push('/login'); }} className='btn btn-sm rounded-full bg-gray-400 hover:bg-gray-600 text-white'>Log out</button>
-
       </div>
-
     </header>
   );
 };

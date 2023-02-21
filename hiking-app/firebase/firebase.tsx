@@ -3,6 +3,8 @@ import {getAuth} from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 import {enableIndexedDbPersistence, getFirestore} from "firebase/firestore";
 import { getDatabase } from "firebase/database";
+import firebase from 'firebase/compat/app';
+import 'firebase/firestore'
 
 const firebaseConfig = {
     apiKey: "AIzaSyCBS3OPQ6gF9srE-BMqKHM6pGwnXY9qU1Y",
@@ -16,9 +18,8 @@ const firebaseConfig = {
   };
 
 const app = initializeApp(firebaseConfig);
-//const analytics = getAnalytics(app);
 
-export const db = getFirestore(app);
+export const db = getDatabase(app);
 export const auth = getAuth(app);
-//export const firestore = getFirestore();
-//enableIndexedDbPersistence(firestore)
+export default firebase;
+export const firestore = getFirestore();

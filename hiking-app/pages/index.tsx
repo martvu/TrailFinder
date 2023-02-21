@@ -1,27 +1,28 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useState } from 'react'
+import { useAuth } from 'context/AuthContext';
+
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
- 
+
   const router = useRouter();
+  const { currentUser } = useAuth();
 
-  useEffect(() => {
-    // Navigate to the about page after 3 seconds
-    const timeoutId = setTimeout(() => {
+  if (!currentUser) {
+    useEffect(() => {
       router.push('/login');
-    }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, []);
+    }, []);
+  } else {
+    useEffect(() => {
+      router.push('/home');
+    }, []);
+  } 
+  
+  
   return (
     <>
       <Head>
@@ -30,7 +31,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      
     </>
   )
 }
