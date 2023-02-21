@@ -1,38 +1,97 @@
-import React from "react";
+import React, { } from "react";
 import Header from "./Header";
-import Link from "next/link";
+import 'firebase/firestore'
+import useFetchUser from "hooks/fetchUser";
+import useFetchPosts from "hooks/fetchPosts";
+import PostCard from "./PostCard";
 
-export default function Profile({setEdit}:any) {
+
+
+export default function Profile({ setEdit }: any) {
+  const { userData, loading } = useFetchUser();
+  const { postList } = useFetchPosts();
+
+  const usersPosts = postList.filter(post => post.username == userData.username);
+  console.log(usersPosts);
   return (
     <>
       <Header />
-      <div className="flex w-full p-4">
-        <div className="w-4/5 p-4">
-          <div className="flex justify-center items-center mb-4 ml-10 font-inter">
-            <div className="w-1/4 h-40 border border-solid border-black mr-4">
-              <img src="/profilbilde.jpg" className="w-full h-full object-cover" />
-            </div>
-            <div>
-              <div className="text-3xl pb-2 font-bold">Kristine Eide Rapp</div>
-              <div className="mb-2">
-                <p className="text-m">Krapp</p>
-              </div>
-              <div className="mb-2">
-                <p className="text-m">Kristrap@gmail.com</p>
-              </div>
-              <div className="mb-2 flex items-center">
-                <i className="fa-solid fa-cake-candles"></i>
-                <p className="text-sm">16.03.2001</p>
-              </div>
-              <div className="flex items-center">
-                <div className="inline-flex mr-2">
-                  <button onClick={() => setEdit(true)} className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-1 px-16 rounded text-xs flex items-center justify-center">
-                    <span className="mx-auto">Edit</span>
-                  </button>
-                </div>
-              </div>
+      
+      <div className="flex w-full p-4 justify-center">
+      
+        <div className="flex flex-col">
+  
+          <div className="flex w-full justify-left rounded-md shadow-md p-4">
+         
+            <div className="flex p-4 justify-center items-center font-inter ">
+
+              {/* loading userData */}
+              {(loading) && (<div className='flex-1 grid place-items-center'>
+                <i className="fa-solid fa-spinner fa-xl animate-spin opacity-40"></i>
+              </div>)}
+              
+              {/* show userData when finished loading*/}
+              {(!loading) && userData && (
+                <>
+                  <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-21 h-21 border-black">
+                    <i className="fa-solid fa-user fa-4x"></i>
+                  </div>
+                  <div className="font-inter">
+                  </div>
+                  <div>
+                    <div className="text-3xl pb-2 font-bold">
+                      {userData.firstname} {userData.lastname}
+                    </div>
+                    <div className="mb-2">
+                      <p className="text-m">{userData.username}</p>
+                    </div>
+                    <div className="mb-2">
+                      <p className="text-m">{userData.email}</p>
+                    </div>
+                    <div className="mb-2 flex items-center">
+                      <i className="fa-solid fa-cake-candles mr-2"></i>
+                      <p className="text-sm">{userData.birthdate.toDate().toLocaleDateString()}</p>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="inline-flex mr-2">
+                        <button
+                          onClick={() => setEdit(true)}
+                          className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-1 px-12 rounded text-xs flex items-center justify-center"
+                        >Edit
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+             
             </div>
           </div>
+          <div className="flex justify-left">
+            <p className="mt-5 h-10 text-xl font-bold">
+              My posts
+            </p>
+          </div>
+
+          {usersPosts.map((post, index) => (
+            <PostCard key={index}
+              //@ts-ignore
+              id={post.id}
+              //@ts-ignore
+              username={post.username}
+              //@ts-ignore må løses senere
+              price={post.price}
+              //@ts-ignore
+              rating={post.rating}
+              //@ts-ignore
+              date={post.date.toDate().toLocaleDateString()}
+              //@ts-ignore
+              title={post.title} route={[]}  >
+
+              {//@ts-ignore
+              }
+            </PostCard>
+          ))}
         </div>
       </div>
     </>
