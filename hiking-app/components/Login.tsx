@@ -1,10 +1,9 @@
-import { auth, db } from "@/app/firebase";
-import { FirebaseError } from "firebase/app";
+import { auth, db } from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import InputField from "../signup/components/inputfield";
+import InputField from "./Inputfield";
 import { DataSnapshot, get, ref } from "firebase/database";
 
 export default function Login() {
@@ -51,10 +50,12 @@ export default function Login() {
           placeholder="Enter password..."
           setInput={setPassword}
         />
-        {error != "" ? <p className="text-red-500 mt-3">{error}</p> : null}
+        <div className='w-full max-w-[30ch] h-3 pt-2 text-rose-500'>
+        {error && <p className="w-full">{error}</p>}
+        </div>
         <div className="mt-5 flex justify-center">
           <button
-            className="btn btn-primary text-white mt-5 flex justify-center rounded-md"
+            className="btn btn-primary text-white mt-2 flex justify-center rounded-md"
             type="submit"
           >
             Log in
@@ -64,7 +65,7 @@ export default function Login() {
 
       <div className="mt-3 text-center text-sm text-gray-500">
         No account?{" "}
-        <Link href="/login/signup" className="font-bold text-primary">
+        <Link href="/signup" className="font-bold text-primary duration-300 hover:brightness-75">
           Sign-up
         </Link>
       </div>

@@ -2,9 +2,9 @@
 
 import { createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
 import React, { useState } from 'react';
-import { auth, db, firestore } from "src/app/firebase";
+import { auth, db, firestore } from "../firebase/firebase";
 import { setDoc, doc, deleteDoc, addDoc, collection, Timestamp } from 'firebase/firestore';
-import InputField from './components/inputfield';
+import InputField from './Inputfield';
 import { useRouter } from 'next/navigation';
 import { get, ref, set } from 'firebase/database';
 
@@ -31,11 +31,12 @@ export default function Signup() {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
       const user = userCredential.user;
-      const userDoc = setDoc(doc(firestore,"users", user.uid), {
+      const userDoc = setDoc(doc(firestore, "users", user.uid), {
         firstname: firstName,
         lastname: lastName,
         birthdate: Timestamp.fromDate(new Date(birthDate)),
         username: username,
+        isAdmin: false,
       });
       const usernameDB = set(ref(db, 'users/' + username), email );
       await Promise.all([userDoc, usernameDB]);
@@ -47,7 +48,13 @@ export default function Signup() {
   }
   function hasAllFieldsFilledOut(): boolean {
     return firstName != "" && lastName != "" && birthDate != "" && email != "" && password != "" && username != "";
+    
   }
+
+  //TODO Se på om løsningen under er bedre med tanke på effektivisering
+  /* function notAllFieldsFilledOut(): boolean {
+    return ([firstName, lastName, birthDate, email, password, username].some(el => el == ""))
+  } */
 
   return (
         <div className="flex flex-col justify-center items-center min-h-screen">
