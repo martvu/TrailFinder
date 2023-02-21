@@ -9,7 +9,7 @@ export default function login() {
 			<img
 				src="/images/bg_trailfinder.png"
 				alt="login image"
-				className="w-1/2 object-cover mb-0 ml-10 mt-10 rounded-lg"
+				className="h-[90%] object-cover mb-0 ml-10 mt-10 rounded-lg"
 			/>
 			<div className="flex flex-col items-center w-1/2 ml-10 px-10">
 				<img
