@@ -3,9 +3,10 @@ import React from 'react';
 const Pictures = () => {
     return (
 
-        <div className="w-1/5 p-4">
-            <div className="rounded-lg overflow-hidden shadow-lg bg-white">
-                <div className="flex justify-between items-center font-medium text-lg p-2">
+       
+        <div className="w-1/5 p-4 bg-base-200">
+            <div className="rounded-lg overflow-hidden shadow-lg bg-base-100 ml-10">
+                <div className="flex justify-between items-center font-medium text-lg p-4">
                     <h1>Pictures</h1>
                     <a href="#" className="text-gray-500 text-xs hover:text-gray-700">
                         See all
@@ -61,7 +62,7 @@ const Pictures = () => {
                 </div>
             </div>
         </div>
-
+       
 
     );
 };
