@@ -13,6 +13,7 @@ type Post = {
   id: string;
   route: Array<string>;
   price: string;
+  length: string;
   rating: number;
   title: string;
   username:string;
@@ -22,6 +23,7 @@ export default function CreatePostComponent() {
 
   const { currentUser } = useAuth();
   const [price, setPrice] = useState("")
+  const [length, setLength] = useState("")
   const [rating, setRating] = useState(0)
   const [title, setTitle] = useState("")
   const [route, setRoute] = useState([])
@@ -39,6 +41,7 @@ export default function CreatePostComponent() {
       date: serverTimestamp(),
       id: dateString,
       route: route,
+      length: length,
       price: price,
       rating: rating,
       username: userData.username,
@@ -90,6 +93,14 @@ export default function CreatePostComponent() {
                   onChange={(e) => setTitle(e.target.value)}
                   type="text"
                   placeholder='Title of the trip'>
+                </input>
+              </div>
+              <div className="flex">
+                <label>Trip length: </label>
+                <input className="border mx-2 mb-1"
+                  onChange={(e) => setLength(e.target.value)}
+                  type="text"
+                  placeholder='Trip length'>
                 </input>
               </div>
               <div className="flex">
