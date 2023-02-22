@@ -76,8 +76,8 @@ export default function CreatePostComponent() {
           <div className="divider"></div>
           <div className="flex flex-row">
             <div className="flex flex-col w-2/5">
-              <div className="flex flex-row place-items-center h-full">
-                <img src="images/bg_trailfinder.png" className="w-full h-full pr-10 mx" /> {/*sett  inn profilbilde*/}
+              <div className="flex flex-row">
+                <img src="images/bg_trailfinder.png" className="w-full pr-10 mx" /> {/*sett  inn profilbilde*/}
                 <div className="opprett-info p-1">
                   {/* importer navn på brukeren*/}
                 </div>
