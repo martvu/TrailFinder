@@ -36,7 +36,7 @@ export default function PostCard(postProps: postProps) {
         </div>
 
         <UtilityButtons setIsDeleted={setIsDeleted} post={postProps.post} className="absolute bottom-0 left-0 m-2" />
-        <div className="card-body">
+        <div className="card-body w-3/6">
           <h2 className="card-title font-extrabold absolute top-2">{title}</h2>
 
           {/* stops */}
