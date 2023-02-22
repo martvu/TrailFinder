@@ -1,64 +1,37 @@
 'use client'
 import { useAuth } from 'context/AuthContext';
-import { db, firestore } from '../firebase/firebase';
-import { Timestamp, addDoc, collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { firestore } from '../firebase/firebase';
+import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
 import useFetchUser from 'hooks/fetchUser';
 import { useRouter } from 'next/router';
 import { PostData } from 'hooks/PostData';
 
 
-export default function CreatePostComponent() {
+export default function EditPostModal(post: PostData) {
 
   const { currentUser } = useAuth();
-  const [price, setPrice] = useState("")
-  const [rating, setRating] = useState(0)
-  const [title, setTitle] = useState("")
-  const [route, setRoute] = useState([])
+  const [price, setPrice] = useState(post.price)
+  const [rating, setRating] = useState(post.rating)
+  const [title, setTitle] = useState(post.title)
+  const [route, setRoute] = useState(post.route)
   const [numStops, setNumStops] = useState(0)
   const [stops, setStops] = useState([] as string[]) // array to hold the stop inputs
   const { userData } = useFetchUser();
 
   const router = useRouter();
 
-  function createPostData(){
-    const now = new Date(Date.now());
-    const dateString = now.toString();
-    if (userData) {
-      const newPost: PostData = {
-        id: dateString,
-        date: Timestamp.now(),
-        route: route,
-        price: price,
-        rating: rating,
-        title: title,
-        username: userData.username
-      }
-      return newPost;
-  };
-}
-  
-  async function handleAddPost() {
-    const newPost = createPostData();
-    console.log(newPost);
-    if(newPost){
-    const postRef = doc(firestore, 'posts', 'post: ' + newPost.id);
-    await setDoc(postRef, newPost);
-    
-
-    console.log("Successful");
-    window.location.reload();
-    }
-
-  };
-
   function addStop(): void {
     setStops((prevStops) => [...prevStops, ""]) // add an empty string to the stops array
   }
 
+  function updatePost(): void {
+
+  }
+
   return (
     <div>
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <input type="checkbox" id="edit-modal" className="modal-toggle" />
       <div className="modal"> {/* Opprett innlegg boks */}
         <div className="modal-box relative h-4/5 w-full max-w-5xl">
           <h1> New Post </h1>
@@ -76,6 +49,7 @@ export default function CreatePostComponent() {
               <div className="flex">
                 <label>Title: </label>
                 <input className="border mx-2 mb-1"
+                  value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   type="text"
                   placeholder='Title of the trip'>
@@ -84,6 +58,7 @@ export default function CreatePostComponent() {
               <div className="flex">
                 <label>Price: </label>
                 <input className="border mx-2 mb-1"
+                  value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   type="text"
                   placeholder='Price'>
@@ -93,6 +68,7 @@ export default function CreatePostComponent() {
                 <label>Rating: </label>
                 <input className="border mx-2 mb-1"
                   onChange={(e) => setRating(parseInt(e.target.value))}
+                  value={rating}
                   type="number"
                   min="1"
                   max="5"
@@ -102,22 +78,6 @@ export default function CreatePostComponent() {
               <div className="addStops">
                 Add stops: <button onClick={addStop} className="btn btn-xs rounded-full">+</button>
               </div>
-              {/* {stops.map((stop, index) => (
-                <div key={index}>
-                  <label>Stop {index + 1}: </label>
-                  <input
-                    type='text'
-                    value={stop.location}
-                    onChange={(e) =>
-                      setStops((prevStops) =>
-                        prevStops.map((prevStop, i) =>
-                          i === index ? { ...prevStop, location: e.target.value } : prevStop
-                        )
-                      )
-                    }
-                  />
-                </div>
-              ))} */}
               <div className=''>
                 <label>Comments: </label>
                 <textarea
@@ -127,8 +87,8 @@ export default function CreatePostComponent() {
               </div>
 
             </div>
-            <button onClick={handleAddPost} className='btn border border-solid border-black'>Publish </button>
-            <label htmlFor="my-modal-3" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+            <button onClick={updatePost} className='btn border border-solid border-black'>Save </button>
+            <label htmlFor="edit-modal" className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
           </div>
         </div>
       </div>

@@ -1,0 +1,42 @@
+import { deleteDoc, doc } from "firebase/firestore";
+import useFetchUser from "hooks/fetchUser";
+import React from "react";
+import CreatePostComponent from "./CreatePost";
+import EditPostModal from "./EditPostModal";
+import { firestore } from "../firebase/firebase";
+import { PostData } from "hooks/PostData";
+
+interface Props {
+  className?: string;
+  setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>;
+  post: PostData;
+}
+
+function UtilityButtons({className, setIsDeleted, post}: Props) {
+  const { userData, loading } = useFetchUser();
+  const adminState = userData?.isAdmin ?? false;
+
+  async function deletePost() {
+    if (adminState || post.username == userData?.username) {
+      await deleteDoc(doc(firestore, 'posts', 'post: ' + post.id));
+      setIsDeleted(true);
+    }
+    else {
+      alert("You don't have permission to delete that post..")
+    }
+  }
+
+  return (
+    <div className={className}>
+      <div onClick={deletePost}>
+        <i className="fa-solid fa-trash-can"></i>
+      </div>
+      <EditPostModal post={post}/>
+      <label htmlFor="edit-modal">
+        <i className="fa-solid fa-pen-to-square"></i>
+      </label>
+    </div>
+  );
+};
+
+export default UtilityButtons;
