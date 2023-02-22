@@ -16,7 +16,7 @@ export default function EditPostModal({ post }: Props) {
 	const [price, setPrice] = useState(post.price);
 	const [rating, setRating] = useState(post.rating);
 	const [title, setTitle] = useState(post.title);
-	const [route, setRoute] = useState(post.route);
+	const [route, setRoute] = useState(post.stops);
 	const [numStops, setNumStops] = useState(0);
 	const [stops, setStops] = useState([] as string[]); // array to hold the stop inputs
 	const { userData } = useFetchUser();
