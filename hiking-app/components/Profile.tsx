@@ -10,17 +10,17 @@ import PostCard from "./PostCard";
 export default function Profile({ setEdit }: any) {
   const { userData, loading } = useFetchUser();
   const { postList } = useFetchPosts();
-
-  const usersPosts = postList.filter(post => post.username == userData.username);
-  console.log(usersPosts);
+  const usersPosts = postList.filter(post => post.username == userData?.username);
+  
+  
   return (
     <>
       <Header />
 
-      <div className="flex w-full p-4 justify-center flex-col">
-        <div className="flex w-full justify-left rounded-md shadow-md p-4">
+      <div className="flex w-full p-4 justify-center items-center flex-col">
+        <div className="flex w-full sm:w-4/5 justify-left rounded-md shadow-lg p-4 bg-white">
 
-          <div className="flex p-4 justify-center items-center font-inter ">
+          <div className="flex p-4 justify-center items-center font-inter bg-white">
 
             {/* loading userData */}
             {(loading) && (<div className='flex-1 grid place-items-center'>
@@ -66,12 +66,11 @@ export default function Profile({ setEdit }: any) {
         </div>
         <div className="flex w-full justify-center">
           <div className="flex w-3/5 flex-col">
-            <div className="flex justify-left">
+            <div className="flex justify-center">
               <p className="mt-5 h-10 text-xl font-bold">
                 My posts
               </p>
             </div>
-
             {usersPosts.map((post, index) => (
               <PostCard key={index} post={post} />
             ))}
