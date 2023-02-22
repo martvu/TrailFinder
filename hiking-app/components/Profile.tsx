@@ -11,16 +11,16 @@ export default function Profile({ setEdit }: any) {
   const { userData, loading } = useFetchUser();
   const { postList } = useFetchPosts();
   const usersPosts = postList.filter(post => post.username == userData?.username);
-  
-  
+
+
   return (
     <>
       <Header />
 
       <div className="flex w-full p-4 justify-center items-center flex-col">
-        <div className="flex w-full sm:w-4/5 justify-left rounded-md shadow-lg p-4 bg-white">
+        <div className="flex w-full sm:w-4/5 justify-left rounded-md shadow-lg p-4 bg-neutral-50">
 
-          <div className="flex p-4 justify-center items-center font-inter bg-white">
+          <div className="flex p-4 justify-center items-center font-inter ">
 
             {/* loading userData */}
             {(loading) && (<div className='flex-1 grid place-items-center'>
@@ -71,9 +71,13 @@ export default function Profile({ setEdit }: any) {
                 My posts
               </p>
             </div>
+
             {usersPosts.map((post, index) => (
-              <PostCard key={index} post={post} />
+              <div className="mb-2">
+                <PostCard key={index} post={post} />
+              </div>
             ))}
+
           </div>
         </div>
       </div>

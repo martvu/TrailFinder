@@ -98,7 +98,7 @@ export default function EditProfile({ setEdit }: any) {
           </div>
           {error && <div className='w-full max-w-[30ch] text-center border-rose-300 text-rose-300'>{error}</div>}
           <div className='mt-3 text-center'>
-            <button onClick={() => { updateUser() }} className="btn-sm bg-green-500 hover:bg-green-700 text-white font-bold rounded-md justify-center">Confirm</button>
+            <button onClick={() => { updateUser() }} className="btn-sm btn-primary text-white font-bold rounded-md justify-center">Confirm</button>
           </div>
         </div>
       </div>

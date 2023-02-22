@@ -10,7 +10,6 @@ import { PostData } from 'hooks/PostData';
 
 export default function CreatePostComponent() {
 
-  const { currentUser } = useAuth();
   const [price, setPrice] = useState("")
   const [length, setLength] = useState("")
   const [rating, setRating] = useState(0)
@@ -20,9 +19,7 @@ export default function CreatePostComponent() {
   const [newStop, setNewStop] = useState("") // array to hold the stop inputs
   const { userData } = useFetchUser();
 
-  const router = useRouter();
-
-  function createPostData(){
+  function createPostData() {
     const now = new Date(Date.now());
     const dateString = now.toString();
     if (userData) {
@@ -38,16 +35,16 @@ export default function CreatePostComponent() {
         username: userData.username
       }
       return newPost;
-  };
-}
-  
+    };
+  }
+
   async function handleAddPost() {
     const newPost = createPostData();
     console.log(newPost);
-    if(newPost){
+    if (newPost) {
       const postRef = doc(firestore, 'posts', 'post: ' + newPost.id);
       await setDoc(postRef, newPost);
-      
+
 
       console.log("Successful");
       window.location.reload();
@@ -117,47 +114,45 @@ export default function CreatePostComponent() {
                 <label>Rating: </label>
                 <div className="rating rating-lg rating-half">
                   <input type="radio" name="rating-10" className="rating-hidden" />
-                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={()=> setRating(0.5) }/>
-                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(1) }/>
-                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={()=> setRating(1.5) }/>
-                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(2) }/>
-                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={()=> setRating(2.5) }/>
-                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(3) }/>
-                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={()=> setRating(3.5) }/>
-                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(4) }/>
-                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={()=> setRating(4.5) }/>
-                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(5) }/>
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={() => setRating(0.5)} />
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={() => setRating(1)} />
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={() => setRating(1.5)} />
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={() => setRating(2)} />
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={() => setRating(2.5)} />
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={() => setRating(3)} />
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={() => setRating(3.5)} />
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={() => setRating(4)} />
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-1" onChange={() => setRating(4.5)} />
+                  <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={() => setRating(5)} />
                 </div>
               </div>
               {/* <StopDiv></StopDiv> */}
-               <div>
-
+              <div>
+                <form
+                  onSubmit={(event) => {
+                    event.preventDefault();
+                    addStop(newStop);
+                    setNewStop("");
+                  }}>
+                  <label>Stops: </label>
+                  <input className="mx-2 mb-1 mt-1" placeholder="Stop" value={newStop} type="text" name="stop" onChange={(e) => setNewStop(e.target.value)} />
+                  {" "}
+                  <button type="submit" className='btn btn-xs btn-primary'>+</button>
+                </form>
+              </div>
               <ul>
-                {stops.map((stop, index) => (
-                  <li key={index}>
-                    {stop + " "}
-                    <button className="btn btn-xs btn-secondary" onClick={() => removeStop(index)}>-</button>
-                  </li>
-                ))}
-              </ul>
-
-              <form
-                onSubmit={(event) => {
-                  event.preventDefault();
-                  addStop(newStop);
-                  setNewStop("");
-                }}
-              ><label>Stops: </label>
-                <input className="mx-2 mb-1 mt-1" placeholder="Stop" value={newStop} type="text" name="stop" onChange={(e) => setNewStop(e.target.value)}/>
-                {" "}
-                <button type="submit" className='btn btn-xs btn-primary'>+</button>
-              </form>
-</div>
-
+                  {stops.map((stop, index) => (
+                    <li key={index}>
+                      {stop + " "}
+                      <button className="btn btn-xs btn-secondary" onClick={() => removeStop(index)}>-</button>
+                    </li>
+                  ))}
+                </ul>
               <div className=''>
                 <label>Trip description: </label>
                 <textarea
-                  className="textarea textarea-bordered w-full"
+                  className="block textarea textarea-bordered w-full max-w-sm"
+                  maxLength={140}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Tell people about your trip!">
                 </textarea>

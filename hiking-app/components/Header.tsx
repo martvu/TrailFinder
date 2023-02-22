@@ -33,14 +33,15 @@ const Header = () => {
         </button>
       </form> */}
         <div onClick={() => { router.push('/home') }} className='flex items-center 
-      text-3xl sm:text-5xl font-extrabold duration-300 hover:opacity-40 cursor-pointer'>
+      text-3xl sm:text-5xl font-extrabold duration-100 hover:opacity-60 cursor-pointer'>
           TrailFinder</div>
         <div className='text-center flex flex-col items-center'>
-          <div onClick={() => { router.push('/profile') }} className='cursor-pointer border rounded-full duration-300 hover:opacity-40 p-3'>
+          <div onClick={() => { router.push('/profile') }} className='bg-neutral-50 
+          cursor-pointer border rounded-full p-3 duration-100 hover:opacity-60'>
             <i className="fa-solid fa-user"></i>
-            <p className='text-sm'>profile</p>
+            <p className='text-xs'>profile</p>
           </div>
-          <button onClick={logout} className='btn btn-sm rounded-full bg-green-500 hover:opacity-40 duration-300 text-white'>Log out</button>
+          <button onClick={logout} className='btn btn-xs mt-1 rounded-full btn-primary text-white'>Log out</button>
         </div>
       </div>
     </header>
