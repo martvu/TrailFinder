@@ -11,11 +11,13 @@ import StopDiv from './StopDiv';
 type Post = {
   date: any;
   id: string;
-  route: Array<string>;
+  //route: Array<string>;
+  stops: Array<string>
   price: string;
   length: string;
   rating: number;
   title: string;
+  description: string;
   username:string;
 }
 
@@ -27,8 +29,10 @@ export default function CreatePostComponent() {
   const [rating, setRating] = useState(0)
   const [title, setTitle] = useState("")
   const [route, setRoute] = useState([])
+  const [description, setDescription] = useState("")
   const [numStops, setNumStops] = useState(0)
-  const [stops, setStops] = useState([stop]) // array to hold the stop inputs
+  const [stops, setStops] = useState([""]) // array to hold the stop inputs
+  const [newStop, setNewStop] = useState("") // array to hold the stop inputs
   const { userData } = useFetchUser();
 
   const router = useRouter();
@@ -40,10 +44,11 @@ export default function CreatePostComponent() {
     const newPost: Post = {
       date: serverTimestamp(),
       id: dateString,
-      route: route,
       length: length,
       price: price,
       rating: rating,
+      stops: stops,
+      description: description,
       username: userData.username,
       title: title
     }
@@ -65,10 +70,12 @@ export default function CreatePostComponent() {
 
   };
 
- /*  const addStop = () => {
-    const newStop = <div> Some stop </div>;
-    setStops([...stops, newStop]);
-  } */
+  function updateStops() {
+    stops.push(newStop);
+    const newStops = stops;
+    setStops(newStops)
+  }
+
 
   return (
     <div>
@@ -127,12 +134,22 @@ export default function CreatePostComponent() {
                   <input type="radio" name="rating-10" className="bg-green-500 mask mask-star-2 mask-half-2" onChange={()=> setRating(5) }/>
                 </div>
               </div>
-              <StopDiv></StopDiv>
+              {/* <StopDiv></StopDiv> */}
+              <div className="flex flex-row">
+                <label>Stops: </label>
+                <input className="border mx-2 mb-1"
+                  onChange={(e) => setNewStop(e.target.value)}
+                  type="text"
+                  placeholder='New stop'>
+                </input>
+                  <button className="btn-primary btn-circle btn-solid btn-xs" onClick={updateStops}>+</button>
+              </div>
               <div className=''>
-                <label>Comments: </label>
+                <label>Trip description: </label>
                 <textarea
                   className="textarea textarea-bordered w-full"
-                  placeholder="Tell about your trip!">
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Tell people about your trip!">
                 </textarea>
               </div>
 
