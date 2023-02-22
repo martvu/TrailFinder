@@ -1,34 +1,20 @@
-import { deleteDoc, doc } from '@firebase/firestore';
-import { firestore } from '../firebase/firebase';
 import React, { useState } from 'react'
-import TrashDiv from './TrashDiv';
-import useFetchUser from "hooks/fetchUser";
+import UtilityButtons from './UtilityButtons'
+import { PostData } from 'hooks/PostData'
 
-export default function PostCard(props: { route: Array<string>, children: any, id: string, price: string, rating: number, date: any, title: string , username: string;}) {
+type postProps = {
+  post: PostData
+}
 
 
-  const { route, children, price, rating, date, title , username, id} = props;
+export default function PostCard(postProps: postProps) {
+
   const [isDeleted, setIsDeleted] = useState(false);
-  const { userData, loading } = useFetchUser();
-  const adminState = userData?.isAdmin ?? false;
-
-  
-  async function deletePost() {
-    if (adminState || username == userData?.username) {
-      await deleteDoc(doc(firestore, 'posts', 'post: ' + id));
-      setIsDeleted(true);
-    }
-    else {
-      alert("You don't have permission to delete that post..")
-    }
-  }
+  const { title, price, rating, date, username } = postProps.post;
 
   if(isDeleted){
     return null;
   }
-
-  
-
   return (
     <div className="card card-side bg-base-100 shadow-md min-w-full max-w-full">
       <div className="flex w-full lg:flex-row min-w-full h-64 bg-base 300">
@@ -37,14 +23,11 @@ export default function PostCard(props: { route: Array<string>, children: any, i
             <img src="images/bg_trailfinder.png" alt="Profile" className="w-20 h-20 p-2 overflow-hidden " />
           </div>
         </section>
-          <div onClick ={()=>deletePost()}className="absolute bottom-0 left-0 m-2 duration-200 hover:scale-110 cursor-pointer">
-            <TrashDiv isVisible={adminState || username == userData?.username} />
-          </div>
+        <UtilityButtons setIsDeleted={setIsDeleted} post={postProps.post} className="absolute bottom-0 left-0 m-2"/>
         <div className="card-body max-w-3/4">
           <h2 className="card-title font-extrabold">{title}</h2>
           <div className='flex flex-col items-start'>
             <>
-              {children}
               <div className='flex items-center'>
                 <p className='font-bold'>Route:</p>
                 <div className='flex justify-center p-2'>
@@ -78,7 +61,7 @@ export default function PostCard(props: { route: Array<string>, children: any, i
           </div>
 
           <div className='text-sm absolute bottom-0 left-0 p-2'>
-            {date}
+            {date.toDate().toLocaleDateString().replace(',', '')}
           </div>
           
         </div>

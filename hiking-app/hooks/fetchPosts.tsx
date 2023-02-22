@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import { collection, getDocs, query, orderBy } from 'firebase/firestore'
 import { firestore } from '../firebase/firebase'
 import { useAuth } from 'context/AuthContext'
-import useFetchUser from './fetchUser'
+import { PostData } from './PostData'
 
 export default function useFetchPosts() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [postList, setPostList] = useState([])
+  const [postList, setPostList] = useState([] as PostData[])
   const { currentUser } = useAuth()
   
   useEffect(() => {
@@ -17,9 +17,8 @@ export default function useFetchPosts() {
         try {
           const postsQuery = query(collection(firestore, 'posts'), orderBy('date', 'desc'));
           const querySnapshot = await getDocs(postsQuery);
-          const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+          const data = querySnapshot.docs.map(doc => ({...doc.data() } as PostData))
           
-          //@ts-ignore
           setPostList(data)
 
         } catch (err) {

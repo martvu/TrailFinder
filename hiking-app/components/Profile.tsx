@@ -73,23 +73,7 @@ export default function Profile({ setEdit }: any) {
             </div>
 
             {usersPosts.map((post, index) => (
-              <PostCard key={index}
-                //@ts-ignore
-                id={post.id}
-                //@ts-ignore
-                username={post.username}
-                //@ts-ignore må løses senere
-                price={post.price}
-                //@ts-ignore
-                rating={post.rating}
-                //@ts-ignore
-                date={post.date.toDate().toLocaleDateString()}
-                //@ts-ignore
-                title={post.title} route={[]}  >
-
-                {//@ts-ignore
-                }
-              </PostCard>
+              <PostCard key={index} post={post} />
             ))}
           </div>
         </div>
