@@ -16,7 +16,6 @@ export default function CreatePostComponent() {
   const [rating, setRating] = useState(0)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
-  const [numStops, setNumStops] = useState(0)
   const [stops, setStops] = useState([] as string[]) // array to hold the stop inputs
   const [newStop, setNewStop] = useState("") // array to hold the stop inputs
   const { userData } = useFetchUser();
@@ -46,12 +45,12 @@ export default function CreatePostComponent() {
     const newPost = createPostData();
     console.log(newPost);
     if(newPost){
-    const postRef = doc(firestore, 'posts', 'post: ' + newPost.id);
-    await setDoc(postRef, newPost);
-    
+      const postRef = doc(firestore, 'posts', 'post: ' + newPost.id);
+      await setDoc(postRef, newPost);
+      
 
-    console.log("Successful");
-    window.location.reload();
+      console.log("Successful");
+      window.location.reload();
     }
 
   };
@@ -148,8 +147,8 @@ export default function CreatePostComponent() {
                   addStop(newStop);
                   setNewStop("");
                 }}
-              >
-                <input value={newStop} type="text" name="stop" onChange={(e) => setNewStop(e.target.value)}/>
+              ><label>Stops: </label>
+                <input className="mx-2 mb-1 mt-1" placeholder="Stop" value={newStop} type="text" name="stop" onChange={(e) => setNewStop(e.target.value)}/>
                 {" "}
                 <button type="submit" className='btn btn-xs btn-primary'>+</button>
               </form>
