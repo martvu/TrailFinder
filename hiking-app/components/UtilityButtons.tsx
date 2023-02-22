@@ -12,7 +12,7 @@ interface Props {
   post: PostData;
 }
 
-function UtilityButtons({className, setIsDeleted, post}: Props) {
+function UtilityButtons({ className, setIsDeleted, post }: Props) {
   const { userData, loading } = useFetchUser();
   const adminState = userData?.isAdmin ?? false;
 
@@ -30,19 +30,23 @@ function UtilityButtons({className, setIsDeleted, post}: Props) {
 
   return (
     <div className={className}>
+      <div className="flex flex-row">
       <div onClick={deletePost}>
-        <i className="fa-solid fa-trash-can cursor-pointer duration-200 hover:scale-110"></i>
+        <i className="fa-solid fa-trash-can cursor-pointer duration-100 hover:scale-110"></i>
       </div>
       {post.username == userData?.username ? (
-      <>
-        <EditPostModal post={post}/>
-        <label htmlFor="edit-modal">
-          <i className="fa-solid fa-pen-to-square cursor-pointer duration-200 hover:scale-110"></i>
-        </label>
-      </>
+        <>
+          <div className="mx-2">
+            <EditPostModal post={post} />
+            <label htmlFor="edit-modal">
+              <i className="fa-solid fa-pen-to-square cursor-pointer duration-100 hover:scale-110"></i>
+            </label>
+          </div>
+        </>
       ) : (
         <></>
       )}
+    </div>  
     </div>
   );
 };

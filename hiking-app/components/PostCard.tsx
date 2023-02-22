@@ -30,7 +30,7 @@ export default function PostCard(postProps: postProps) {
           <p className="card-title flex text-sm opacity-90 ">
             {username}</p>
 
-          <div className='w-20 mt-3'>
+          <div className='max-w-20 w-20 m-3'>
             <img src="./images/bg_trailfinder.png"></img>
           </div>
         </div>

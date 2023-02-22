@@ -64,8 +64,8 @@ export default function Profile({ setEdit }: any) {
 
           </div>
         </div>
-        <div className="flex w-full justify-center">
-          <div className="flex w-3/5 flex-col">
+        <div className="flex w-full justify-center ">
+          <div className="flex w-full flex-col sm:w-3/5">
             <div className="flex justify-center">
               <p className="mt-5 h-10 text-xl font-bold">
                 My posts
