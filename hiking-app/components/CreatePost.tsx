@@ -62,6 +62,16 @@ export default function CreatePostComponent() {
     setStops(newStops)
   }
 
+  function addStop(stop: string) {
+    setStops([...stops, stop]);
+  }
+
+  function removeStop(index: number) {
+    const newStops = [...stops];
+    newStops.splice(index, 1);
+    setStops(newStops);
+  }
+
 
   return (
     <div>
@@ -121,15 +131,30 @@ export default function CreatePostComponent() {
                 </div>
               </div>
               {/* <StopDiv></StopDiv> */}
-              <div className="flex flex-row">
-                <label>Stops: </label>
-                <input className="border mx-2 mb-1"
-                  onChange={(e) => setNewStop(e.target.value)}
-                  type="text"
-                  placeholder='New stop'>
-                </input>
-                  <button className="btn-primary btn-circle btn-solid btn-xs" onClick={updateStops}>+</button>
-              </div>
+               <div>
+
+              <ul>
+                {stops.map((stop, index) => (
+                  <li key={index}>
+                    {stop + " "}
+                    <button className="btn btn-xs btn-secondary" onClick={() => removeStop(index)}>-</button>
+                  </li>
+                ))}
+              </ul>
+
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  addStop(newStop);
+                  setNewStop("");
+                }}
+              >
+                <input value={newStop} type="text" name="stop" onChange={(e) => setNewStop(e.target.value)}/>
+                {" "}
+                <button type="submit" className='btn btn-xs btn-primary'>+</button>
+              </form>
+</div>
+
               <div className=''>
                 <label>Trip description: </label>
                 <textarea
