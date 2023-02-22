@@ -2,11 +2,15 @@ import React, { useState } from 'react'
 import UtilityButtons from './UtilityButtons'
 import { PostData } from 'hooks/PostData'
 
+type postProps = {
+  post: PostData
+}
 
-export default function PostCard(post: PostData) {
+
+export default function PostCard(postProps: postProps) {
 
   const [isDeleted, setIsDeleted] = useState(false);
-  const { title, price, rating, date, username } = post;
+  const { title, price, rating, date, username } = postProps.post;
 
   if(isDeleted){
     return null;
@@ -19,7 +23,7 @@ export default function PostCard(post: PostData) {
             <img src="images/bg_trailfinder.png" alt="Profile" className="w-20 h-20 p-2 overflow-hidden " />
           </div>
         </section>
-        <UtilityButtons setIsDeleted={setIsDeleted} post={post} className="absolute bottom-0 left-0 m-2"/>
+        <UtilityButtons setIsDeleted={setIsDeleted} post={postProps.post} className="absolute bottom-0 left-0 m-2"/>
         <div className="card-body max-w-3/4">
           <h2 className="card-title font-extrabold">{title}</h2>
           <div className='flex flex-col items-start'>
@@ -57,7 +61,7 @@ export default function PostCard(post: PostData) {
           </div>
 
           <div className='text-sm absolute bottom-0 left-0 p-2'>
-            {date.toString()}
+            {date.toDate().toLocaleDateString().replace(',', '')}
           </div>
           
         </div>

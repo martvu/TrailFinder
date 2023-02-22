@@ -39,10 +39,8 @@ export default function Home() {
           <div className='font-extrabold text-2xl'>
             Recent posts:
           </div>
-          {postList.map((post, index) => (
-            <div key={index}>
-              <PostCard post={post as PostData}/>
-            </div>
+          {postList.map((postData, index) => (
+            <PostCard key={index} post={postData}/>
             ))}
         </div>
       </div>

@@ -26,15 +26,23 @@ function UtilityButtons({className, setIsDeleted, post}: Props) {
     }
   }
 
+  if (post.username != userData?.username && !adminState) return <></> // if the user isn't the author of the post, don't show the buttons
+
   return (
     <div className={className}>
       <div onClick={deletePost}>
-        <i className="fa-solid fa-trash-can"></i>
+        <i className="fa-solid fa-trash-can cursor-pointer duration-200 hover:scale-110"></i>
       </div>
-      <EditPostModal post={post}/>
-      <label htmlFor="edit-modal">
-        <i className="fa-solid fa-pen-to-square"></i>
-      </label>
+      {post.username == userData?.username ? (
+      <>
+        <EditPostModal post={post}/>
+        <label htmlFor="edit-modal">
+          <i className="fa-solid fa-pen-to-square cursor-pointer duration-200 hover:scale-110"></i>
+        </label>
+      </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
