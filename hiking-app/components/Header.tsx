@@ -12,11 +12,13 @@ const Header = () => {
   }
 
   return (
-    <header className="sm:p-4">
-      <div className='flex items-center justify-between '>
-        <div onClick={() => { router.push('/home') }} className='text-center flex flex-col items-center duration-300 hover:opacity-40 cursor-pointer'>
-          <img src="/images/trailfinder_logo_simple.png" alt="Logo" className="h-10 duration-100 hover:opacity-40" />
-          <p className=''>TrailFinder</p>
+    <header className="p-2 sm:p-4">
+      <div className='flex justify-between'>
+        <div onClick={() => { router.push('/home') }} className='text-center flex items-center duration-300 hover:opacity-40 cursor-pointer'>
+          <img src="/images/trailfinder_logo_simple.png" alt="Logo" className="h-20 duration-100 hover:opacity-40 mr-3" />
+          <div onClick={() => { router.push('/home') }} className='flex items-center 
+      text-3xl sm:text-5xl font-extrabold duration-100 hover:opacity-60 cursor-pointer'>
+          TrailFinder</div>
         </div>
 
         {/* <form className="flex items-center">
@@ -32,10 +34,10 @@ const Header = () => {
           Search
         </button>
       </form> */}
-        <div onClick={() => { router.push('/home') }} className='flex items-center 
-      text-3xl sm:text-5xl font-extrabold duration-100 hover:opacity-60 cursor-pointer'>
-          TrailFinder</div>
-        <div className='text-center flex flex-col items-center'>
+        
+
+
+        <div className='text-center flex flex-col items-center justify-end'>
           <div onClick={() => { router.push('/profile') }} className='bg-neutral-50 
           cursor-pointer border rounded-full p-3 duration-100 hover:opacity-60'>
             <i className="fa-solid fa-user"></i>
