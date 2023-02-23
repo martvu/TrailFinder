@@ -1,86 +1,81 @@
-import { deleteDoc, doc } from '@firebase/firestore';
-import { firestore } from '../firebase/firebase';
 import React, { useState } from 'react'
-import TrashDiv from './TrashDiv';
-import useFetchUser from "hooks/fetchUser";
+import UtilityButtons from './UtilityButtons'
+import { PostData } from 'hooks/PostData'
 
-export default function PostCard(props: { route: Array<string>, children: any, id: string, price: string, rating: number, date: any, title: string , username: string;}) {
+type postProps = {
+  post: PostData
+}
 
 
-  const { route, children, price, rating, date, title , username, id} = props;
+export default function PostCard(postProps: postProps) {
+
   const [isDeleted, setIsDeleted] = useState(false);
-  const { userData, loading } = useFetchUser();
-  const adminState = userData?.isAdmin ?? false;
+  const { title, price, rating, date, username, length, stops, description } = postProps.post;
 
-  
-  async function deletePost() {
-    if (adminState || username == userData?.username) {
-      await deleteDoc(doc(firestore, 'posts', 'post: ' + id));
-      setIsDeleted(true);
-    }
-    else {
-      alert("You don't have permission to delete that post..")
-    }
-  }
 
-  if(isDeleted){
+
+  if (isDeleted) {
     return null;
   }
-
-  
-
   return (
-    <div className="card card-side bg-base-100 shadow-md min-w-full max-w-full">
-      <div className="flex w-full lg:flex-row min-w-full h-64 bg-base 300">
-        <section className="flex lg:flex-col bg-base 300">
-          <div>
-            <img src="images/bg_trailfinder.png" alt="Profile" className="w-20 h-20 p-2 overflow-hidden " />
-          </div>
-        </section>
-          <div onClick ={()=>deletePost()}className="absolute bottom-0 left-0 m-2 duration-200 hover:scale-110 cursor-pointer">
-            <TrashDiv isVisible={adminState || username == userData?.username} />
-          </div>
-        <div className="card-body max-w-3/4">
-          <h2 className="card-title font-extrabold">{title}</h2>
-          <div className='flex flex-col items-start'>
-            <>
-              {children}
-              <div className='flex items-center'>
-                <p className='font-bold'>Route:</p>
-                <div className='flex justify-center p-2'>
-                  {/* {firstTrip.map((item, index) => (
-                    <div className="p-2" key={index}>
-                      {item}
-                      {index != firstTrip.length -1 && <i className="pl-2 fa-solid fa-arrow-right"></i>}
-                    </div>
-                  ))} */}
-                </div>
-              </div>
-            </>
-          </div>
+    <div className="card card-side shadow-md min-w-full max-w-full max-h-64 min-h-64 bg-neutral-50">
 
-          <div className="card-actions">
-            <a href="#" className="font-bold text-green-500 hover:text-green-700">
-              Read more
-            </a>
+      <div className="flex w-full">
+
+        {/* left section */}
+        <div className='h-64 min-h-full w-1/6 flex items-center flex-col pt-5'>
+          <div className="p-5 flex justify-center items-center border border-solid rounded-full w-12 h-12 border-black">
+            <i className="fa-solid fa-user fa-2x"></i>
           </div>
-          <div> 
-            <p>Published by: {username}</p>
+          <p className="card-title flex text-sm opacity-90 ">
+            {username}</p>
+
+          <div className='max-w-20 w-20 m-3'>
+            <img src="./images/bg_trailfinder.png"></img>
           </div>
         </div>
 
-        <div className="flex relative border-l-2 border-0 border-solid flex-col w-2/5 h-full pr-4 p-3 gap-2 ">
+        <UtilityButtons setIsDeleted={setIsDeleted} post={postProps.post} className="absolute bottom-0 left-0 m-2" />
+        <div className="card-body w-3/6">
+          <h2 className="card-title font-extrabold absolute top-2">{title}</h2>
+
+          {/* stops */}
+          <div className='flex pt-6'>
+            <div className='flex'>
+              <p className='font-bold mr-2'>Stops:</p>
+              <div>{stops && stops.length > 0 && stops.map((stop, index) => <span className="text-sm list-none pr-1" key={index}><i className="fa-solid fa-map-pin mr-1 text-accent"></i>{stop}</span>)}</div>
+            </div>
+          </div>
+          <div className="max-w-sm sm:max-w-full">
+            <span className='font-bold'>Description</span>
+            <div className='max-w-full break-words'>{description}</div>
+          </div>
+
+          {/* <div className="card-actions bg-base300">
+            <a href="#" className="font-bold text-green-500 hover:text-green-700 absolute bottom-2">
+              Read more
+            </a>
+          </div> */}
+
+        </div>
+
+        {/* right section */}
+        <div className="max-w-sm flex relative border-l-2 border-0 border-solid flex-col w-1/5 h-full pr-4 p-3 gap-2 ">
           <div>
-            <span  className='font-bold'>Price: </span> {price}
+            <span className='font-bold'>Price: </span> {price}
           </div>
           <div>
-            <span  className='font-bold'>Rating: </span> {rating}
+            <span className='font-bold'>Rating: </span> {rating}
+          </div>
+          <div>
+            <span className='font-bold'>Trip length: </span>
+            <div>{length}</div>
           </div>
 
           <div className='text-sm absolute bottom-0 left-0 p-2'>
-            {date}
+            {date.toDate().toLocaleDateString().replace(',', '')}
           </div>
-          
+
         </div>
       </div>
     </div>

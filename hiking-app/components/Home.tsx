@@ -3,6 +3,7 @@ import CreatePostComponent from './CreatePost'
 import PostCard from './PostCard'
 import Header from './Header'
 import useFetchPosts from 'hooks/fetchPosts';
+import { PostData } from 'hooks/PostData';
 
 
 export default function Home() {
@@ -26,10 +27,10 @@ export default function Home() {
 
 
         {/* Main screen in the middle */}
-        <div className="flex flex-col w-full sm:w-3/5 place-items-center p-2 gap-2">
+        <div className="flex flex-col w-full min-w-[70%] sm:w-3/5 place-items-center p-2 gap-2">
           <div className="w-full main-box flex justify-between items-center">
             <div className="flex main-box w-full">
-              <label htmlFor="my-modal-3" className="btn btn-outline 
+              <label htmlFor="my-modal-3" className="btn btn-outline bg-neutral-50 
               rounded-full w-full">
                 Create new post
                 </label>
@@ -38,26 +39,8 @@ export default function Home() {
           <div className='font-extrabold text-2xl'>
             Recent posts:
           </div>
-          {postList.map((post,index) => (
-            <PostCard key= {index}
-              //@ts-ignore
-              id={post.id}
-              //@ts-ignore
-              username={post.username}
-              //@ts-ignore må løses senere
-              price={post.price}
-              //@ts-ignore
-              rating={post.rating}
-              //@ts-ignore
-              date={post.date.toDate().toLocaleString().replace(',','')}
-              /* date={post.date.toDate().toLocaleString('en-GB', options)} */
-
-              //@ts-ignore
-              title={post.title} route={[]}  >
-                
-              {//@ts-ignore
-              }
-            </PostCard>
+          {postList.map((postData, index) => (
+            <PostCard key={index} post={postData}/>
             ))}
         </div>
       </div>
