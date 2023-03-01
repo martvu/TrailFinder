@@ -8,7 +8,7 @@ import { useFetchUser } from "context/AuthContext";
 
 
 export default function Profile({ setEdit }: any) {
-  const userData = useFetchUser();
+  const { userData } = useFetchUser();
   const { postList } = useFetchPosts();
   const usersPosts = postList.filter(post => post.username == userData?.username);
 

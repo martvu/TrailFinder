@@ -6,7 +6,7 @@ import { useAuth, useFetchUser } from 'context/AuthContext';
 
 export default function EditProfile({ setEdit }: any) {
 
-  const userData = useFetchUser()
+  const { userData, setUserData } = useFetchUser()
   const { currentUser } = useAuth()
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -37,7 +37,8 @@ export default function EditProfile({ setEdit }: any) {
         .catch(error => {
           console.log(error);
         })
-      window.location.reload();
+      const newUserData = {...userData, firstname: firstName, lastname: lastName};
+      setUserData(newUserData);
       setEdit(false);
       
     } else {

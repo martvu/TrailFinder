@@ -12,7 +12,7 @@ interface Props {
 }
 
 function UtilityButtons({ className, setIsDeleted, post }: Props) {
-  const userData = useFetchUser();
+  const  { userData } = useFetchUser();
   const adminState = userData?.isAdmin ?? false;
 
   async function deletePost() {

@@ -15,7 +15,7 @@ export default function CreatePostComponent() {
   const [description, setDescription] = useState("")
   const [stops, setStops] = useState([] as string[]) // array to hold the stop inputs
   const [newStop, setNewStop] = useState("") // array to hold the stop inputs
-  const userData = useFetchUser();
+  const { userData } = useFetchUser();
 
   function createPostData() {
     const now = new Date(Date.now());

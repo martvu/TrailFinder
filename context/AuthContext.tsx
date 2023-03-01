@@ -25,12 +25,19 @@ type AuthContextType = {
   currentUser: User | null;
 };
 
+type UserContextType = {
+  userData: UserType;
+  setUserData: (newUserData: UserType) => void;
+};
 
 const AuthContext = createContext<AuthContextType>({
   currentUser: null,
 });
 
-const UserContext = createContext<UserType>({} as UserType);
+const UserContext = createContext<UserContextType>({
+  userData: emptyUser,
+  setUserData: () => {},
+});
 
 
 export function useAuth() {
@@ -49,6 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userData, setUserData] = useState<UserType>(emptyUser)
 
 
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user)
@@ -90,12 +98,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     fetchUserData()
   }, [currentUser])
 
+  const updateUserProfile = (newUserData: UserType) => {
+    setUserData(newUserData);
+  };
   const value = {
     currentUser
 
   } as unknown as { currentUser: User | null };
 
-  const userValue = userData;
+  const userValue = {
+    userData,
+    setUserData,
+  };
 
   return (
     <AuthContext.Provider value={value}>
