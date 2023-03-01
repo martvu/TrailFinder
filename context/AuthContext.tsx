@@ -96,11 +96,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
     fetchUserData()
+    return () => {};
   }, [currentUser])
 
-  const updateUserProfile = (newUserData: UserType) => {
-    setUserData(newUserData);
-  };
   const value = {
     currentUser
 

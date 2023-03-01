@@ -66,9 +66,9 @@ export default function Profile({ setEdit }: any) {
               </p>
             </div>
 
-            {usersPosts.map((post, index) => (
-              <div className="mb-2">
-                <PostCard key={index} post={post} />
+            {usersPosts.map((post) => (
+              <div key={post.id} className="mb-2">
+                <PostCard post={post} />
               </div>
             ))}
 
