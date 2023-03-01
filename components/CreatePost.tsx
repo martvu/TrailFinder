@@ -1,10 +1,8 @@
 'use client'
-import { useAuth } from 'context/AuthContext';
-import { db, firestore } from '../firebase/firebase';
-import { Timestamp, addDoc, collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { useFetchUser } from 'context/AuthContext';
+import { firestore } from '../firebase/firebase';
+import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
-import useFetchUser from 'hooks/fetchUser';
-import { useRouter } from 'next/router';
 import { PostData } from 'hooks/PostData';
 
 

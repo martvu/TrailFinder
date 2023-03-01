@@ -1,9 +1,9 @@
 import React, { } from "react";
 import Header from "./Header";
 import 'firebase/firestore'
-import useFetchUser from "hooks/fetchUser";
 import useFetchPosts from "hooks/fetchPosts";
 import PostCard from "./PostCard";
+import { useFetchUser } from "context/AuthContext";
 
 
 
@@ -47,7 +47,7 @@ export default function Profile({ setEdit }: any) {
                   </div>
                   <div className="mb-2 flex items-center">
                     <i className="fa-solid fa-cake-candles mr-2"></i>
-                    <p className="text-sm">{userData.birthdate.toDate().toLocaleDateString()}</p>
+                    <p className="text-sm">{userData.birthdate}</p>
                   </div>
                   <div className="flex items-center">
                     <div className="inline-flex mr-2">

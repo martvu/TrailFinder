@@ -1,13 +1,10 @@
 import React, {useState, Component, PropsWithChildren} from "react";
 
-
 interface State {
   divs: { id: number; content: JSX.Element }[];
   values: string[];
   nextId: number;
 }
-
-
 
 const StopDiv: React.FC = () => {
   const [state, setState] = useState<State>({ divs: [], values: [], nextId: 0 });

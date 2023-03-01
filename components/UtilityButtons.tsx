@@ -1,10 +1,9 @@
 import { deleteDoc, doc } from "firebase/firestore";
-import useFetchUser from "hooks/fetchUser";
 import React from "react";
-import CreatePostComponent from "./CreatePost";
 import EditPostModal from "./EditPostModal";
 import { firestore } from "../firebase/firebase";
 import { PostData } from "hooks/PostData";
+import { useFetchUser } from "context/AuthContext";
 
 interface Props {
   className?: string;

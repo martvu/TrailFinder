@@ -3,8 +3,6 @@ import CreatePostComponent from './CreatePost'
 import PostCard from './PostCard'
 import Header from './Header'
 import useFetchPosts from 'hooks/fetchPosts';
-import { PostData } from 'hooks/PostData';
-
 
 export default function Home() {
   const { postList } = useFetchPosts();

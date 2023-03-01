@@ -1,15 +1,12 @@
 'use client'
-
 import React, { useEffect, useState } from 'react';
-import InputField from './Inputfield';
-import useFetchUser from 'hooks/fetchUser';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../firebase/firebase'
-import { useAuth } from 'context/AuthContext';
+import { useAuth, useFetchUser } from 'context/AuthContext';
 
 export default function EditProfile({ setEdit }: any) {
 
-  const { userData, loading } = useFetchUser()
+  const { userData }  = useFetchUser()
   const { currentUser } = useAuth()
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
