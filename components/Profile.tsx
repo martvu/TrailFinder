@@ -8,7 +8,7 @@ import { useFetchUser } from "context/AuthContext";
 
 
 export default function Profile({ setEdit }: any) {
-  const { userData, loading } = useFetchUser();
+  const userData = useFetchUser();
   const { postList } = useFetchPosts();
   const usersPosts = postList.filter(post => post.username == userData?.username);
 
@@ -22,13 +22,7 @@ export default function Profile({ setEdit }: any) {
 
           <div className="flex p-4 justify-center items-center font-inter ">
 
-            {/* loading userData */}
-            {(loading) && (<div className='flex-1 grid place-items-center'>
-              <i className="fa-solid fa-spinner fa-xl animate-spin opacity-40"></i>
-            </div>)}
-
-            {/* show userData when finished loading*/}
-            {(!loading) && userData && (
+            { userData && (
               <>
                 <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-21 h-21 border-black">
                   <i className="fa-solid fa-user fa-4x"></i>

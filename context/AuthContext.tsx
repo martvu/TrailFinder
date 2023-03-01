@@ -30,15 +30,7 @@ const AuthContext = createContext<AuthContextType>({
   currentUser: null,
 });
 
-type UserValues = {
-  userData: UserType,
-  loading: boolean
-}
-
-const UserContext = createContext<UserValues>({
-  userData: emptyUser,
-  loading: true
-});
+const UserContext = createContext<UserType>({} as UserType);
 
 
 export function useAuth() {
@@ -103,10 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   } as unknown as { currentUser: User | null };
 
-  const userValue = {
-    userData,
-    loading
-  };
+  const userValue = userData;
 
   return (
     <AuthContext.Provider value={value}>

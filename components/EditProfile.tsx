@@ -6,7 +6,7 @@ import { useAuth, useFetchUser } from 'context/AuthContext';
 
 export default function EditProfile({ setEdit }: any) {
 
-  const { userData }  = useFetchUser()
+  const userData = useFetchUser()
   const { currentUser } = useAuth()
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -26,12 +26,10 @@ export default function EditProfile({ setEdit }: any) {
   async function updateUser() {
     if (firstName !== "" && lastName !== "" && currentUser) {
       const docRef = doc(firestore, "users", currentUser.uid);
-
       const data = {
         firstname: firstName,
         lastname: lastName
       };
-
       await updateDoc(docRef, data)
         .then(() => {
           console.log("A New Document Field has been added to an existing document");
@@ -39,7 +37,9 @@ export default function EditProfile({ setEdit }: any) {
         .catch(error => {
           console.log(error);
         })
+      window.location.reload();
       setEdit(false);
+      
     } else {
       setError('Field required');
       console.log('Error');
