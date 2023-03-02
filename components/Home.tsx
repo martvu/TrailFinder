@@ -1,36 +1,23 @@
 import React from 'react'
-import CreatePostComponent from './CreatePost'
+import { CreatePostModal } from "./CreatePostModal";
 import PostCard from './PostCard'
 import Header from './Header'
 import useFetchPosts from 'hooks/fetchPosts';
-import { PostData } from 'hooks/PostData';
-
 
 export default function Home() {
   const { postList } = useFetchPosts();
-  
-  /* Another way to display date */
-  /* const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric'
-  }; */
   
   return (
 
     <main className="flex flex-col ">
       <Header />
       <div className="flex flex-row justify-center">
-        <CreatePostComponent />
-
-
+        <CreatePostModal />
         {/* Main screen in the middle */}
         <div className="flex flex-col w-full min-w-[70%] sm:w-3/5 place-items-center p-2 gap-2">
           <div className="w-full main-box flex justify-between items-center">
             <div className="flex main-box w-full">
-              <label htmlFor="my-modal-3" className="btn btn-outline bg-neutral-50 
+              <label htmlFor="create-modal" className="btn btn-outline bg-neutral-50 
               rounded-full w-full">
                 Create new post
                 </label>

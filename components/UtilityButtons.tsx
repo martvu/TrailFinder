@@ -1,8 +1,7 @@
 import { deleteDoc, doc } from "firebase/firestore";
 import useFetchUser from "hooks/fetchUser";
 import React from "react";
-import CreatePostComponent from "./CreatePost";
-import EditPostModal from "./EditPostModal";
+import { EditPostModal } from "./EditPostModal";
 import { firestore } from "../firebase/firebase";
 import { PostData } from "hooks/PostData";
 
@@ -37,7 +36,7 @@ function UtilityButtons({ className, setIsDeleted, post }: Props) {
       {post.username == userData?.username ? (
         <>
           <div className="mx-2">
-            <EditPostModal post={post} />
+            <EditPostModal postData={post} />
             <label htmlFor="edit-modal">
               <i className="fa-solid fa-pen-to-square cursor-pointer duration-100 hover:scale-110"></i>
             </label>
