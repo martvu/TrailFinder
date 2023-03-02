@@ -1,15 +1,12 @@
 'use client'
-
 import React, { useEffect, useState } from 'react';
-import InputField from './Inputfield';
-import useFetchUser from 'hooks/fetchUser';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore } from '../firebase/firebase'
-import { useAuth } from 'context/AuthContext';
+import { useAuth, useFetchUser } from 'context/AuthContext';
 
 export default function EditProfile({ setEdit }: any) {
 
-  const { userData, loading } = useFetchUser()
+  const { userData, setUserData } = useFetchUser()
   const { currentUser } = useAuth()
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -29,12 +26,10 @@ export default function EditProfile({ setEdit }: any) {
   async function updateUser() {
     if (firstName !== "" && lastName !== "" && currentUser) {
       const docRef = doc(firestore, "users", currentUser.uid);
-
       const data = {
         firstname: firstName,
         lastname: lastName
       };
-
       await updateDoc(docRef, data)
         .then(() => {
           console.log("A New Document Field has been added to an existing document");
@@ -42,7 +37,10 @@ export default function EditProfile({ setEdit }: any) {
         .catch(error => {
           console.log(error);
         })
+      const newUserData = {...userData, firstname: firstName, lastname: lastName};
+      setUserData(newUserData);
       setEdit(false);
+      
     } else {
       setError('Field required');
       console.log('Error');

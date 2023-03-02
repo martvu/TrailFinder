@@ -1,10 +1,7 @@
 "use client";
-import { useAuth } from "context/AuthContext";
 import { firestore } from "../firebase/firebase";
-import { Timestamp, doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
-import useFetchUser from "hooks/fetchUser";
-import { useRouter } from "next/router";
 import { PostData } from "hooks/PostData";
 
 type Props = {
