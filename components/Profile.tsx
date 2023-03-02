@@ -1,14 +1,14 @@
 import React, { } from "react";
 import Header from "./Header";
 import 'firebase/firestore'
-import useFetchUser from "hooks/fetchUser";
 import useFetchPosts from "hooks/fetchPosts";
 import PostCard from "./PostCard";
+import { useFetchUser } from "context/AuthContext";
 
 
 
 export default function Profile({ setEdit }: any) {
-  const { userData, loading } = useFetchUser();
+  const { userData } = useFetchUser();
   const { postList } = useFetchPosts();
   const usersPosts = postList.filter(post => post.username == userData?.username);
 
@@ -22,13 +22,7 @@ export default function Profile({ setEdit }: any) {
 
           <div className="flex p-4 justify-center items-center font-inter ">
 
-            {/* loading userData */}
-            {(loading) && (<div className='flex-1 grid place-items-center'>
-              <i className="fa-solid fa-spinner fa-xl animate-spin opacity-40"></i>
-            </div>)}
-
-            {/* show userData when finished loading*/}
-            {(!loading) && userData && (
+            { userData && (
               <>
                 <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-21 h-21 border-black">
                   <i className="fa-solid fa-user fa-4x"></i>
@@ -47,7 +41,7 @@ export default function Profile({ setEdit }: any) {
                   </div>
                   <div className="mb-2 flex items-center">
                     <i className="fa-solid fa-cake-candles mr-2"></i>
-                    <p className="text-sm">{userData.birthdate.toDate().toLocaleDateString()}</p>
+                    <p className="text-sm">{userData.birthdate}</p>
                   </div>
                   <div className="flex items-center">
                     <div className="inline-flex mr-2">
@@ -72,9 +66,9 @@ export default function Profile({ setEdit }: any) {
               </p>
             </div>
 
-            {usersPosts.map((post, index) => (
-              <div className="mb-2">
-                <PostCard key={index} post={post} />
+            {usersPosts.map((post) => (
+              <div key={post.id} className="mb-2">
+                <PostCard post={post} />
               </div>
             ))}
 

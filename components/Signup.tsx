@@ -1,9 +1,8 @@
 'use client'
-
-import { createUserWithEmailAndPassword, deleteUser } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from 'react';
 import { auth, db, firestore } from "../firebase/firebase";
-import { setDoc, doc, deleteDoc, addDoc, collection, Timestamp } from 'firebase/firestore';
+import { setDoc, doc, Timestamp } from 'firebase/firestore';
 import InputField from './Inputfield';
 import { useRouter } from 'next/navigation';
 import { get, ref, set } from 'firebase/database';

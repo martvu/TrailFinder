@@ -2,9 +2,6 @@
 import React, { useState } from "react";
 import { PostData } from "hooks/PostData";
 
-export type Props = {
-	postData: PostData;
-};
 
 type ModalData = {
 	modalId: string;

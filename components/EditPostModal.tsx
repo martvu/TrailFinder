@@ -2,8 +2,12 @@
 import { firestore } from "../firebase/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
-import { Props, PostModal } from "./PostModal";
+import { PostModal } from "./PostModal";
+import { PostData } from "hooks/PostData";
 
+type Props = {
+	postData: PostData;
+};
 
 export function EditPostModal({ postData }: Props) {
   const [post, setPost] = useState(postData);

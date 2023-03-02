@@ -2,7 +2,7 @@
 import { firestore } from "../firebase/firebase";
 import { Timestamp, doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import useFetchUser from "hooks/fetchUser";
+import { useFetchUser } from "context/AuthContext";
 import { PostData } from "hooks/PostData";
 import { PostModal } from "./PostModal";
 
