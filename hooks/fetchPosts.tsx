@@ -32,7 +32,6 @@ export default function useFetchPosts() {
       }
     }
     fetchData()
-    return () => {};
   }, [currentUser]) 
   /* render */
 

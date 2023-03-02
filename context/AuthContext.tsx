@@ -102,7 +102,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value = {
     currentUser
 
-  } as unknown as { currentUser: User | null };
+  };
 
   const userValue = {
     userData,
