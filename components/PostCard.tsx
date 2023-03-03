@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import UtilityButtons from './UtilityButtons'
 import { PostData } from 'hooks/PostData'
-
+import { HeartButton } from './HeartButton'
 type postProps = {
   post: PostData
 }
@@ -56,8 +56,11 @@ export default function PostCard(postProps: postProps) {
               Read more
             </a>
           </div> */}
-
+          <div>
+            <HeartButton/>
+          </div>
         </div>
+        
 
         {/* right section */}
         <div className="max-w-sm flex relative border-l-2 border-0 border-solid flex-col w-1/5 h-full pr-4 p-3 gap-2 ">
