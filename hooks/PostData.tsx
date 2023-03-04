@@ -10,4 +10,5 @@ export type PostData = {
   username: string;
   description: string;
   length: string;
+  likes: string[]
 };

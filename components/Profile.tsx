@@ -1,4 +1,4 @@
-import React, { } from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import 'firebase/firestore'
 import useFetchPosts from "hooks/fetchPosts";
@@ -11,8 +11,21 @@ export default function Profile({ setEdit }: any) {
   const { userData } = useFetchUser();
   const { postList } = useFetchPosts();
   const usersPosts = postList.filter(post => post.username == userData?.username);
+  const likedPosts = postList.filter(post => post.likes.includes(userData?.username));
+  const [myPosts, setMyPosts] = useState(false);
+  const [liked, setLiked] = useState(true);
 
 
+  function handleMyPostsClick() {
+    setMyPosts(true);
+    setLiked(false);
+  }
+
+  function handleLikedPostsClick() {
+    setMyPosts(false);
+    setLiked(true);
+    console.log(liked)
+  }
   return (
     <>
       <Header />
@@ -58,15 +71,30 @@ export default function Profile({ setEdit }: any) {
 
           </div>
         </div>
+
         <div className="flex w-full justify-center ">
           <div className="flex w-full flex-col sm:w-3/5">
-            <div className="flex justify-center">
-              <p className="mt-5 h-10 text-xl font-bold">
-                My posts
-              </p>
-            </div>
+            <div className="mt-3 mb-3 justify-between flex">
+              
+              <button onClick={handleMyPostsClick} className={`${myPosts? 'btn-secondary text-neutral font-extrabold' : ''} 
+              text-base btn flex-1 text-secondary text-center p-3 justify-center font-bold cursor-pointer`}>
+                My posts  
+              </button>
 
-            {usersPosts.map((post) => (
+              <button onClick={handleLikedPostsClick} className={`${liked ? 'btn-secondary text-neutral font-extrabold' : ''} 
+              text-base btn flex-1 text-secondary text-center p-3 font-bold cursor-pointer`}>
+                Liked posts
+              </button>
+              
+            </div>
+          
+            {liked && likedPosts.map((post) => (
+              <div key={post.id} className="mb-2">
+                <PostCard post={post} />
+              </div>
+            ))}
+
+            {myPosts && usersPosts.map((post) => (
               <div key={post.id} className="mb-2">
                 <PostCard post={post} />
               </div>
