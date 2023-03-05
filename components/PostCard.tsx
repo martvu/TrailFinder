@@ -11,9 +11,9 @@ type postProps = {
 export default function PostCard(postProps: postProps) {
 
   const [isDeleted, setIsDeleted] = useState(false);
-  const { title, price, rating, date, username, length, stops, description, likes } = postProps.post;
+  const { title, price, rating, date, username, length, stops, description, likedBy } = postProps.post;
   const { userData } = useFetchUser();
-  const [isLiked, setIsLiked] = useState(likes.includes(userData.username));
+  const [isLiked, setIsLiked] = useState(likedBy?.includes(userData.username));
 
 
   if (isDeleted) {
