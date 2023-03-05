@@ -11,7 +11,7 @@ export default function Profile({ setEdit }: any) {
   const { userData } = useFetchUser();
   const { postList } = useFetchPosts();
   const usersPosts = postList.filter(post => post.username == userData?.username);
-  const likedPosts = postList.filter(post => post.likes.includes(userData?.username));
+  const likedPosts = postList.filter(post => post.likedBy.includes(userData?.username));
   const [myPosts, setMyPosts] = useState(false);
   const [liked, setLiked] = useState(true);
 

@@ -18,7 +18,7 @@ export function CreatePostModal() {
     rating: 5,
     stops: [],
     description: "",
-    likes: []
+    likedBy: []
   };
   const [post, setPost] = useState<PostData>(emptyPost);
   const { userData } = useFetchUser();
