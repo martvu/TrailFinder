@@ -14,8 +14,15 @@ interface Props {
 export default function HeartButton({ className, setIsLiked, isLiked, post }: Props) {
   const { userData } = useFetchUser();
   const [likeCounter, setLikeCounter] = useState(post.likes.length);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   async function handleLike() {
+
+    if (isDisabled) {
+      return;
+    }
+    setIsDisabled(true);
+
     const docRef = doc(firestore, "posts", "post: " + post.id);
     const docSnap = await getDoc(docRef);
 
@@ -33,6 +40,7 @@ export default function HeartButton({ className, setIsLiked, isLiked, post }: Pr
       }
       await updateDoc(docRef, { likes });
       setIsLiked(!isLiked);
+      setIsDisabled(false);
     }
   }
 
