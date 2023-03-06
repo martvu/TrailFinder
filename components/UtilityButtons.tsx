@@ -2,7 +2,7 @@ import { deleteDoc, doc } from "firebase/firestore";
 import React from "react";
 import EditPostModal from "./EditPostModal";
 import { firestore } from "../firebase/firebase";
-import { PostData } from "hooks/PostData";
+import { PostData } from "types/PostData";
 import { useFetchUser } from "context/AuthContext";
 
 interface Props {

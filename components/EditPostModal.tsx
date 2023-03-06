@@ -2,7 +2,7 @@
 import { firestore } from "../firebase/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
-import { PostData } from "hooks/PostData";
+import { PostData } from "types/PostData";
 
 type Props = {
   post: PostData;

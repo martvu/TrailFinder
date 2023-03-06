@@ -2,10 +2,10 @@ import React from 'react'
 import CreatePostComponent from './CreatePost'
 import PostCard from './PostCard'
 import Header from './Header'
-import useFetchPosts from 'hooks/fetchPosts';
+import FetchPostProvider, {useFetchPosts} from "../context/FetchPosts";
 
 export default function Home() {
-  const { postList } = useFetchPosts();
+  const postList = useFetchPosts();
   
   /* Another way to display date */
   /* const options = {
@@ -37,9 +37,11 @@ export default function Home() {
           <div className='font-extrabold text-2xl'>
             Recent posts:
           </div>
-          {postList.map((postData, index) => (
-            <PostCard key={index} post={postData}/>
-            ))}
+          <FetchPostProvider>
+            {postList.map((postData, index) => (
+              <PostCard key={index} post={postData}/>
+              ))}
+          </FetchPostProvider>
         </div>
       </div>
     </main>

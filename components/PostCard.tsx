@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import UtilityButtons from './UtilityButtons'
-import { PostData } from 'hooks/PostData'
+import { PostData } from 'types/PostData'
 
 type postProps = {
   post: PostData

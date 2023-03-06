@@ -3,7 +3,7 @@ import { useFetchUser } from 'context/AuthContext';
 import { firestore } from '../firebase/firebase';
 import { Timestamp, doc, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react'
-import { PostData } from 'hooks/PostData';
+import { PostData } from 'types/PostData';
 
 
 export default function CreatePostComponent() {
