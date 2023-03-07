@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import Link from 'next/link';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { DataSnapshot, get, ref } from 'firebase/database';
 import InputField from './Inputfield';
@@ -17,7 +17,7 @@ export default function Login() {
     let usernameDBsnap : DataSnapshot | null;
     try {
       usernameDBsnap = await get(ref(db, `users/${email}`));
-    } catch (error) {
+    } catch (e) {
       usernameDBsnap = null;
     }
     const userEmail = usernameDBsnap && usernameDBsnap.exists() ? usernameDBsnap.val() : email;
@@ -25,7 +25,7 @@ export default function Login() {
       await signInWithEmailAndPassword(auth, userEmail, password);
       console.log('Logged in');
       router.push('/profile');
-    } catch (error) {
+    } catch (e) {
       setError('Login failed. Try again.');
     }
   }

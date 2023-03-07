@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { PostData } from 'hooks/PostData';
+import Image from 'next/image';
 import UtilityButtons from './UtilityButtons';
 
-type postProps = {
+type PostProps = {
   post: PostData
 };
 
-export default function PostCard(postProps: postProps) {
+export default function PostCard({ post }: PostProps) {
   const [isDeleted, setIsDeleted] = useState(false);
+
   const {
     title, price, rating, date, username, length, stops, description,
-  } = postProps.post;
+  } = post;
 
   if (isDeleted) {
     return null;
@@ -30,11 +32,11 @@ export default function PostCard(postProps: postProps) {
           </p>
 
           <div className="max-w-20 w-20 m-3">
-            <img src="./images/bg_trailfinder.png" />
+            <Image src="./images/bg_trailfinder.png" alt="BackgroundPic" />
           </div>
         </div>
 
-        <UtilityButtons setIsDeleted={setIsDeleted} post={postProps.post} className="absolute bottom-0 left-0 m-2" />
+        <UtilityButtons setIsDeleted={setIsDeleted} post={post} className="absolute bottom-0 left-0 m-2" />
         <div className="card-body w-3/6">
           <h2 className="card-title font-extrabold absolute top-2">{title}</h2>
 

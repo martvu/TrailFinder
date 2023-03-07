@@ -1,14 +1,14 @@
 import React, { } from 'react';
+import useFetchPosts from 'hooks/fetchPosts';
+import { useFetchUser } from 'context/AuthContext';
 import Header from './Header';
 import 'firebase/firestore';
-import useFetchPosts from 'hooks/fetchPosts';
 import PostCard from './PostCard';
-import { useFetchUser } from 'context/AuthContext';
 
 export default function Profile({ setEdit }: any) {
   const { userData } = useFetchUser();
   const { postList } = useFetchPosts();
-  const usersPosts = postList.filter((post) => post.username == userData?.username);
+  const usersPosts = postList.filter((post) => post.username === userData?.username);
 
   return (
     <>
@@ -45,6 +45,7 @@ export default function Profile({ setEdit }: any) {
                     <div className="inline-flex mr-2">
                       <button
                         onClick={() => setEdit(true)}
+                        type="button"
                         className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-1 px-12 rounded text-xs flex items-center justify-center"
                       >
                         Edit

@@ -1,6 +1,6 @@
 import React from 'react';
 import useFetchPosts from 'hooks/fetchPosts';
-import { CreatePostModal } from './CreatePostModal';
+import CreatePostModal from './CreatePostModal';
 import PostCard from './PostCard';
 import Header from './Header';
 
@@ -19,8 +19,7 @@ export default function Home() {
             <div className="flex main-box w-full">
               <label
                 htmlFor="create-modal"
-                className="btn btn-outline bg-neutral-50
-              rounded-full w-full"
+                className="btn btn-outline bg-neutral-50 rounded-full w-full"
               >
                 Create new post
               </label>

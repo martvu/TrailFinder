@@ -41,8 +41,8 @@ export default function Signup() {
       const usernameDB = set(ref(db, `users/${username}`), email);
       await Promise.all([userDoc, usernameDB]);
       router.push('/login');
-    } catch (error) {
-      console.log(`Error: ${error}`);
+    } catch (e) {
+      console.log(`Error: ${e}`);
       setError('Sign-up failed. Try again.');
     }
   }
@@ -73,7 +73,7 @@ export default function Signup() {
         <InputField label="Username" placeholder="Enter username..." setInput={setUsername} type="text" />
         <InputField label="E-mail" placeholder="Enter e-mail..." setInput={setEmail} type="email" />
         <InputField label="Password" placeholder="Enter password..." setInput={setPassword} type="password" />
-        {error != '' ? <p className="text-red-500 mt-3">{error}</p> : null}
+        {error !== '' ? <p className="text-red-500 mt-3">{error}</p> : null}
         <div className="flex justify-between">
           <button className="btn btn-secondary text-white font-bold py-2 px-4 mt-5 rounded-md justify-center" type="button" onClick={router.back}>Back</button>
           <button className="btn btn-primary text-white font-bold py-2 px-4 mt-5 rounded-md justify-center" type="submit" disabled={!hasAllFieldsFilledOut()}>Sign-up</button>

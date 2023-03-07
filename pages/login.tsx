@@ -16,7 +16,7 @@ export default function LoginPage() {
     <div className="flex justify-center items-center h-screen">
       <img
         src="/images/bg_trailfinder.png"
-        alt="login image"
+        alt="login"
         className="w-1/2 object-cover mb-0 ml-10 mt-10 rounded-lg hidden md:block "
       />
       <div className="flex flex-col items-center w-full md:w-1/2 ml-10 px-10">
