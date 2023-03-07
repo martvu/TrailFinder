@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, createContext } from 'react'
-import { auth, firestore } from '../firebase/firebase'
+import { auth, firestore, storage } from '../firebase/firebase'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -10,6 +10,7 @@ type UserType = {
   birthdate: any;
   isAdmin: boolean;
   email: string;
+  profilePicture?: string;
 }
 
 const emptyUser: UserType = {
@@ -19,10 +20,14 @@ const emptyUser: UserType = {
   birthdate: '',
   isAdmin: false,
   email: '',
+  profilePicture: '',
 };
 
 type AuthContextType = {
   currentUser: User | null;
+  updateEmail: (email: string) => Promise<void>;
+  updatePassword: (password: string) => Promise<void>;
+  updateProfile: (firstName: string, lastName: string, profilePicture: string | null) => Promise<void>;
 };
 
 type UserContextType = {
@@ -32,6 +37,9 @@ type UserContextType = {
 
 const AuthContext = createContext<AuthContextType>({
   currentUser: null,
+  updateEmail: () => Promise.resolve(),
+  updatePassword: () => Promise.resolve(),
+  updateProfile: () => Promise.resolve(),
 });
 
 const UserContext = createContext<UserContextType>({
@@ -54,6 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [userData, setUserData] = useState<UserType>(emptyUser)
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string>('');
 
 
   
@@ -79,6 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               username: docSnap.data().username,
               birthdate: docSnap.data().birthdate.toDate().toLocaleDateString(),
               isAdmin: docSnap.data().isAdmin,
+              profilePicture: docSnap.data().profilePicture,
               email: currentUser.email || ""
             }
             setUserData(userInfo)
@@ -101,6 +111,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value = {
     currentUser
+    
 
   };
 

@@ -3,6 +3,7 @@ import {getAuth} from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 import {enableIndexedDbPersistence, getFirestore} from "firebase/firestore";
 import { getDatabase } from "firebase/database";
+import { getStorage } from "firebase/storage";
 import firebase from 'firebase/compat/app';
 import 'firebase/firestore'
 
@@ -21,5 +22,6 @@ const app = initializeApp(firebaseConfig);
 
 export const db = getDatabase(app);
 export const auth = getAuth(app);
+export const storage = getStorage(app);
 export default firebase;
 export const firestore = getFirestore();

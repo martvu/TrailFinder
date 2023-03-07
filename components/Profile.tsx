@@ -1,17 +1,28 @@
-import React, { } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import 'firebase/firestore'
 import useFetchPosts from "hooks/fetchPosts";
 import PostCard from "./PostCard";
 import { useFetchUser } from "context/AuthContext";
-
-
+import { getDownloadURL, ref } from 'firebase/storage';
+import { storage } from '../firebase/firebase';
 
 export default function Profile({ setEdit }: any) {
   const { userData } = useFetchUser();
   const { postList } = useFetchPosts();
   const usersPosts = postList.filter(post => post.username == userData?.username);
+  const [profilePicture, setProfilePictureUrl] = useState<string>('');
 
+  useEffect(() => {
+    async function fetchProfilePicture() {
+      if (userData.profilePicture) {
+        const profilePictureRef = ref(storage, userData.profilePicture);
+        const downloadUrl = await getDownloadURL(profilePictureRef);
+        setProfilePictureUrl(downloadUrl);
+      }
+    }
+    fetchProfilePicture();
+  }, [userData]);
 
   return (
     <>
@@ -19,17 +30,17 @@ export default function Profile({ setEdit }: any) {
 
       <div className="flex w-full p-4 justify-center items-center flex-col">
         <div className="flex w-full sm:w-4/5 justify-left rounded-md shadow-lg p-4 bg-neutral-50">
-
-          <div className="flex p-4 justify-center items-center font-inter ">
-
+          <div className="flex p-4 justify-center items-center font-inter">
             { userData && (
               <>
                 <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-21 h-21 border-black">
-                  <i className="fa-solid fa-user fa-4x"></i>
+                  {profilePicture ? (
+                    <img src={profilePicture} alt="Profile" className="rounded-full w-20 h-20 object-cover" />
+                  ) : (
+                    <i className="fa-solid fa-user fa-4x"></i>
+                  )}
                 </div>
                 <div className="font-inter">
-                </div>
-                <div>
                   <div className="text-3xl pb-2 font-bold">
                     {userData.firstname} {userData.lastname}
                   </div>
@@ -55,7 +66,6 @@ export default function Profile({ setEdit }: any) {
                 </div>
               </>
             )}
-
           </div>
         </div>
         <div className="flex w-full justify-center ">
@@ -71,7 +81,6 @@ export default function Profile({ setEdit }: any) {
                 <PostCard post={post} />
               </div>
             ))}
-
           </div>
         </div>
       </div>

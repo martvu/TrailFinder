@@ -1,20 +1,15 @@
-'use client'
 import React, { useEffect, useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
-import { firestore } from '../firebase/firebase'
-import { useAuth, useFetchUser } from 'context/AuthContext';
+import { firestore, storage } from '../firebase/firebase';
+import { useAuth, useFetchUser } from '../context/AuthContext';
 
 export default function EditProfile({ setEdit }: any) {
-
-  const { userData, setUserData } = useFetchUser()
-  const { currentUser } = useAuth()
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  console.log(userData)
-  console.log(firstName)
-  //const [birthDate, setBirthDate] = useState("");
-  //const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
+  const { userData, setUserData } = useFetchUser();
+  const { currentUser } = useAuth();
+  const [firstName, setFirstName] = useState(userData?.firstname || '');
+  const [lastName, setLastName] = useState(userData?.lastname || '');
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (userData) {
@@ -24,28 +19,47 @@ export default function EditProfile({ setEdit }: any) {
   }, [userData]);
 
   async function updateUser() {
-    if (firstName !== "" && lastName !== "" && currentUser) {
-      const docRef = doc(firestore, "users", currentUser.uid);
+    if (firstName !== '' && lastName !== '' && currentUser) {
+      const docRef = doc(firestore, 'users', currentUser.uid);
       const data = {
-        firstname: firstName,
-        lastname: lastName
+        firstName,
+        lastName,
       };
       await updateDoc(docRef, data)
         .then(() => {
-          console.log("A New Document Field has been added to an existing document");
+          console.log('A new document field has been added to an existing document');
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
-        })
-      const newUserData = {...userData, firstname: firstName, lastname: lastName};
-      setUserData(newUserData);
-      setEdit(false);
-      
+        });
+
+      if (profilePicture) {
+        const storageRef = storage.ref(`profile-pictures/${currentUser.uid}`);
+        const uploadTask = storageRef.put(profilePicture);
+        uploadTask.on(
+          'state_changed',
+          (_snapshot: any) => {
+            // progress
+          },
+          (error: any) => {
+            console.log(error);
+          },
+          async () => {
+            const downloadUrl = await uploadTask.snapshot.ref.getDownloadURL();
+            const newUserData = { ...userData, firstName, lastName, profilePictureUrl: downloadUrl };
+            setUserData(newUserData);
+            setEdit(false);
+          }
+        );
+      } else {
+        const newUserData = { ...userData, firstName, lastName };
+        setUserData(newUserData);
+        setEdit(false);
+      }
     } else {
-      setError('Field required');
+      setError('Fields required');
       console.log('Error');
     }
-
   }
 
   if (!userData) {
@@ -67,8 +81,12 @@ export default function EditProfile({ setEdit }: any) {
             <i className="inline fa-solid fa-xmark"></i>
           </div>
           <div className='mt-3 text-center'>
-            <div className='flex justify-center items-center border p-8 shadow-lg bg-white rounded-full w-12 h-12 mx-auto'>
-              <i className="fa-solid fa-user fa-2x "></i>
+            <label htmlFor='profile-picture-input'/>
+              <div className='flex justify-center items-center border p-8 shadow-lg bg-white rounded-full w-12 h-12 mx-auto'>
+                {userData.profilePicture ? (
+                  <img src={userData.profilePicture} alt='Profile' className='w-12 h-12 rounded-full' />
+                ) : (
+              <i className="fa-solid fa-user fa-2x "></i>)
               {/* <img src="/profilbilde.jpg" alt="Profile" className="w-12 h-12 rounded-full" /> */}
             </div>
             <label className="block text-base mb-3">
