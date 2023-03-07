@@ -20,7 +20,7 @@ export default function Home() {
         <div className="flex flex-col w-full min-w-[70%] sm:w-3/5 place-items-center p-2 gap-2">
           <div className="w-full main-box flex justify-between items-center">
             <div className="flex main-box w-full">
-              <label htmlFor="create-modal" className="btn btn-outline bg-neutral-50 
+              <label htmlFor="create-modal" className="btn btn-outline bg-neutral
               rounded-full w-full">
                 Create new post
                 </label>
