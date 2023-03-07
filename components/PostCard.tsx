@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import UtilityButtons from './UtilityButtons'
 import { PostData } from 'hooks/PostData'
-
+import HeartButton from './HeartButton'
+import { useAuth, useFetchUser } from 'context/AuthContext'
 type postProps = {
   post: PostData
 }
@@ -10,8 +11,9 @@ type postProps = {
 export default function PostCard(postProps: postProps) {
 
   const [isDeleted, setIsDeleted] = useState(false);
-  const { title, price, rating, date, username, length, stops, description } = postProps.post;
-
+  const { title, price, rating, date, username, length, stops, description, likedBy } = postProps.post;
+  const { userData } = useFetchUser();
+  const [isLiked, setIsLiked] = useState(likedBy?.includes(userData.username));
 
 
   if (isDeleted) {
@@ -28,16 +30,22 @@ export default function PostCard(postProps: postProps) {
             <i className="fa-solid fa-user fa-2x"></i>
           </div>
           <p className="card-title flex text-sm opacity-90 ">
-            {username}</p>
-
+            {username}
+          </p>
+          <div className='text-xs'>
+            {date.toDate().toLocaleDateString().replace(',', '')}
+          </div>
           <div className='max-w-20 w-20 m-3'>
             <img src="./images/bg_trailfinder.png"></img>
           </div>
+          
         </div>
 
         <UtilityButtons setIsDeleted={setIsDeleted} post={postProps.post} className="absolute bottom-0 left-0 m-2" />
+        
         <div className="card-body w-3/6">
           <h2 className="card-title font-extrabold absolute top-2">{title}</h2>
+          
 
           {/* stops */}
           <div className='flex pt-6'>
@@ -56,8 +64,9 @@ export default function PostCard(postProps: postProps) {
               Read more
             </a>
           </div> */}
-
+          
         </div>
+        
 
         {/* right section */}
         <div className="max-w-sm flex relative border-l-2 border-0 border-solid flex-col w-1/5 h-full pr-4 p-3 gap-2 ">
@@ -72,9 +81,9 @@ export default function PostCard(postProps: postProps) {
             <div>{length}</div>
           </div>
 
-          <div className='text-sm absolute bottom-0 left-0 p-2'>
-            {date.toDate().toLocaleDateString().replace(',', '')}
-          </div>
+          
+          <HeartButton setIsLiked={setIsLiked} isLiked = {isLiked} 
+          post={postProps.post} className="absolute bottom-0 right-0 m-2"/>
 
         </div>
       </div>
