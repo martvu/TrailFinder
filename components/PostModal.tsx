@@ -16,7 +16,7 @@ type PostModalProps = {
   modalData: ModalData;
 };
 
-export function PostModal({
+export default function PostModal({
   post,
   setPost,
   finish,
@@ -52,6 +52,7 @@ export function PostModal({
                 <img
                   src="images/bg_trailfinder.png"
                   className="w-full pr-10 mx"
+                  alt="background"
                 />
                 {' '}
                 {/* sett  inn profilbilde */}
@@ -66,9 +67,9 @@ export function PostModal({
                 <input
                   className="border mx-2 mb-1"
                   onChange={(e) => setPost({
-									    ...post,
-									    title: e.target.value,
-									  })}
+                    ...post,
+                    title: e.target.value,
+                  })}
                   value={post.title}
                   type="text"
                   placeholder="Title of the trip"
@@ -79,9 +80,9 @@ export function PostModal({
                 <input
                   className="border mx-2 mb-1"
                   onChange={(e) => setPost({
-									    ...post,
-									    length: e.target.value,
-									  })}
+                    ...post,
+                    length: e.target.value,
+                  })}
                   value={post.length}
                   type="text"
                   placeholder="Trip length"
@@ -92,9 +93,9 @@ export function PostModal({
                 <input
                   className="border mx-2 mb-1"
                   onChange={(e) => setPost({
-									    ...post,
-									    price: e.target.value,
-									  })}
+                    ...post,
+                    price: e.target.value,
+                  })}
                   value={post.price}
                   type="text"
                   placeholder="Price"
@@ -126,9 +127,9 @@ export function PostModal({
               <div>
                 <form
                   onSubmit={(event) => {
-									  event.preventDefault();
-									  addStop(newStop);
-									  setNewStop('');
+                    event.preventDefault();
+                    addStop(newStop);
+                    setNewStop('');
                   }}
                 >
                   <label>Stops: </label>
@@ -156,6 +157,7 @@ export function PostModal({
                     <button
                       className="btn btn-xs btn-secondary"
                       onClick={() => removeStop(index)}
+                      type="button"
                     >
                       -
                     </button>
@@ -169,9 +171,9 @@ export function PostModal({
                   maxLength={140}
                   value={post.description}
                   onChange={(e) => setPost({
-									    ...post,
-									    description: e.target.value,
-									  })}
+                    ...post,
+                    description: e.target.value,
+                  })}
                   placeholder="Tell people about your trip!"
                 />
               </div>
@@ -179,6 +181,7 @@ export function PostModal({
             <button
               onClick={finish}
               className="btn border border-solid border-black"
+              type="button"
             >
               {buttonName}
             </button>
@@ -205,7 +208,7 @@ export function PostModal({
         name="rating-10"
         value={rating}
         checked={post.rating === rating}
-        className={rating % 1 == 0 ? 'bg-green-500 mask mask-star-2 mask-half-2' : 'bg-green-500 mask mask-star-2 mask-half-1'}
+        className={rating % 1 === 0 ? 'bg-green-500 mask mask-star-2 mask-half-2' : 'bg-green-500 mask mask-star-2 mask-half-1'}
         onChange={() => setPost({ ...post, rating })}
       />
     );

@@ -5,9 +5,9 @@ import { useState } from 'react';
 import { useFetchUser } from 'context/AuthContext';
 import { PostData } from 'hooks/PostData';
 import { firestore } from '../firebase/firebase';
-import { PostModal } from './PostModal';
+import PostModal from './PostModal';
 
-export function CreatePostModal() {
+export default function CreatePostModal() {
   const emptyPost: PostData = {
     id: '',
     date: Timestamp.now(),
@@ -33,7 +33,7 @@ export function CreatePostModal() {
         username: userData.username,
       };
       return newPost;
-    }
+    } return false;
   }
 
   async function handleAddPost() {

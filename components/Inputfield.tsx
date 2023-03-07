@@ -1,6 +1,6 @@
-import { HTMLInputTypeAttribute, useState } from 'react';
+import React, { HTMLInputTypeAttribute } from 'react';
 
-type inputfieldProps = {
+type InputfieldProps = {
   label: string,
   placeholder: string,
   type: HTMLInputTypeAttribute | undefined,
@@ -8,18 +8,18 @@ type inputfieldProps = {
 };
 export default function InputField({
   label, placeholder, type, setInput,
-}: inputfieldProps) {
+}: InputfieldProps) {
   return (
     <div className="mt-3">
       <label className="block text-base mb-2">
         {label}
+        <input
+          type={type}
+          placeholder={placeholder}
+          className="input input-bordered w-full"
+          onChange={(e) => setInput(e.target.value)}
+        />
       </label>
-      <input
-        type={type}
-        placeholder={placeholder}
-        className="input input-bordered w-full"
-        onChange={(e) => setInput(e.target.value)}
-      />
     </div>
   );
 }

@@ -61,13 +61,12 @@ export default function EditProfile({ setEdit }: any) {
             <i className="fa-solid fa-pen-to-square mx-3" />
           </div>
 
-          <div onClick={() => { setEdit(false); }} className="btn btn-sm btn-circle absolute right-2 top-2">
+          <button onClick={() => { setEdit(false); }} type="button" className="btn btn-sm btn-circle absolute right-2 top-2">
             <i className="inline fa-solid fa-xmark" />
-          </div>
+          </button>
           <div className="mt-3 text-center">
             <div className="flex justify-center items-center border p-8 shadow-lg bg-white rounded-full w-12 h-12 mx-auto">
               <i className="fa-solid fa-user fa-2x " />
-              {/* <img src="/profilbilde.jpg" alt="Profile" className="w-12 h-12 rounded-full" /> */}
             </div>
             <label className="block text-base mb-3">
               {/* <p>{userData.firstname} {userData.lastname}</p> */}
@@ -75,27 +74,32 @@ export default function EditProfile({ setEdit }: any) {
             </label>
           </div>
           <div className="flex mb-3 items-center">
-            <label>First name: </label>
-            <input
-              className="p-1 rounded-md border focus:outline-primary mx-2"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              type="text"
-            />
+            <label>
+              First name:
+              <input
+                className="p-1 rounded-md border focus:outline-primary mx-2"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                type="text"
+              />
+            </label>
+
           </div>
           <div className="flex items-center">
-            <label>Last name: </label>
-            <input
-              className="p-1 rounded-md border focus:outline-primary mx-2"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              type="text"
-              placeholder={lastName}
-            />
+            <label>
+              Last name:
+              <input
+                className="p-1 rounded-md border focus:outline-primary mx-2"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                type="text"
+                placeholder={lastName}
+              />
+            </label>
           </div>
           {error && <div className="w-full max-w-[30ch] text-center border-rose-300 text-rose-300">{error}</div>}
           <div className="mt-3 text-center">
-            <button onClick={() => { updateUser(); }} className="btn-sm btn-primary text-white font-bold rounded-md justify-center">Confirm</button>
+            <button type="button" onClick={() => { updateUser(); }} className="btn-sm btn-primary text-white font-bold rounded-md justify-center">Confirm</button>
           </div>
         </div>
       </div>

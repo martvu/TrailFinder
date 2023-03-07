@@ -2,7 +2,7 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import React from 'react';
 import { PostData } from 'hooks/PostData';
 import { useFetchUser } from 'context/AuthContext';
-import { EditPostModal } from './EditPostModal';
+import EditPostModal from './EditPostModal';
 import { firestore } from '../firebase/firebase';
 
 interface Props {
@@ -16,23 +16,23 @@ function UtilityButtons({ className, setIsDeleted, post }: Props) {
   const adminState = userData?.isAdmin ?? false;
 
   async function deletePost() {
-    if (adminState || post.username == userData?.username) {
+    if (adminState || post.username === userData?.username) {
       await deleteDoc(doc(firestore, 'posts', `post: ${post.id}`));
       setIsDeleted(true);
     } else {
       alert("You don't have permission to delete that post..");
     }
   }
-
-  if (post.username != userData?.username && !adminState) return <></>; // if the user isn't the author of the post, don't show the buttons
+  // if the user isn't the author of the post, don't show the buttons
+  if (post.username !== userData?.username && !adminState) return null;
 
   return (
     <div className={className}>
       <div className="flex flex-row">
-        <div onClick={deletePost}>
+        <button onClick={deletePost} type="button">
           <i className="fa-solid fa-trash-can cursor-pointer duration-100 hover:scale-110" />
-        </div>
-        {post.username == userData?.username ? (
+        </button>
+        {post.username === userData?.username ? (
           <div className="mx-2">
             <EditPostModal postData={post} />
             <label htmlFor="edit-modal">
