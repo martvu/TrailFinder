@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import UtilityButtons from './UtilityButtons'
 import { PostData } from 'hooks/PostData'
+import { CommentModal } from './CommentModal'
 
 type postProps = {
   post: PostData
@@ -75,6 +76,7 @@ export default function PostCard(postProps: postProps) {
           <div className='text-sm absolute bottom-0 left-0 p-2'>
             {date.toDate().toLocaleDateString().replace(',', '')}
           </div>
+          <CommentModal postData={postProps.post} />
 
         </div>
       </div>
