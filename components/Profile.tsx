@@ -1,17 +1,14 @@
-import React, { } from "react";
-import Header from "./Header";
-import 'firebase/firestore'
-import useFetchPosts from "hooks/fetchPosts";
-import PostCard from "./PostCard";
-import { useFetchUser } from "context/AuthContext";
-
-
+import React, { } from 'react';
+import Header from './Header';
+import 'firebase/firestore';
+import useFetchPosts from 'hooks/fetchPosts';
+import PostCard from './PostCard';
+import { useFetchUser } from 'context/AuthContext';
 
 export default function Profile({ setEdit }: any) {
   const { userData } = useFetchUser();
   const { postList } = useFetchPosts();
-  const usersPosts = postList.filter(post => post.username == userData?.username);
-
+  const usersPosts = postList.filter((post) => post.username == userData?.username);
 
   return (
     <>
@@ -25,13 +22,14 @@ export default function Profile({ setEdit }: any) {
             { userData && (
               <>
                 <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-21 h-21 border-black">
-                  <i className="fa-solid fa-user fa-4x"></i>
+                  <i className="fa-solid fa-user fa-4x" />
                 </div>
-                <div className="font-inter">
-                </div>
+                <div className="font-inter" />
                 <div>
                   <div className="text-3xl pb-2 font-bold">
-                    {userData.firstname} {userData.lastname}
+                    {userData.firstname}
+                    {' '}
+                    {userData.lastname}
                   </div>
                   <div className="mb-2">
                     <p className="text-m">{userData.username}</p>
@@ -40,7 +38,7 @@ export default function Profile({ setEdit }: any) {
                     <p className="text-m">{userData.email}</p>
                   </div>
                   <div className="mb-2 flex items-center">
-                    <i className="fa-solid fa-cake-candles mr-2"></i>
+                    <i className="fa-solid fa-cake-candles mr-2" />
                     <p className="text-sm">{userData.birthdate}</p>
                   </div>
                   <div className="flex items-center">
@@ -48,7 +46,8 @@ export default function Profile({ setEdit }: any) {
                       <button
                         onClick={() => setEdit(true)}
                         className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-1 px-12 rounded text-xs flex items-center justify-center"
-                      >Edit
+                      >
+                        Edit
                       </button>
                     </div>
                   </div>

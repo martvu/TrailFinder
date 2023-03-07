@@ -1,12 +1,12 @@
-import React from 'react'
-import { CreatePostModal } from "./CreatePostModal";
-import PostCard from './PostCard'
-import Header from './Header'
+import React from 'react';
 import useFetchPosts from 'hooks/fetchPosts';
+import { CreatePostModal } from './CreatePostModal';
+import PostCard from './PostCard';
+import Header from './Header';
 
 export default function Home() {
   const { postList } = useFetchPosts();
-  
+
   return (
 
     <main className="flex flex-col ">
@@ -17,20 +17,23 @@ export default function Home() {
         <div className="flex flex-col w-full min-w-[70%] sm:w-3/5 place-items-center p-2 gap-2">
           <div className="w-full main-box flex justify-between items-center">
             <div className="flex main-box w-full">
-              <label htmlFor="create-modal" className="btn btn-outline bg-neutral-50 
-              rounded-full w-full">
+              <label
+                htmlFor="create-modal"
+                className="btn btn-outline bg-neutral-50
+              rounded-full w-full"
+              >
                 Create new post
-                </label>
+              </label>
             </div>
           </div>
-          <div className='font-extrabold text-2xl'>
+          <div className="font-extrabold text-2xl">
             Recent posts:
           </div>
           {postList.map((postData, index) => (
-            <PostCard key={index} post={postData}/>
-            ))}
+            <PostCard key={index} post={postData} />
+          ))}
         </div>
       </div>
     </main>
-  )
+  );
 }

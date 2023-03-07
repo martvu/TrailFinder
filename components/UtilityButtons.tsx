@@ -1,9 +1,9 @@
-import { deleteDoc, doc } from "firebase/firestore";
-import React from "react";
-import { EditPostModal } from "./EditPostModal";
-import { firestore } from "../firebase/firebase";
-import { PostData } from "hooks/PostData";
-import { useFetchUser } from "context/AuthContext";
+import { deleteDoc, doc } from 'firebase/firestore';
+import React from 'react';
+import { PostData } from 'hooks/PostData';
+import { useFetchUser } from 'context/AuthContext';
+import { EditPostModal } from './EditPostModal';
+import { firestore } from '../firebase/firebase';
 
 interface Props {
   className?: string;
@@ -12,42 +12,39 @@ interface Props {
 }
 
 function UtilityButtons({ className, setIsDeleted, post }: Props) {
-  const  { userData } = useFetchUser();
+  const { userData } = useFetchUser();
   const adminState = userData?.isAdmin ?? false;
 
   async function deletePost() {
     if (adminState || post.username == userData?.username) {
-      await deleteDoc(doc(firestore, 'posts', 'post: ' + post.id));
+      await deleteDoc(doc(firestore, 'posts', `post: ${post.id}`));
       setIsDeleted(true);
-    }
-    else {
-      alert("You don't have permission to delete that post..")
+    } else {
+      alert("You don't have permission to delete that post..");
     }
   }
 
-  if (post.username != userData?.username && !adminState) return <></> // if the user isn't the author of the post, don't show the buttons
+  if (post.username != userData?.username && !adminState) return <></>; // if the user isn't the author of the post, don't show the buttons
 
   return (
     <div className={className}>
       <div className="flex flex-row">
-      <div onClick={deletePost}>
-        <i className="fa-solid fa-trash-can cursor-pointer duration-100 hover:scale-110"></i>
-      </div>
-      {post.username == userData?.username ? (
-        <>
+        <div onClick={deletePost}>
+          <i className="fa-solid fa-trash-can cursor-pointer duration-100 hover:scale-110" />
+        </div>
+        {post.username == userData?.username ? (
           <div className="mx-2">
             <EditPostModal postData={post} />
             <label htmlFor="edit-modal">
-              <i className="fa-solid fa-pen-to-square cursor-pointer duration-100 hover:scale-110"></i>
+              <i className="fa-solid fa-pen-to-square cursor-pointer duration-100 hover:scale-110" />
             </label>
           </div>
-        </>
-      ) : (
-        <></>
-      )}
-    </div>  
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
-};
+}
 
 export default UtilityButtons;

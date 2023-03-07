@@ -1,23 +1,23 @@
-"use client";
-import { firestore } from "../firebase/firebase";
-import { Timestamp, doc, setDoc } from "firebase/firestore";
-import { useState } from "react";
-import { useFetchUser } from "context/AuthContext";
-import { PostData } from "hooks/PostData";
-import { PostModal } from "./PostModal";
+'use client';
 
+import { Timestamp, doc, setDoc } from 'firebase/firestore';
+import { useState } from 'react';
+import { useFetchUser } from 'context/AuthContext';
+import { PostData } from 'hooks/PostData';
+import { firestore } from '../firebase/firebase';
+import { PostModal } from './PostModal';
 
 export function CreatePostModal() {
   const emptyPost: PostData = {
-    id: "",
+    id: '',
     date: Timestamp.now(),
-    username: "",
-    title: "",
-    length: "",
-    price: "",
+    username: '',
+    title: '',
+    length: '',
+    price: '',
     rating: 5,
     stops: [],
-    description: "",
+    description: '',
   };
   const [post, setPost] = useState<PostData>(emptyPost);
   const { userData } = useFetchUser();
@@ -40,10 +40,10 @@ export function CreatePostModal() {
     const newPost = createPostData();
     console.log(newPost);
     if (newPost) {
-      const postRef = doc(firestore, "posts", "post: " + newPost.id);
+      const postRef = doc(firestore, 'posts', `post: ${newPost.id}`);
       await setDoc(postRef, newPost);
 
-      console.log("Successful");
+      console.log('Successful');
       window.location.reload();
     }
   }
@@ -53,9 +53,9 @@ export function CreatePostModal() {
     setPost,
     finish: handleAddPost,
     modalData: {
-      modalId: "create-modal",
-      title: "New Post",
-      buttonName: "Publish",
+      modalId: 'create-modal',
+      title: 'New Post',
+      buttonName: 'Publish',
     },
   });
 }

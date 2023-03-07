@@ -1,7 +1,9 @@
-import React, { useContext, useState, useEffect, createContext } from 'react'
-import { auth, firestore } from '../firebase/firebase'
-import { onAuthStateChanged, User } from 'firebase/auth'
+import React, {
+  useContext, useState, useEffect, createContext,
+} from 'react';
+import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import { auth, firestore } from '../firebase/firebase';
 
 type UserType = {
   firstname: string;
@@ -10,7 +12,7 @@ type UserType = {
   birthdate: any;
   isAdmin: boolean;
   email: string;
-}
+};
 
 const emptyUser: UserType = {
   firstname: '',
@@ -39,39 +41,35 @@ const UserContext = createContext<UserContextType>({
   setUserData: () => {},
 });
 
-
 export function useAuth() {
-  return useContext(AuthContext)
+  return useContext(AuthContext);
 }
 
 export function useFetchUser() {
-  return useContext(UserContext)
+  return useContext(UserContext);
 }
-
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [userData, setUserData] = useState<UserType>(emptyUser)
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [userData, setUserData] = useState<UserType>(emptyUser);
 
-
-  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user)
-      setLoading(false)
-    })
-    return unsubscribe
-  }, [])
+      setCurrentUser(user);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     async function fetchUserData() {
       if (currentUser) {
-        console.log(currentUser)
+        console.log(currentUser);
         try {
-          const docRef = doc(firestore, 'users', currentUser.uid)
-          const docSnap = await getDoc(docRef)
+          const docRef = doc(firestore, 'users', currentUser.uid);
+          const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
             const userInfo: UserType = {
               firstname: docSnap.data().firstname,
@@ -79,28 +77,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               username: docSnap.data().username,
               birthdate: docSnap.data().birthdate.toDate().toLocaleDateString(),
               isAdmin: docSnap.data().isAdmin,
-              email: currentUser.email || ""
-            }
-            setUserData(userInfo)
+              email: currentUser.email || '',
+            };
+            setUserData(userInfo);
           } else {
-            setUserData(emptyUser)
+            setUserData(emptyUser);
           }
         } catch (err) {
-          setError('Failed to load data')
-          console.log(err)
-
+          setError('Failed to load data');
+          console.log(err);
         } finally {
-          setLoading(false)
-
+          setLoading(false);
         }
       }
     }
-    fetchUserData()
+    fetchUserData();
     return () => {};
-  }, [currentUser])
+  }, [currentUser]);
 
   const value = {
-    currentUser
+    currentUser,
 
   };
 
@@ -115,5 +111,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         {!loading && children}
       </UserContext.Provider>
     </AuthContext.Provider>
-  )
+  );
 }

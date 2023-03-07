@@ -1,32 +1,32 @@
-import { auth, db } from "../firebase/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import InputField from "./Inputfield";
-import { DataSnapshot, get, ref } from "firebase/database";
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { DataSnapshot, get, ref } from 'firebase/database';
+import InputField from './Inputfield';
+import { auth, db } from '../firebase/firebase';
 
 export default function Login() {
-  const [error, setError] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const router = useRouter();
 
   async function login() {
-    setError("");
+    setError('');
     let usernameDBsnap : DataSnapshot | null;
     try {
-      usernameDBsnap = await get(ref(db, 'users/' + email));
+      usernameDBsnap = await get(ref(db, `users/${email}`));
     } catch (error) {
       usernameDBsnap = null;
     }
     const userEmail = usernameDBsnap && usernameDBsnap.exists() ? usernameDBsnap.val() : email;
     try {
       await signInWithEmailAndPassword(auth, userEmail, password);
-      console.log("Logged in");
+      console.log('Logged in');
       router.push('/profile');
     } catch (error) {
-      setError("Login failed. Try again.");
+      setError('Login failed. Try again.');
     }
   }
   return (
@@ -34,7 +34,8 @@ export default function Login() {
       <form onSubmit={(e) => {
         e.preventDefault();
         login();
-      }}>
+      }}
+      >
         <h1 className="text-3xl block text-center font-bold text-primary">
           Login
         </h1>
@@ -50,8 +51,8 @@ export default function Login() {
           placeholder="Enter password..."
           setInput={setPassword}
         />
-        <div className='w-full max-w-[30ch] h-3 pt-2 text-rose-500'>
-        {error && <p className="w-full">{error}</p>}
+        <div className="w-full max-w-[30ch] h-3 pt-2 text-rose-500">
+          {error && <p className="w-full">{error}</p>}
         </div>
         <div className="mt-5 flex justify-center">
           <button
@@ -64,7 +65,8 @@ export default function Login() {
       </form>
 
       <div className="mt-3 text-center text-sm text-gray-500">
-        No account?{" "}
+        No account?
+        {' '}
         <Link href="/signup" className="font-bold text-primary duration-300 hover:brightness-75">
           Sign-up
         </Link>

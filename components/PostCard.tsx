@@ -1,18 +1,16 @@
-import React, { useState } from 'react'
-import UtilityButtons from './UtilityButtons'
-import { PostData } from 'hooks/PostData'
+import React, { useState } from 'react';
+import { PostData } from 'hooks/PostData';
+import UtilityButtons from './UtilityButtons';
 
 type postProps = {
   post: PostData
-}
-
+};
 
 export default function PostCard(postProps: postProps) {
-
   const [isDeleted, setIsDeleted] = useState(false);
-  const { title, price, rating, date, username, length, stops, description } = postProps.post;
-
-
+  const {
+    title, price, rating, date, username, length, stops, description,
+  } = postProps.post;
 
   if (isDeleted) {
     return null;
@@ -23,15 +21,16 @@ export default function PostCard(postProps: postProps) {
       <div className="flex w-full">
 
         {/* left section */}
-        <div className='h-64 min-h-full w-1/6 flex items-center flex-col pt-5'>
+        <div className="h-64 min-h-full w-1/6 flex items-center flex-col pt-5">
           <div className="p-5 flex justify-center items-center border border-solid rounded-full w-12 h-12 border-black">
-            <i className="fa-solid fa-user fa-2x"></i>
+            <i className="fa-solid fa-user fa-2x" />
           </div>
           <p className="card-title flex text-sm opacity-90 ">
-            {username}</p>
+            {username}
+          </p>
 
-          <div className='max-w-20 w-20 m-3'>
-            <img src="./images/bg_trailfinder.png"></img>
+          <div className="max-w-20 w-20 m-3">
+            <img src="./images/bg_trailfinder.png" />
           </div>
         </div>
 
@@ -40,15 +39,22 @@ export default function PostCard(postProps: postProps) {
           <h2 className="card-title font-extrabold absolute top-2">{title}</h2>
 
           {/* stops */}
-          <div className='flex pt-6'>
-            <div className='flex'>
-              <p className='font-bold mr-2'>Stops:</p>
-              <div>{stops && stops.length > 0 && stops.map((stop, index) => <span className="text-sm list-none pr-1" key={index}><i className="fa-solid fa-map-pin mr-1 text-accent"></i>{stop}</span>)}</div>
+          <div className="flex pt-6">
+            <div className="flex">
+              <p className="font-bold mr-2">Stops:</p>
+              <div>
+                {stops && stops.length > 0 && stops.map((stop, index) => (
+                  <span className="text-sm list-none pr-1" key={index}>
+                    <i className="fa-solid fa-map-pin mr-1 text-accent" />
+                    {stop}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
           <div className="max-w-sm sm:max-w-full">
-            <span className='font-bold'>Description</span>
-            <div className='max-w-full break-words'>{description}</div>
+            <span className="font-bold">Description</span>
+            <div className="max-w-full break-words">{description}</div>
           </div>
 
           {/* <div className="card-actions bg-base300">
@@ -62,24 +68,26 @@ export default function PostCard(postProps: postProps) {
         {/* right section */}
         <div className="max-w-sm flex relative border-l-2 border-0 border-solid flex-col w-1/5 h-full pr-4 p-3 gap-2 ">
           <div>
-            <span className='font-bold'>Price: </span> {price}
+            <span className="font-bold">Price: </span>
+            {' '}
+            {price}
           </div>
           <div>
-            <span className='font-bold'>Rating: </span> {rating}
+            <span className="font-bold">Rating: </span>
+            {' '}
+            {rating}
           </div>
           <div>
-            <span className='font-bold'>Trip length: </span>
+            <span className="font-bold">Trip length: </span>
             <div>{length}</div>
           </div>
 
-          <div className='text-sm absolute bottom-0 left-0 p-2'>
+          <div className="text-sm absolute bottom-0 left-0 p-2">
             {date.toDate().toLocaleDateString().replace(',', '')}
           </div>
 
         </div>
       </div>
     </div>
-  )
+  );
 }
-
-
