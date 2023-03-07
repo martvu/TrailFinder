@@ -18,19 +18,19 @@ export default function Profile({ setEdit }: any) {
       <Header />
 
       <div className="flex w-full p-4 justify-center items-center flex-col">
-        <div className="flex w-full sm:w-4/5 justify-left rounded-md shadow-lg p-4 bg-neutral-50">
+        <div className="flex w-full sm:w-4/5 justify-left rounded-md shadow-lg p-4 bg-neutral">
 
           <div className="flex p-4 justify-center items-center font-inter ">
 
             { userData && (
               <>
-                <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-21 h-21 border-black">
-                  <i className="fa-solid fa-user fa-4x"></i>
+                <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-20 h-20">
+                  <i className="fa-solid fa-user fa-3x"></i>
                 </div>
                 <div className="font-inter">
                 </div>
                 <div>
-                  <div className="text-3xl pb-2 font-bold">
+                  <div className="text-3xl pb-2 font-bold ">
                     {userData.firstname} {userData.lastname}
                   </div>
                   <div className="mb-2">

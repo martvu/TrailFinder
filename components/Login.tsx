@@ -30,7 +30,7 @@ export default function Login() {
     }
   }
   return (
-    <div className="w-96 max-h p-6 shadow-lg bg-white rounded-lg">
+    <div className="w-96 max-h p-6 shadow-lg bg-neutral rounded-lg">
       <form onSubmit={(e) => {
         e.preventDefault();
         login();

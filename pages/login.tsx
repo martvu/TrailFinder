@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Login from "../components/Login";
 import { useAuth } from "context/AuthContext";
 import { useRouter } from "next/navigation";
+import DarkModeButton from "components/ToggleDark";
 
 export default function LoginPage() {
 
@@ -15,6 +16,7 @@ export default function LoginPage() {
   
 	return (
 		<div className="flex justify-center items-center h-screen">
+      <DarkModeButton/>
 			<img
 				src="/images/bg_trailfinder.png"
 				alt="login image"
@@ -26,7 +28,7 @@ export default function LoginPage() {
 					alt="logo"
 					className="w-20 pb-5"
 				/>
-				<h1 className="text-2xl md:text-3xl block text-center font-bold text-secondary pb-5">
+				<h1 className="text-2xl md:text-3xl block text-center font-bold pb-5">
 					Welcome to TrailFinder!
 				</h1>
 				<Login />

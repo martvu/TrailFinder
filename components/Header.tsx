@@ -2,6 +2,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import DarkModeButton from './ToggleDark'
 
 const Header = () => {
   const router = useRouter();
@@ -36,9 +37,9 @@ const Header = () => {
       </form> */}
         
 
-
+<DarkModeButton/>
         <div className='text-center flex flex-col items-center justify-end'>
-          <div onClick={() => { router.push('/profile') }} className='bg-neutral-50 
+          <div onClick={() => { router.push('/profile') }} className='bg-neutral 
           cursor-pointer border rounded-full p-3 duration-100 hover:opacity-60'>
             <i className="fa-solid fa-user"></i>
             <p className='text-xs'>profile</p>
