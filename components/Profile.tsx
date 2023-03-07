@@ -4,17 +4,17 @@ import 'firebase/firestore'
 import useFetchPosts from "hooks/fetchPosts";
 import PostCard from "./PostCard";
 import { useFetchUser } from "context/AuthContext";
+import { PostData } from "hooks/PostData";
 
 
 
 export default function Profile({ setEdit }: any) {
   const { userData } = useFetchUser();
-  const { postList } = useFetchPosts();
-  const usersPosts = postList.filter(post => post.username == userData?.username);
-  const likedPosts = postList.filter(post => post.likedBy.includes(userData?.username));
-  const [myPosts, setMyPosts] = useState(false);
-  const [liked, setLiked] = useState(true);
-
+  const { recentPostsList, likedPostsList, setLikedPostsList, usersPostsList, setUsersPostsList } = useFetchPosts();
+  //const usersList = useState(recentPostsList.filter(post => post.username == userData?.username));
+  //const likedPosts = recentPostsList.filter(post => post.likedBy.includes(userData?.username)); 
+  const [myPosts, setMyPosts] = useState(true);
+  const [liked, setLiked] = useState(false);
 
   function handleMyPostsClick() {
     setMyPosts(true);
@@ -26,6 +26,12 @@ export default function Profile({ setEdit }: any) {
     setLiked(true);
     console.log(liked)
   }
+
+  function onLike(post: any) {
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }
   return (
     <>
       <Header />
@@ -35,7 +41,7 @@ export default function Profile({ setEdit }: any) {
 
           <div className="flex p-4 justify-center items-center font-inter ">
 
-            { userData && (
+            {userData && (
               <>
                 <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-21 h-21 border-black">
                   <i className="fa-solid fa-user fa-4x"></i>
@@ -75,8 +81,8 @@ export default function Profile({ setEdit }: any) {
         <div className="flex w-full justify-center ">
           <div className="flex w-full flex-col sm:w-3/5">
             <div className="mt-3 mb-3 justify-between flex">
-              
-              <button onClick={handleMyPostsClick} className={`${myPosts? 'btn-primary text-lg text-white font-extrabold' : ''} 
+
+              <button onClick={handleMyPostsClick} className={`${myPosts ? 'btn-primary text-lg text-white font-extrabold' : ''} 
               btn flex-1 text-center p-3 justify-center font-bold cursor-pointer`}>
                 My posts  <i className="mx-2 mb-1 fa-solid fa-user"></i>
               </button>
@@ -85,18 +91,18 @@ export default function Profile({ setEdit }: any) {
               btn flex-1 text-center p-3 font-bold cursor-pointer`}>
                 Liked posts <i className="mx-2 fa-solid fa-heart"></i>
               </button>
-              
+
             </div>
-          
-            {liked && likedPosts.map((post) => (
+
+            {liked && likedPostsList.map((post) => (
               <div key={post.id} className="mb-2">
-                <PostCard post={post} />
+                <PostCard post={post} onLike={() => onLike(post)} />
               </div>
             ))}
 
-            {myPosts && usersPosts.map((post) => (
+            {myPosts && usersPostsList.map((post) => (
               <div key={post.id} className="mb-2">
-                <PostCard post={post} />
+                <PostCard post={post} onLike={() => onLike(post)} />
               </div>
             ))}
 

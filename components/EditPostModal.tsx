@@ -6,14 +6,14 @@ import { PostModal } from "./PostModal";
 import { PostData } from "hooks/PostData";
 
 type Props = {
-	postData: PostData;
+  postData: PostData;
 };
 
 export function EditPostModal({ postData }: Props) {
   const [post, setPost] = useState(postData);
 
   async function updatePost() {
-    const docRef = doc(firestore, "posts", "post: " + post.id);
+    const docRef = doc(firestore, "posts", post.id);
 
     try {
       await updateDoc(docRef, post);

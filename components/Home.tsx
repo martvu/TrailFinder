@@ -5,8 +5,11 @@ import Header from './Header'
 import useFetchPosts from 'hooks/fetchPosts';
 
 export default function Home() {
-  const { postList } = useFetchPosts();
+  const { recentPostsList } = useFetchPosts();
   
+  function empty(){
+
+  }
   return (
 
     <main className="flex flex-col ">
@@ -26,8 +29,8 @@ export default function Home() {
           <div className='font-extrabold text-2xl'>
             Recent posts:
           </div>
-          {postList.map((postData, index) => (
-            <PostCard key={index} post={postData}/>
+          {recentPostsList.map((postData, index) => (
+            <PostCard onLike={empty} key={index} post={postData}/>
             ))}
         </div>
       </div>

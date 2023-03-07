@@ -1,14 +1,14 @@
 "use client";
 import { firestore } from "../firebase/firebase";
-import { Timestamp, doc, setDoc, addDoc, collection } from "firebase/firestore";
+import { Timestamp, doc, setDoc, addDoc, collection, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useFetchUser } from "context/AuthContext";
-import { PostInfo, PostData } from "hooks/PostData";
+import { PostData } from "hooks/PostData";
 import { PostModal } from "./PostModal";
 
 
 export function CreatePostModal() {
-  const emptyPost: PostData = {
+  const emptyPost: PostData= {
     id: "",
     date: Timestamp.now(),
     username: "",
@@ -23,11 +23,10 @@ export function CreatePostModal() {
   const [post, setPost] = useState<PostData>(emptyPost);
   const { userData } = useFetchUser();
 
-  function createPostInfo() {
-    const now = new Date(Date.now());
-    const nowDate = now.toString();
+  function createPostData() {
+   
     if (userData) {
-      const newPost: PostInfo = {
+      const newPost: PostData = {
         ...post,
         date: Timestamp.now(),
         username: userData.username,
@@ -37,12 +36,12 @@ export function CreatePostModal() {
   }
 
   async function handleAddPost() {
-    const newPost = createPostInfo();
+    const newPost = createPostData();
     console.log(newPost);
     if (newPost) {
       const postRef = collection(firestore, "posts");
-      await addDoc(postRef, newPost);
-
+      const newDocRef = await addDoc(postRef, newPost);
+      await updateDoc(newDocRef, { ...newPost, id: newDocRef.id });
       console.log("Successful");
       window.location.reload();
     }

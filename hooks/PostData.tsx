@@ -13,4 +13,4 @@ export type PostData = {
   likedBy: string[];
 };
 
-export type PostInfo = Omit<PostData, "id">
+//export type PostInfo = Omit<PostData, "id">

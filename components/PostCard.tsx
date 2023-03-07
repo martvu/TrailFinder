@@ -4,7 +4,8 @@ import { PostData } from 'hooks/PostData'
 import HeartButton from './HeartButton'
 import { useAuth, useFetchUser } from 'context/AuthContext'
 type postProps = {
-  post: PostData
+  post: PostData,
+  onLike: (post:any) => void
 }
 
 
@@ -12,6 +13,7 @@ export default function PostCard(postProps: postProps) {
 
   const [isDeleted, setIsDeleted] = useState(false);
   const { title, price, rating, date, username, length, stops, description, likedBy } = postProps.post;
+  const { onLike } = postProps
   const { userData } = useFetchUser();
   const [isLiked, setIsLiked] = useState(likedBy?.includes(userData.username));
 
@@ -82,7 +84,7 @@ export default function PostCard(postProps: postProps) {
           </div>
 
           
-          <HeartButton setIsLiked={setIsLiked} isLiked = {isLiked} 
+          <HeartButton onLike ={onLike} setIsLiked={setIsLiked} isLiked={isLiked} 
           post={postProps.post} className="absolute bottom-0 right-0 m-2"/>
 
         </div>
