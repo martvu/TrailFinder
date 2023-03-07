@@ -38,6 +38,7 @@ export default function Signup() {
         isAdmin: false,
       });
       const usernameDB = set(ref(db, 'users/' + username), email );
+
       await Promise.all([userDoc, usernameDB]);
       router.push('/login');
     } catch (error) {

@@ -16,8 +16,9 @@ function UtilityButtons({ className, setIsDeleted, post }: Props) {
   const adminState = userData?.isAdmin ?? false;
 
   async function deletePost() {
+
     if (adminState || post.username == userData?.username) {
-      await deleteDoc(doc(firestore, 'posts', 'post: ' + post.id));
+      await deleteDoc(doc(firestore, 'posts', post.id ));
       setIsDeleted(true);
     }
     else {

@@ -17,7 +17,7 @@ export default function useFetchPosts() {
         try {
           const postsQuery = query(collection(firestore, 'posts'), orderBy('date', 'desc'));
           const querySnapshot = await getDocs(postsQuery);
-          const data = querySnapshot.docs.map(doc => ({...doc.data() } as PostData))
+          const data = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id} as PostData))
           
           setPostList(data)
 
