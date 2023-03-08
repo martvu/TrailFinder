@@ -36,8 +36,10 @@ export default function Signup() {
         birthdate: Timestamp.fromDate(new Date(birthDate)),
         username: username,
         isAdmin: false,
+        userLikes: []
       });
       const usernameDB = set(ref(db, 'users/' + username), email );
+
       await Promise.all([userDoc, usernameDB]);
       router.push('/login');
     } catch (error) {

@@ -11,6 +11,7 @@ type UserType = {
   isAdmin: boolean;
   email: string;
   uid: string;
+  userLikes: string[];
 }
 
 const emptyUser: UserType = {
@@ -20,7 +21,8 @@ const emptyUser: UserType = {
   birthdate: '',
   isAdmin: false,
   email: '',
-  uid: ''
+  uid: '',
+  userLikes: []
 };
 
 type AuthContextType = {
@@ -82,7 +84,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               birthdate: docSnap.data().birthdate.toDate().toLocaleDateString(),
               isAdmin: docSnap.data().isAdmin,
               email: currentUser.email || "",
-              uid: currentUser.uid
+              uid: currentUser.uid,
+              userLikes: []
             }
             setUserData(userInfo)
           } else {

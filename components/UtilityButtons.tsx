@@ -1,4 +1,4 @@
-import { deleteDoc, doc } from "firebase/firestore";
+import { arrayRemove, collection, deleteDoc, doc, getDocs, query, where, writeBatch } from "firebase/firestore";
 import React from "react";
 import { EditPostModal } from "./EditPostModal";
 import { firestore } from "../firebase/firebase";
@@ -12,12 +12,25 @@ interface Props {
 }
 
 function UtilityButtons({ className, setIsDeleted, post }: Props) {
-  const  { userData } = useFetchUser();
+  const { userData } = useFetchUser();
   const adminState = userData?.isAdmin ?? false;
 
   async function deletePost() {
+
     if (adminState || post.username == userData?.username) {
-      await deleteDoc(doc(firestore, 'posts', 'post: ' + post.id));
+      await deleteDoc(doc(firestore, 'posts', post.id));
+      const likesRef = collection(firestore, 'users');
+      const q = query(likesRef, where('userLikes', 'array-contains', post.id));
+      const querySnapshot = await getDocs(q);
+      console.log("deleting")
+      // 2. Remove the post ID from the `likes` array of each user who has liked the post.
+      const batch = writeBatch(firestore);
+      querySnapshot.forEach((doc) => {
+        const userRef = doc.ref;
+        console.log(doc);
+        batch.update(userRef, { userLikes: arrayRemove(post.id) });
+      });
+      await batch.commit();
       setIsDeleted(true);
     }
     else {
@@ -30,22 +43,22 @@ function UtilityButtons({ className, setIsDeleted, post }: Props) {
   return (
     <div className={className}>
       <div className="flex flex-row">
-      <div onClick={deletePost}>
-        <i className="fa-solid fa-trash-can cursor-pointer duration-100 hover:scale-110"></i>
+        <div onClick={deletePost}>
+          <i className="fa-solid fa-trash-can cursor-pointer duration-100 hover:scale-110"></i>
+        </div>
+        {post.username == userData?.username ? (
+          <>
+            <div className="mx-2">
+              <EditPostModal postData={post} />
+              <label htmlFor="edit-modal">
+                <i className="fa-solid fa-pen-to-square cursor-pointer duration-100 hover:scale-110"></i>
+              </label>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
-      {post.username == userData?.username ? (
-        <>
-          <div className="mx-2">
-            <EditPostModal postData={post} />
-            <label htmlFor="edit-modal">
-              <i className="fa-solid fa-pen-to-square cursor-pointer duration-100 hover:scale-110"></i>
-            </label>
-          </div>
-        </>
-      ) : (
-        <></>
-      )}
-    </div>  
     </div>
   );
 };
