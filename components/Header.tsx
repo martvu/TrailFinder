@@ -24,7 +24,7 @@ const Header = () => {
         </div>
 
         
-        <div className="flex items-center ">
+        <div className="absolute top-12 right-24 ">
           <DarkModeButton />
         </div>
 
