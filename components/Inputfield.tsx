@@ -11,10 +11,11 @@ export default function InputField({
 }: InputfieldProps) {
   return (
     <div className="mt-3">
-      <label className="block text-base mb-2">
+      <label htmlFor={label} className="block text-base mb-2">
         {label}
         <input
           type={type}
+          name={label}
           placeholder={placeholder}
           className="input input-bordered w-full"
           onChange={(e) => setInput(e.target.value)}

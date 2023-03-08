@@ -5,15 +5,15 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { useAuth, useFetchUser } from 'context/AuthContext';
 import { firestore } from '../firebase/firebase';
 
-export default function EditProfile({ setEdit }: any) {
+type EditProfileProps = {
+  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function EditProfile({ setEdit }: EditProfileProps) {
   const { userData, setUserData } = useFetchUser();
   const { currentUser } = useAuth();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  console.log(userData);
-  console.log(firstName);
-  // const [birthDate, setBirthDate] = useState("");
-  // const [email, setEmail] = useState("");
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -34,8 +34,8 @@ export default function EditProfile({ setEdit }: any) {
         .then(() => {
           console.log('A New Document Field has been added to an existing document');
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((e) => {
+          console.log(e);
         });
       const newUserData = { ...userData, firstname: firstName, lastname: lastName };
       setUserData(newUserData);
@@ -61,24 +61,22 @@ export default function EditProfile({ setEdit }: any) {
             <i className="fa-solid fa-pen-to-square mx-3" />
           </div>
 
-          <button onClick={() => { setEdit(false); }} type="button" className="btn btn-sm btn-circle absolute right-2 top-2">
+          <button onClick={() => { setEdit(false); }} type="button" title="Exit editing" className="btn btn-sm btn-circle absolute right-2 top-2">
             <i className="inline fa-solid fa-xmark" />
           </button>
           <div className="mt-3 text-center">
             <div className="flex justify-center items-center border p-8 shadow-lg bg-white rounded-full w-12 h-12 mx-auto">
               <i className="fa-solid fa-user fa-2x " />
             </div>
-            <label className="block text-base mb-3">
-              {/* <p>{userData.firstname} {userData.lastname}</p> */}
-              <p className="text-xs mt-2">{userData.email}</p>
-            </label>
+            <p className="text-xs mt-2 mb-3 block">{userData.email}</p>
           </div>
           <div className="flex mb-3 items-center">
-            <label>
+            <label htmlFor="firstName">
               First name:
               <input
                 className="p-1 rounded-md border focus:outline-primary mx-2"
                 value={firstName}
+                name="firstName"
                 onChange={(e) => setFirstName(e.target.value)}
                 type="text"
               />
@@ -86,13 +84,14 @@ export default function EditProfile({ setEdit }: any) {
 
           </div>
           <div className="flex items-center">
-            <label>
+            <label htmlFor="lastName">
               Last name:
               <input
                 className="p-1 rounded-md border focus:outline-primary mx-2"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
+                name="lastName"
                 placeholder={lastName}
               />
             </label>

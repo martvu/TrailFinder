@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getAnalytics } from 'firebase/analytics';
-import { enableIndexedDbPersistence, getFirestore } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 import { getDatabase } from 'firebase/database';
 import firebase from 'firebase/compat/app';
 

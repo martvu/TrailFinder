@@ -1,24 +1,15 @@
 import Head from 'next/head';
-import { Inter } from '@next/font/google';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from 'context/AuthContext';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
   const router = useRouter();
   const { currentUser } = useAuth();
 
-  if (!currentUser) {
-    useEffect(() => {
-      router.push('/login');
-    }, []);
-  } else {
-    useEffect(() => {
-      router.push('/home');
-    }, []);
-  }
+  useEffect(() => {
+    router.push(currentUser ? '/home' : '/login');
+  }, []);
 
   return (
     <Head>

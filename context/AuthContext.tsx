@@ -1,5 +1,5 @@
 import React, {
-  useContext, useState, useEffect, createContext,
+  useContext, useState, useEffect, createContext, useMemo,
 } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
@@ -52,7 +52,6 @@ export function useFetchUser() {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [userData, setUserData] = useState<UserType>(emptyUser);
 
   useEffect(() => {
@@ -84,7 +83,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setUserData(emptyUser);
           }
         } catch (err) {
-          setError('Failed to load data');
           console.log(err);
         } finally {
           setLoading(false);
@@ -95,15 +93,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {};
   }, [currentUser]);
 
-  const value = {
+  const value = useMemo(() => ({
     currentUser,
+  }), [currentUser]);
 
-  };
-
-  const userValue = {
+  const userValue = useMemo(() => ({
     userData,
     setUserData,
-  };
+  }), [userData]);
 
   return (
     <AuthContext.Provider value={value}>
