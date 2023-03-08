@@ -18,7 +18,7 @@ export default function HeartButton({ className, setIsLiked, isLiked, post, onLi
   const { userData } = useFetchUser();
   const [likeCounter, setLikeCounter] = useState(post.likedBy?.length);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [likedBy, setLikedBy] = useState(post.likedBy);
+  const [likesArray, setLikesArray] = useState(post.likedBy);
 
   async function handleLike() {
 
@@ -26,12 +26,6 @@ export default function HeartButton({ className, setIsLiked, isLiked, post, onLi
       return;
     }
     setIsDisabled(true);
-
-    /* using realtime database */
-    const user_likes = ref(db, 'user_likes/' + userData.uid);
-    const likes = ref(db, 'likes/' + post.id)
-    const updates = {} as any;
-    const postUpdates = {} as any;
     
     /* using firestore */
     const postRef = doc(firestore, "posts", post.id);
@@ -48,6 +42,7 @@ export default function HeartButton({ className, setIsLiked, isLiked, post, onLi
       if (!isLiked && !likedBy.includes(userData.username)) {
         userLikes.push(post.id);
         likedBy.push(userData.username);
+        likesArray.push(userData.username);
         setLikeCounter(likeCounter + 1);
       } else {
         const postIndex = likedBy.indexOf(userData.username);
@@ -55,32 +50,18 @@ export default function HeartButton({ className, setIsLiked, isLiked, post, onLi
 
         const userIndex = userLikes.indexOf(post.id);
         if (userIndex !== -1) userLikes.splice(userIndex, 1);
+
+        const likesArrayIndex = likesArray.indexOf(userData.username);
+        if (likesArrayIndex !== -1) likesArray.splice(likesArrayIndex, 1);
         setLikeCounter(likeCounter - 1);
 
       }
       await updateDoc(postRef, { likedBy });
       await updateDoc(userRef, { userLikes });
     }
-    
-    /* with realtime database */
-    /* if (!isLiked && !likedBy.includes(userData.username)) {
-        likedBy.push(userData.username);
-        setLikeCounter(likeCounter + 1);
-        postUpdates[userData.uid] = true;
-        updates[post.id] = true;
-      } else {
-        const index = likedBy.indexOf(userData.username);
-        if (index !== -1) likedBy.splice(index, 1);
-        setLikeCounter(likeCounter - 1);
-        postUpdates[userData.uid] = false;
-        updates[post.id] = false;
-      }
-
-    await update(likes, postUpdates);
-    await update(user_likes, updates); */
 
     setIsLiked(!isLiked);
-    setLikedBy(likedBy)
+    setLikesArray(likesArray)
     setIsDisabled(false);
   }
 
@@ -88,12 +69,12 @@ export default function HeartButton({ className, setIsLiked, isLiked, post, onLi
     <div className={className}>
       <div className={`${isLiked ? "text-red-400" : ""} relative group flex flex-row items-center`}>
 
-        {likedBy.length > 0 && (
+        {likesArray.length > 0 && (
           <div className="absolute bottom-full bg-white text-sm text-gray-500 px-2 py-1 rounded-md 
           shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            {likedBy.slice(0, 5).join(", ")}
-            {likedBy.length > 5 && (
-              <span> and {likedBy.length - 5} more</span>
+            {likesArray.slice(0, 5).join(", ")}
+            {likesArray.length > 5 && (
+              <span> and {likesArray.length - 5} more</span>
             )}
           </div>
         )}
