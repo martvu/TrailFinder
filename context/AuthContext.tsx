@@ -25,9 +25,6 @@ const emptyUser: UserType = {
 
 type AuthContextType = {
   currentUser: User | null;
-  updateEmail: (email: string) => Promise<void>;
-  updatePassword: (password: string) => Promise<void>;
-  updateProfile: (firstName: string, lastName: string, profilePicture: string | null) => Promise<void>;
 };
 
 type UserContextType = {
@@ -37,9 +34,6 @@ type UserContextType = {
 
 const AuthContext = createContext<AuthContextType>({
   currentUser: null,
-  updateEmail: () => Promise.resolve(),
-  updatePassword: () => Promise.resolve(),
-  updateProfile: () => Promise.resolve(),
 });
 
 const UserContext = createContext<UserContextType>({

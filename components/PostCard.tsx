@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import UtilityButtons from './UtilityButtons'
 import { PostData } from 'hooks/PostData'
+import useFetchPicture from 'hooks/fetchPictures'
+
+import { storage } from '../firebase/firebase'
+import { getDownloadURL, ref } from 'firebase/storage'
 
 type postProps = {
   post: PostData
@@ -10,10 +14,20 @@ type postProps = {
 export default function PostCard(postProps: postProps) {
 
   const [isDeleted, setIsDeleted] = useState(false);
-  const { title, price, rating, date, username, length, stops, description } = postProps.post;
+  const { title, price, rating, date, username, length, stops, description} = postProps.post;
+  const [profilePicture, setProfilePictureUrl] = useState<string>('');
 
-
-
+  useEffect(() => {
+    async function fetchProfilePicture() {
+      if (profilePicture) {
+        const profilePictureRef = ref(storage, profilePicture);
+        const downloadUrl = await getDownloadURL(profilePictureRef);
+        setProfilePictureUrl(downloadUrl);
+      }
+    }
+    fetchProfilePicture();
+  }, []); 
+  
   if (isDeleted) {
     return null;
   }
@@ -24,8 +38,12 @@ export default function PostCard(postProps: postProps) {
 
         {/* left section */}
         <div className='h-64 min-h-full w-1/6 flex items-center flex-col pt-5'>
-          <div className="p-5 flex justify-center items-center border border-solid rounded-full w-12 h-12 border-black">
-            <i className="fa-solid fa-user fa-2x"></i>
+          <div className="p-5 flex justify-center items-center border border-solid rounded-full border-black">
+          {profilePicture ? (
+                    <img src={profilePicture} alt="Profile" className="rounded-full w-10 h-10" />
+                  ) : (
+                    <i className="fa-solid fa-user fa-3x w-10 h-10"></i>
+                  )}
           </div>
           <p className="card-title flex text-sm opacity-90 ">
             {username}</p>

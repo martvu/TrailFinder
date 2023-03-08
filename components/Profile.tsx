@@ -6,24 +6,13 @@ import PostCard from "./PostCard";
 import { useFetchUser } from "context/AuthContext";
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '../firebase/firebase';
+import useFetchPicture from "hooks/fetchPictures";
 
 export default function Profile({ setEdit }: any) {
   const { userData } = useFetchUser();
   const { postList } = useFetchPosts();
   const usersPosts = postList.filter(post => post.username == userData?.username);
-  const [profilePicture, setProfilePictureUrl] = useState<string>('');
-
-  useEffect(() => {
-    async function fetchProfilePicture() {
-      if (userData.profilePicture) {
-        const profilePictureRef = ref(storage, userData.profilePicture);
-        const downloadUrl = await getDownloadURL(profilePictureRef);
-        setProfilePictureUrl(downloadUrl);
-      }
-    }
-    fetchProfilePicture();
-  }, [userData]);
-
+  const { profilePicture } = useFetchPicture();
   return (
     <>
       <Header />
@@ -33,9 +22,9 @@ export default function Profile({ setEdit }: any) {
           <div className="flex p-4 justify-center items-center font-inter">
             { userData && (
               <>
-                <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-21 h-21 border-black">
+                <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-22 h-22 border-black">
                   {profilePicture ? (
-                    <img src={profilePicture} alt="Profile" className="rounded-full w-20 h-20 object-cover" />
+                    <img src={profilePicture} alt="Profile" className="rounded-full w-20 h-20" />
                   ) : (
                     <i className="fa-solid fa-user fa-4x"></i>
                   )}

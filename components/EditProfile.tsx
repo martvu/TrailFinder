@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { firestore, storage } from '../firebase/firebase';
 import { useAuth, useFetchUser } from '../context/AuthContext';
+import { ref } from 'firebase/storage';
 
 export default function EditProfile({ setEdit }: any) {
   const { userData, setUserData } = useFetchUser();
@@ -34,7 +35,7 @@ export default function EditProfile({ setEdit }: any) {
         });
 
       if (profilePicture) {
-        const storageRef = storage.ref(`profile-pictures/${currentUser.uid}`);
+        const storageRef = ref(storage, `profile-pictures/${currentUser.uid}`);
         const uploadTask = storageRef.put(profilePicture);
         uploadTask.on(
           'state_changed',
@@ -84,11 +85,12 @@ export default function EditProfile({ setEdit }: any) {
             <label htmlFor='profile-picture-input'/>
               <div className='flex justify-center items-center border p-8 shadow-lg bg-white rounded-full w-12 h-12 mx-auto'>
                 {userData.profilePicture ? (
-                  <img src={userData.profilePicture} alt='Profile' className='w-12 h-12 rounded-full' />
+                  <img src={userData.profilePicture} alt='Profile' className='rounded-full' />
                 ) : (
-              <i className="fa-solid fa-user fa-2x "></i>)
+              <i className="fa-solid fa-user fa-2x "></i>)}
               {/* <img src="/profilbilde.jpg" alt="Profile" className="w-12 h-12 rounded-full" /> */}
-            </div>
+              </div>
+              
             <label className="block text-base mb-3">
               {/* <p>{userData.firstname} {userData.lastname}</p> */}
               <p className='text-xs mt-2'>{userData.email}</p>
