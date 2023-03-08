@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { firestore, storage } from '../firebase/firebase';
 import { useAuth, useFetchUser } from '../context/AuthContext';
-import { ref } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import useFetchPicture from 'hooks/fetchPictures';
 
 export default function EditProfile({ setEdit }: any) {
   const { userData, setUserData } = useFetchUser();
   const { currentUser } = useAuth();
   const [firstName, setFirstName] = useState(userData?.firstname || '');
   const [lastName, setLastName] = useState(userData?.lastname || '');
-  const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const { profilePicture } = useFetchPicture();
   const [error, setError] = useState('');
+  const [file, setFile] = useState<File | null>(null);
+  const [percent, setPercent] = useState(0);
 
   useEffect(() => {
     if (userData) {
@@ -33,8 +36,10 @@ export default function EditProfile({ setEdit }: any) {
         .catch((error) => {
           console.log(error);
         });
+      setEdit(false);
 
-      if (profilePicture) {
+
+      /* if (profilePicture) {
         const storageRef = ref(storage, `profile-pictures/${currentUser.uid}`);
         const uploadTask = storageRef.put(profilePicture);
         uploadTask.on(
@@ -56,7 +61,7 @@ export default function EditProfile({ setEdit }: any) {
         const newUserData = { ...userData, firstName, lastName };
         setUserData(newUserData);
         setEdit(false);
-      }
+      } */
     } else {
       setError('Fields required');
       console.log('Error');
@@ -67,6 +72,55 @@ export default function EditProfile({ setEdit }: any) {
     return <div>Error: User does not exist.</div>;
   }
 
+  /* function handleChange(event: { target: { files: FileList; }; }) {
+    const file = event.target.files[0];
+    setFile(file);
+  } */
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const fileList = event.target.files;
+    if (fileList && fileList.length > 0) {
+      const selectedFile = fileList[0];
+      setFile(selectedFile);
+    }
+  }
+
+
+  function handleUpload() {
+    if (!file) {
+      alert("Please choose a file first!")
+    }
+    if (currentUser && file) {
+      const storageRef = ref(storage, `/profile-pictures/${file.name}`)
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const percent = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+
+          setPercent(percent);
+        },
+        (err) => console.log(err),
+        () => {
+          // download url
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            console.log(url);
+          });
+        }
+      );
+      if (file) {
+        const fileUrl = `gs://gruppe64-hiking-app.appspot.com/profile-pictures/${file.name}`
+        const newUserData = { ...userData, profilePicture: fileUrl };
+        console.log("uploader")
+        setUserData(newUserData);
+        updateDoc(doc(firestore, "users", currentUser.uid), { profilePicture: fileUrl });
+      }
+
+    }
+  }
   return (
     <div>
       <div className={"flex h-screen items-center justify-center"}>
@@ -81,16 +135,21 @@ export default function EditProfile({ setEdit }: any) {
           <div onClick={() => { setEdit(false) }} className="btn btn-sm btn-circle absolute right-2 top-2" >
             <i className="inline fa-solid fa-xmark"></i>
           </div>
-          <div className='mt-3 text-center'>
-            <label htmlFor='profile-picture-input'/>
-              <div className='flex justify-center items-center border p-8 shadow-lg bg-white rounded-full w-12 h-12 mx-auto'>
-                {userData.profilePicture ? (
-                  <img src={userData.profilePicture} alt='Profile' className='rounded-full' />
-                ) : (
-              <i className="fa-solid fa-user fa-2x "></i>)}
-              {/* <img src="/profilbilde.jpg" alt="Profile" className="w-12 h-12 rounded-full" /> */}
-              </div>
-              
+          <div className='flex flex-col justify-center items-center mt-3 text-center'>
+            <label htmlFor='profile-picture-input' />
+            <div className="flex justify-center items-center border p-2 shadow-lg border-solid rounded-full w-12 h-12 border-black">
+              {profilePicture ? (
+                <img src={profilePicture} alt="Profile" className="rounded-full mx-auto" />
+              ) : (
+                <i className="fa-solid fa-user fa-2x"></i>
+              )}
+            </div>
+            <div className='flex justify-end items-end'>
+              <input className=" text-sm p-2 ml-16 " type="file" accept="image/*" onChange={handleChange} />
+            </div>
+            
+            <button className="btn btn-xs btn-outline" onClick={handleUpload}>Upload</button>
+            <p>{percent} % done </p>
             <label className="block text-base mb-3">
               {/* <p>{userData.firstname} {userData.lastname}</p> */}
               <p className='text-xs mt-2'>{userData.email}</p>
