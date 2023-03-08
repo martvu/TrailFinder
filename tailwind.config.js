@@ -31,7 +31,7 @@ module.exports = {
 				},
 				trailfinder_dark: {
 					"primary": "#1eb854",
-					"secondary": "#374151",
+					"secondary": "#e7e5e4",
 					"accent": "#cba8a3",
 					"neutral": "#374151",
 					"base-100": "#1f2937",
