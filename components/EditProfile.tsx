@@ -55,9 +55,9 @@ export default function EditProfile({ setEdit }: any) {
   return (
     <div>
       <div className={"flex h-screen items-center justify-center"}>
-        <div className={"relative w-96 max-h p-6 py-3 shadow-lg bg-white rounded-md gap-4"}>
+        <div className={"relative w-96 max-h p-6 py-3 shadow-lg bg-neutral rounded-md gap-4"}>
           <div className='flex items-center justify-center'>
-            <h1 className="text-2xl block text-center font-bold text-green-500">
+            <h1 className="text-2xl block text-center font-bold text-primary">
               Edit profile
             </h1>
             <i className="fa-solid fa-pen-to-square mx-3"></i>
@@ -67,7 +67,7 @@ export default function EditProfile({ setEdit }: any) {
             <i className="inline fa-solid fa-xmark"></i>
           </div>
           <div className='mt-3 text-center'>
-            <div className='flex justify-center items-center border p-8 shadow-lg bg-white rounded-full w-12 h-12 mx-auto'>
+            <div className='flex justify-center items-center border p-8 shadow-lg bg-neutral rounded-full w-12 h-12 mx-auto'>
               <i className="fa-solid fa-user fa-2x "></i>
               {/* <img src="/profilbilde.jpg" alt="Profile" className="w-12 h-12 rounded-full" /> */}
             </div>
@@ -78,7 +78,7 @@ export default function EditProfile({ setEdit }: any) {
           </div>
           <div className="flex mb-3 items-center">
             <label>First name: </label>
-            <input className="p-1 rounded-md border focus:outline-primary mx-2"
+            <input className="input input-sm input-bordered p-1 rounded-md mx-2"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               type="text"
@@ -87,7 +87,7 @@ export default function EditProfile({ setEdit }: any) {
           </div>
           <div className="flex items-center">
             <label>Last name: </label>
-            <input className="p-1 rounded-md border focus:outline-primary mx-2"
+            <input className="input input-sm input-bordered p-1 rounded-md mx-2"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               type="text"
@@ -96,7 +96,9 @@ export default function EditProfile({ setEdit }: any) {
           </div>
           {error && <div className='w-full max-w-[30ch] text-center border-rose-300 text-rose-300'>{error}</div>}
           <div className='mt-3 text-center'>
-            <button onClick={() => { updateUser() }} className="btn-sm btn-primary text-white font-bold rounded-md justify-center">Confirm</button>
+            <button onClick={() => { updateUser() }} className="btn-sm btn-primary text-neutral
+            font-bold rounded-md justify-center">
+              Confirm</button>
           </div>
         </div>
       </div>

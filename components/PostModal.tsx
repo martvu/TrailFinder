@@ -34,12 +34,12 @@ export function PostModal({
 	}
 
 	return (
-		<div>
+		<div className="bg-neutral">
 			<input type="checkbox" id={modalId} className="modal-toggle" />
 			<div className="modal">
 				{" "}
 				{/* Opprett innlegg boks */}
-				<div className="modal-box relative h-4/5 w-full max-w-5xl">
+				<div className="modal-box bg-neutral relative h-4/5 w-full max-w-5xl">
 					<h1> {title} </h1>
 					<div className="divider"></div>
 					<div className="flex flex-row">
@@ -56,10 +56,10 @@ export function PostModal({
 							</div>
 						</div>
 						<div className="flex flex-col w-3/5">
-							<div className="flex">
+							<div className="mb-1">
 								<label>Title: </label>
 								<input
-									className="border mx-2 mb-1"
+									className="input input-sm input-bordered rounded-md mx-2"
 									onChange={(e) =>
 										setPost({
 											...post,
@@ -71,10 +71,10 @@ export function PostModal({
 									placeholder="Title of the trip"
 								/>
 							</div>
-							<div className="flex">
+							<div className="mb-1">
 								<label>Trip length: </label>
 								<input
-									className="border mx-2 mb-1"
+									className="input input-sm input-bordered rounded-md mx-2"
 									onChange={(e) =>
 										setPost({
 											...post,
@@ -86,10 +86,10 @@ export function PostModal({
 									placeholder="Trip length"
 								/>
 							</div>
-							<div className="flex">
+							<div className="mb-1">
 								<label>Price: </label>
 								<input
-									className="border mx-2 mb-1"
+									className="input input-sm input-bordered rounded-md mx-2"
 									onChange={(e) =>
 										setPost({
 											...post,
@@ -101,9 +101,9 @@ export function PostModal({
 									placeholder="Price"
 								></input>
 							</div>
-							<div className="flex">
+							<div className="mb-1">
 								<label>Rating: </label>
-								<div className="rating rating-lg rating-half">
+								<div className="rating rating-md rating-half">
 									<input
 										type="radio"
 										name="rating-10"
@@ -134,9 +134,10 @@ export function PostModal({
 										setNewStop("");
 									}}
 								>
+                  <div className="mb-1">
 									<label>Stops: </label>
 									<input
-										className="mx-2 mb-1 mt-1"
+										className="input input-sm input-bordered rounded-md mx-2"
 										placeholder="Stop"
 										value={newStop}
 										type="text"
@@ -151,6 +152,7 @@ export function PostModal({
 									>
 										+
 									</button>
+                  </div>
 								</form>
 							</div>
 							<ul>

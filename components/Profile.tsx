@@ -99,7 +99,7 @@ export default function Profile({ setEdit }: any) {
                     <div className="inline-flex mr-2">
                       <button
                         onClick={() => setEdit(true)}
-                        className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-1 px-12 rounded text-xs flex items-center justify-center"
+                        className="btn btn-sm btn-outline border border-solid border-secondary text-base py-1 px-12 rounded text-xs flex items-center justify-center"
                       >Edit
                       </button>
                     </div>

@@ -1,6 +1,14 @@
 import { useTheme } from 'next-themes';
+import { FaMoon, FaSun, } from 'react-icons/fa';
+import React from 'react';
 
-export default function DarkModeButton() {
+interface DarkModeButtonProps {
+  className?: string;
+}
+
+
+
+export default function DarkModeButton({ className }: DarkModeButtonProps) {
   const { theme, setTheme } = useTheme();
 
   function toggleTheme() {
@@ -8,9 +16,9 @@ export default function DarkModeButton() {
   }
 
   return (
-    <div>
-      <button onClick={toggleTheme}>Toggle Theme</button>
-      {/* rest of your component code */}
-    </div>
+    <button onClick={toggleTheme} className={`flex items-center justify-center gap-2 py-1 px-2 shadow-md btn btn-xs rounded-lg hover:bg-gray-200 dark:hover:bg-slate-500 dark:hover:text-neutral ${className}`}>
+      {theme === 'trailfinder_light' ? <FaMoon /> : <FaSun />}
+      <span>{theme === 'trailfinder_light' ? 'Dark Mode' : 'Light Mode'}</span>
+    </button>
   );
 }

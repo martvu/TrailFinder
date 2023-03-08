@@ -16,7 +16,7 @@ export default function LoginPage() {
   
 	return (
 		<div className="flex justify-center items-center h-screen">
-      <DarkModeButton/>
+    
 			<img
 				src="/images/bg_trailfinder.png"
 				alt="login image"
