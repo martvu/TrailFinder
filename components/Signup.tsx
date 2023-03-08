@@ -61,7 +61,7 @@ export default function Signup() {
               e.preventDefault(); // prevent default form submission behavior
               signUp();
             }}
-            className="w-full sm:w-96 p-6 space-y-4 bg-white rounded-lg shadow-lg"
+            className="w-full sm:w-96 p-6 space-y-4 bg-neutral rounded-lg shadow-lg"
           >
             <h1 className="text-3xl block text-center font-bold text-green-500">
               Sign-up
