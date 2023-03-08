@@ -36,5 +36,41 @@ After the dependencies are installed, you can run the application by running the
 npm run dev
 ```
 
+## Common issues with EsLint
+
+### Button is missing an explicit type attribute
+This error occurs when you use a button without specifying the type attribute. This is a common error when using Next.js, since the default type of a button is "submit". To fix this error, you can add the type attribute to the button, like this:
+``` jsx
+<button type="button">Click me</button>
+```
+
+### Button has an onClick handler but does not have an accessible name
+This error occurs when you use a button without specifying the text inside the button. To fix this error, you can add the text inside the button, like this:
+``` jsx
+<button>Click me</button>
+```
+If you want to use an icon inside the button, you can add the aria-label attribute to the button, like this:
+``` jsx
+<button aria-label="Click me"><Icon /></button>
+```
+Or you can simply add a title attribute to the icon, like this:
+``` jsx
+<button><Icon title="Click me" /></button>
+```
+(Note! This will give the icon a tooltip when you hover over it, which is not always desirable.)
+
+### A form label must be associated with a control
+This error occurs when you use a label without specifying the htmlFor attribute. To fix this error, you can add the htmlFor attribute to the label, like this:
+``` jsx
+<label htmlFor="input">Input</label>
+<input id="input" />
+```
+Note that this will still cause an error, since the input is not within the label. To fix this, you can wrap the input inside the label, like this:
+``` jsx
+<label htmlFor="input">Input
+  <input id="input" />
+</label>
+```
+
 [//]: <> (Todo: Add link to where the webpage is hosted)
 [//]: <> (Todo: Add documentation for how to test the application)
