@@ -38,13 +38,24 @@ npm run dev
 
 ## Common issues with EsLint
 
-### Button is missing an explicit type attribute
+If you are facing issues with EsLint, you can try to fix them by running the following command:
+``` bash
+eslint . --fix
+```
+If that still does not fix it, the following states some common issues and how to fix them.
+### __React must be in scope when using JSX__
+This error occurs when you use JSX without importing React. To fix this error, you can add the following line at the top of the file:
+``` jsx
+import React from 'react';
+```
+
+### __Button is missing an explicit type attribute__
 This error occurs when you use a button without specifying the type attribute. This is a common error when using Next.js, since the default type of a button is "submit". To fix this error, you can add the type attribute to the button, like this:
 ``` jsx
 <button type="button">Click me</button>
 ```
 
-### Button has an onClick handler but does not have an accessible name
+### __Button has an onClick handler but does not have an accessible name__
 This error occurs when you use a button without specifying the text inside the button. To fix this error, you can add the text inside the button, like this:
 ``` jsx
 <button>Click me</button>
@@ -55,11 +66,11 @@ If you want to use an icon inside the button, you can add the aria-label attribu
 ```
 Or you can simply add a title attribute to the icon, like this:
 ``` jsx
-<button><Icon title="Click me" /></button>
+<button title="Click me" /><Icon /></button>
 ```
 (Note! This will give the icon a tooltip when you hover over it, which is not always desirable.)
 
-### A form label must be associated with a control
+### __A form label must be associated with a control__
 This error occurs when you use a label without specifying the htmlFor attribute. To fix this error, you can add the htmlFor attribute to the label, like this:
 ``` jsx
 <label htmlFor="input">Input</label>
@@ -71,6 +82,21 @@ Note that this will still cause an error, since the input is not within the labe
   <input id="input" />
 </label>
 ```
+Also note that both name and id can be used on the input element, but you should use id, since name is deprecated.
+
+### __An input element must be accompanied by a label element__
+This error occurs when you use an input without specifying the label. To fix this error, you can add the label, like this:
+``` jsx
+<label htmlFor="input">Input</label>
+<input id="input" />
+```
+Note that this will still cause an error, since the input is not within the label. To fix this, you can wrap the input inside the label, like this:
+``` jsx
+<label htmlFor="input">Input
+  <input id="input" />
+</label>
+```
+Also note that both name and id can be used on the input element, but you should use id, since name is deprecated.
 
 [//]: <> (Todo: Add link to where the webpage is hosted)
 [//]: <> (Todo: Add documentation for how to test the application)
