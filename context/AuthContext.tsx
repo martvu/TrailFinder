@@ -10,7 +10,7 @@ type UserType = {
   birthdate: any;
   isAdmin: boolean;
   email: string;
-  profilePicture?: string;
+  profilePicture?: string | null;
 }
 
 const emptyUser: UserType = {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { firestore, storage } from '../firebase/firebase';
 import { useAuth, useFetchUser } from '../context/AuthContext';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytesResumable, deleteObject } from 'firebase/storage';
 import useFetchPicture from 'hooks/fetchPictures';
 
 export default function EditProfile({ setEdit }: any) {
@@ -37,31 +37,13 @@ export default function EditProfile({ setEdit }: any) {
           console.log(error);
         });
       setEdit(false);
-
-
-      /* if (profilePicture) {
-        const storageRef = ref(storage, `profile-pictures/${currentUser.uid}`);
-        const uploadTask = storageRef.put(profilePicture);
-        uploadTask.on(
-          'state_changed',
-          (_snapshot: any) => {
-            // progress
-          },
-          (error: any) => {
-            console.log(error);
-          },
-          async () => {
-            const downloadUrl = await uploadTask.snapshot.ref.getDownloadURL();
-            const newUserData = { ...userData, firstName, lastName, profilePictureUrl: downloadUrl };
-            setUserData(newUserData);
-            setEdit(false);
-          }
-        );
-      } else {
-        const newUserData = { ...userData, firstName, lastName };
-        setUserData(newUserData);
-        setEdit(false);
-      } */
+      if (!file && !profilePicture) {
+        await updateDoc(docRef, { profilePicture: null }).then(() => {
+          setUserData({ ...userData, profilePicture: null });
+        }).catch((error) => {
+          console.log(error);
+        });
+      }
     } else {
       setError('Fields required');
       console.log('Error');
@@ -109,6 +91,7 @@ export default function EditProfile({ setEdit }: any) {
           getDownloadURL(uploadTask.snapshot.ref).then((url) => {
             console.log(url);
           });
+          //setFile(null); // set file to null when the upload is finished
         }
       );
       if (file) {
@@ -137,9 +120,23 @@ export default function EditProfile({ setEdit }: any) {
           </div>
           <div className='flex flex-col justify-center items-center mt-3 text-center'>
             <label htmlFor='profile-picture-input' />
-            <div className="flex justify-center items-center border p-2 shadow-lg border-solid rounded-full w-12 h-12 border-black">
+            <div className="flex justify-center items-center border p-2 shadow-lg border-solid rounded-full w-20 h-20 border-black">
               {profilePicture ? (
+                <div className="relative">
                 <img src={profilePicture} alt="Profile" className="rounded-full mx-auto" />
+                <button
+                  onClick={() => {
+                    if (profilePicture) {
+                    const storageRef = ref(storage, `profile-pictures/${profilePicture}`);
+                    deleteObject(storageRef).then(() => {
+                      setUserData({ ...userData, profilePicture: null });
+                    });
+                  }}}
+                  className=" btn btn-error btn-outline btn-xs btn-circle absolute top-0 right-0 left-16"
+                >
+                  <i className="fa-solid fa-times"></i>
+                </button>
+              </div>
               ) : (
                 <i className="fa-solid fa-user fa-2x"></i>
               )}
@@ -147,7 +144,6 @@ export default function EditProfile({ setEdit }: any) {
             <div className='flex justify-end items-end'>
               <input className=" text-sm p-2 ml-16 " type="file" accept="image/*" onChange={handleChange} />
             </div>
-            
             <button className="btn btn-xs btn-outline" onClick={handleUpload}>Upload</button>
             <p>{percent} % done </p>
             <label className="block text-base mb-3">
