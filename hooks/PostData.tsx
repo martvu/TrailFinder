@@ -1,7 +1,7 @@
 import { Timestamp } from 'firebase/firestore';
 
 export type PostData = {
-  id: string;
+  id: string,
   date: Timestamp;
   stops: string[];
   price: string;
@@ -10,4 +10,5 @@ export type PostData = {
   username: string;
   description: string;
   length: string;
+  likedBy: string[];
 };

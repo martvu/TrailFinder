@@ -2,29 +2,41 @@ import React, {
   useContext, useState, useEffect, createContext, useMemo,
 } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, Timestamp } from 'firebase/firestore';
 import { auth, firestore } from '../firebase/firebase';
 
 type UserType = {
   firstname: string;
   lastname: string;
   username: string;
-  birthdate: any;
+  birthdate: Timestamp;
   isAdmin: boolean;
   email: string;
+  uid: string;
+  userLikes: string[];
 };
 
 const emptyUser: UserType = {
   firstname: '',
   lastname: '',
   username: '',
-  birthdate: '',
+  birthdate: Timestamp.now(),
   isAdmin: false,
   email: '',
+  uid: '',
+  userLikes: [],
 };
 
 type AuthContextType = {
   currentUser: User | null;
+};
+
+type FirebaseUserData = {
+  firstname: string;
+  lastname: string;
+  username: string;
+  birthdate: Timestamp;
+  isAdmin: boolean;
 };
 
 type UserContextType = {
@@ -55,28 +67,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userData, setUserData] = useState<UserType>(emptyUser);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
     });
     return unsubscribe;
   }, []);
-
   useEffect(() => {
     async function fetchUserData() {
       if (currentUser) {
-        console.log(currentUser);
         try {
           const docRef = doc(firestore, 'users', currentUser.uid);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
+            const firebaseData = docSnap.data() as FirebaseUserData;
             const userInfo: UserType = {
-              firstname: docSnap.data().firstname,
-              lastname: docSnap.data().lastname,
-              username: docSnap.data().username,
-              birthdate: docSnap.data().birthdate.toDate().toLocaleDateString(),
-              isAdmin: docSnap.data().isAdmin,
+              ...firebaseData,
               email: currentUser.email || '',
+              uid: currentUser.uid,
+              userLikes: [],
             };
             setUserData(userInfo);
           } else {
@@ -89,8 +98,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       }
     }
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     fetchUserData();
-    return () => {};
   }, [currentUser]);
 
   const value = useMemo(() => ({

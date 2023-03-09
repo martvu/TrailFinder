@@ -1,4 +1,6 @@
-import { deleteDoc, doc } from 'firebase/firestore';
+import {
+  arrayRemove, collection, deleteDoc, doc, getDocs, query, where, writeBatch,
+} from 'firebase/firestore';
 import React from 'react';
 import { PostData } from 'hooks/PostData';
 import { useFetchUser } from 'context/AuthContext';
@@ -16,7 +18,19 @@ function UtilityButtons({ setIsDeleted, post }: Props) {
 
   async function deletePost() {
     if (adminState || post.username === userData?.username) {
-      await deleteDoc(doc(firestore, 'posts', `post: ${post.id}`));
+      await deleteDoc(doc(firestore, 'posts', post.id));
+      const likesRef = collection(firestore, 'users');
+      const q = query(likesRef, where('userLikes', 'array-contains', post.id));
+      const querySnapshot = await getDocs(q);
+      console.log('deleting');
+      // 2. Remove the post ID from the `likes` array of each user who has liked the post.
+      const batch = writeBatch(firestore);
+      querySnapshot.forEach((docc) => {
+        const userRef = docc.ref;
+        console.log(docc);
+        batch.update(userRef, { userLikes: arrayRemove(post.id) });
+      });
+      await batch.commit();
       setIsDeleted(true);
     } else {
       alert("You don't have permission to delete that post..");
@@ -28,6 +42,7 @@ function UtilityButtons({ setIsDeleted, post }: Props) {
   return (
     <div className="absolute bottom-0 left-0 m-2">
       <div className="flex flex-row">
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <button title="Delete post" onClick={deletePost} type="button">
           <i className="fa-solid fa-trash-can cursor-pointer duration-100 hover:scale-110" />
         </button>

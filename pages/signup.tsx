@@ -8,6 +8,5 @@ export default function SignupPage() {
     <div>
       <Signup />
     </div>
-
   );
 }

@@ -1,42 +1,61 @@
 import React, { useState } from 'react';
 import { PostData } from 'hooks/PostData';
+import { useFetchUser } from 'context/AuthContext';
 import Image from 'next/image';
 import UtilityButtons from './UtilityButtons';
+import HeartButton from './HeartButton';
 
 type PostProps = {
-  post: PostData
+  post: PostData,
+  onLike: () => void
 };
 
-export default function PostCard({ post }: PostProps) {
+export default function PostCard({ post, onLike }: PostProps) {
   const [isDeleted, setIsDeleted] = useState(false);
-
   const {
-    title, price, rating, date, username, length, stops, description,
+    title, price, rating, date, username, length, stops, description, likedBy,
   } = post;
+  const { userData } = useFetchUser();
+  const [isLiked, setIsLiked] = useState(likedBy?.includes(userData.username));
 
   if (isDeleted) {
     return null;
   }
   return (
-    <div className="card card-side shadow-md min-w-full max-w-full max-h-64 min-h-64 bg-neutral-50">
+    <div className="card card-side shadow-md min-w-full max-w-full max-h-64 min-h-64 bg-neutral">
 
       <div className="flex w-full">
+
+        {/* left section */}
         <div className="h-64 min-h-full w-1/6 flex items-center flex-col pt-5">
-          <div className="p-5 flex justify-center items-center border border-solid rounded-full w-12 h-12 border-black">
+          <div className="p-5 flex justify-center items-center border border-solid rounded-full w-12 h-12 ">
             <i className="fa-solid fa-user fa-2x" />
           </div>
           <p className="card-title flex text-sm opacity-90 ">
             {username}
           </p>
-
-          <div className="max-w-20 w-20 m-3">
-            <Image src="/images/bg_trailfinder.png" alt="BackgroundPic" width={100} height={100} />
+          <div className="text-xs">
+            {date.toDate().toLocaleDateString().replace(',', '')}
           </div>
+          <div className="max-w-20 w-20 m-3">
+            <Image
+              src="./images/bg_trailfinder.png"
+              alt="Picture of the trip"
+              width={100}
+              height={100}
+            />
+          </div>
+
         </div>
 
-        <UtilityButtons setIsDeleted={setIsDeleted} post={post} />
+        <UtilityButtons
+          setIsDeleted={setIsDeleted}
+          post={post}
+        />
+
         <div className="card-body w-3/6">
           <h2 className="card-title font-extrabold absolute top-2">{title}</h2>
+
           {/* stops */}
           <div className="flex pt-6">
             <div className="flex">
@@ -55,7 +74,16 @@ export default function PostCard({ post }: PostProps) {
             <span className="font-bold">Description</span>
             <div className="max-w-full break-words">{description}</div>
           </div>
+
+          {/* <div className="card-actions bg-base300">
+            <a href="#" className="font-bold text-green-500 hover:text-green-700 absolute bottom-2">
+              Read more
+            </a>
+          </div> */}
+
         </div>
+
+        {/* right section */}
         <div className="max-w-sm flex relative border-l-2 border-0 border-solid flex-col w-1/5 h-full pr-4 p-3 gap-2 ">
           <div>
             <span className="font-bold">Price: </span>
@@ -72,9 +100,13 @@ export default function PostCard({ post }: PostProps) {
             <div>{length}</div>
           </div>
 
-          <div className="text-sm absolute bottom-0 left-0 p-2">
-            {date.toDate().toLocaleDateString().replace(',', '')}
-          </div>
+          <HeartButton
+            onLike={onLike}
+            setIsLiked={setIsLiked}
+            isLiked={isLiked}
+            post={post}
+            className="absolute bottom-0 right-0 m-2"
+          />
 
         </div>
       </div>

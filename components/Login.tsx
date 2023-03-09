@@ -20,7 +20,8 @@ export default function Login() {
     } catch (e) {
       usernameDBsnap = null;
     }
-    const userEmail = usernameDBsnap && usernameDBsnap.exists() ? usernameDBsnap.val() : email;
+    const userEmail = usernameDBsnap && usernameDBsnap.exists()
+      ? usernameDBsnap.val() as string : email;
     try {
       await signInWithEmailAndPassword(auth, userEmail, password);
       console.log('Logged in');
@@ -30,9 +31,10 @@ export default function Login() {
     }
   }
   return (
-    <div className="w-96 max-h p-6 shadow-lg bg-white rounded-lg">
+    <div className="w-96 max-h p-6 shadow-lg bg-neutral rounded-lg">
       <form onSubmit={(e) => {
         e.preventDefault();
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         login();
       }}
       >

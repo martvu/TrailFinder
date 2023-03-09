@@ -37,12 +37,14 @@ export default function Signup() {
         birthdate: Timestamp.fromDate(new Date(birthDate)),
         username,
         isAdmin: false,
+        userLikes: [],
       });
       const usernameDB = set(ref(db, `users/${username}`), email);
+
       await Promise.all([userDoc, usernameDB]);
       router.push('/login');
     } catch (e) {
-      console.log(`Error: ${e}`);
+      console.error(e);
       setError('Sign-up failed. Try again.');
     }
   }
@@ -50,19 +52,15 @@ export default function Signup() {
     return firstName !== '' && lastName !== '' && birthDate !== '' && email !== '' && password !== '' && username !== '';
   }
 
-  // TODO Se på om løsningen under er bedre med tanke på effektivisering
-  /* function notAllFieldsFilledOut(): boolean {
-    return ([firstName, lastName, birthDate, email, password, username].some(el => el == ""))
-  } */
-
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">
       <form
-        onSubmit={(e) => {
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onSubmit={async (e) => {
           e.preventDefault(); // prevent default form submission behavior
-          signUp();
+          await signUp();
         }}
-        className="w-full sm:w-96 p-6 space-y-4 bg-white rounded-lg shadow-lg"
+        className="w-full sm:w-96 p-6 space-y-4 bg-neutral rounded-lg shadow-lg"
       >
         <h1 className="text-3xl block text-center font-bold text-green-500">
           Sign-up
@@ -75,6 +73,7 @@ export default function Signup() {
         <InputField label="Password" placeholder="Enter password..." setInput={setPassword} type="password" />
         {error !== '' ? <p className="text-red-500 mt-3">{error}</p> : null}
         <div className="flex justify-between">
+          {/* eslint-disable-next-line @typescript-eslint/unbound-method */}
           <button className="btn btn-secondary text-white font-bold py-2 px-4 mt-5 rounded-md justify-center" type="button" onClick={router.back}>Back</button>
           <button className="btn btn-primary text-white font-bold py-2 px-4 mt-5 rounded-md justify-center" type="submit" disabled={!hasAllFieldsFilledOut()}>Sign-up</button>
         </div>

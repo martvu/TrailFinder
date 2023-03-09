@@ -1,6 +1,8 @@
 'use client';
 
-import { Timestamp, doc, setDoc } from 'firebase/firestore';
+import {
+  addDoc, collection, Timestamp, updateDoc,
+} from 'firebase/firestore';
 import { useState } from 'react';
 import { useFetchUser } from 'context/AuthContext';
 import { PostData } from 'hooks/PostData';
@@ -18,17 +20,15 @@ export default function CreatePostModal() {
     rating: 5,
     stops: [],
     description: '',
+    likedBy: [],
   };
   const [post, setPost] = useState<PostData>(emptyPost);
   const { userData } = useFetchUser();
 
   function createPostData() {
-    const now = new Date(Date.now());
-    const nowDate = now.toString();
     if (userData) {
       const newPost: PostData = {
         ...post,
-        id: nowDate,
         date: Timestamp.now(),
         username: userData.username,
       };
@@ -40,9 +40,8 @@ export default function CreatePostModal() {
     const newPost = createPostData();
     console.log(newPost);
     if (newPost) {
-      const postRef = doc(firestore, 'posts', `post: ${newPost.id}`);
-      await setDoc(postRef, newPost);
-
+      const newDocRef = await addDoc(collection(firestore, 'posts'), newPost);
+      await updateDoc(newDocRef, { ...newPost, id: newDocRef.id });
       console.log('Successful');
       window.location.reload();
     }
@@ -51,6 +50,7 @@ export default function CreatePostModal() {
   return PostModal({
     post,
     setPost,
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     finish: handleAddPost,
     modalData: {
       modalId: 'create-modal',

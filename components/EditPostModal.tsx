@@ -14,7 +14,7 @@ export default function EditPostModal({ postData }: Props) {
   const [post, setPost] = useState(postData);
 
   async function updatePost() {
-    const docRef = doc(firestore, 'posts', `post: ${post.id}`);
+    const docRef = doc(firestore, 'posts', post.id);
 
     try {
       await updateDoc(docRef, post);
@@ -27,6 +27,7 @@ export default function EditPostModal({ postData }: Props) {
   return PostModal({
     post,
     setPost,
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     finish: updatePost,
     modalData: {
       modalId: 'edit-modal',

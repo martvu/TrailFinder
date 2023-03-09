@@ -5,10 +5,12 @@ import PostCard from './PostCard';
 import Header from './Header';
 
 export default function Home() {
-  const { postList } = useFetchPosts();
+  const { recentPostsList } = useFetchPosts();
 
+  function empty() {
+
+  }
   return (
-
     <main className="flex flex-col ">
       <Header />
       <div className="flex flex-row justify-center">
@@ -20,7 +22,8 @@ export default function Home() {
               {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
               <label
                 htmlFor="create-modal"
-                className="btn btn-outline bg-neutral-50 rounded-full w-full"
+                className="btn btn-outline bg-neutral
+              rounded-full w-full"
               >
                 Create new post
               </label>
@@ -29,8 +32,9 @@ export default function Home() {
           <div className="font-extrabold text-2xl">
             Recent posts:
           </div>
-          {postList.map((postData) => (
-            <PostCard key={postData.id} post={postData} />
+          {recentPostsList.map((postData) => (
+            // eslint-disable-next-line react/jsx-no-bind
+            <PostCard onLike={empty} key={postData.id} post={postData} />
           ))}
         </div>
       </div>

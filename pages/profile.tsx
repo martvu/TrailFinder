@@ -2,17 +2,18 @@
 
 import EditProfile from 'components/EditProfile';
 import Profile from 'components/Profile';
-import { useAuth } from 'context/AuthContext';
 import React, { useState } from 'react';
+import AuthHoc from 'utils/HOC';
 
-export default function ProfilePage() {
+function ProfilePage() {
   const [edit, setEdit] = useState(false);
-  const { currentUser } = useAuth();
 
   return (
     <div>
-      {currentUser && !edit && <Profile setEdit={setEdit} />}
-      {currentUser && edit && <EditProfile setEdit={setEdit} />}
+      {!edit && <Profile setEdit={setEdit} />}
+      {edit && <EditProfile setEdit={setEdit} />}
     </div>
   );
 }
+
+export default AuthHoc(ProfilePage);

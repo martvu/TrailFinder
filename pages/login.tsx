@@ -9,6 +9,7 @@ import Login from '../components/Login';
 export default function LoginPage() {
   const router = useRouter();
   const { currentUser } = useAuth();
+
   if (currentUser) {
     router.push('/home');
   }

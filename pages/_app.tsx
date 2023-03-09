@@ -3,14 +3,17 @@ import React from 'react';
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { AuthProvider } from 'context/AuthContext';
+import { ThemeProvider } from 'next-themes';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
-      <Layout>
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <Component {...pageProps} />
-      </Layout>
+      <ThemeProvider defaultTheme="trailfinder_dark">
+        <Layout>
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+          <Component {...pageProps} />
+        </Layout>
+      </ThemeProvider>
     </AuthProvider>
   );
 }

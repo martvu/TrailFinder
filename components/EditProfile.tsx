@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -53,19 +56,19 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
   return (
     <div>
       <div className="flex h-screen items-center justify-center">
-        <div className="relative w-96 max-h p-6 py-3 shadow-lg bg-white rounded-md gap-4">
+        <div className="relative w-96 max-h p-6 py-3 shadow-lg bg-neutral rounded-md gap-4">
           <div className="flex items-center justify-center">
-            <h1 className="text-2xl block text-center font-bold text-green-500">
+            <h1 className="text-2xl block text-center font-bold text-primary">
               Edit profile
             </h1>
             <i className="fa-solid fa-pen-to-square mx-3" />
           </div>
 
-          <button onClick={() => { setEdit(false); }} type="button" title="Exit editing" className="btn btn-sm btn-circle absolute right-2 top-2">
+          <div onClick={() => { setEdit(false); }} className="btn btn-sm btn-circle absolute right-2 top-2">
             <i className="inline fa-solid fa-xmark" />
-          </button>
+          </div>
           <div className="mt-3 text-center">
-            <div className="flex justify-center items-center border p-8 shadow-lg bg-white rounded-full w-12 h-12 mx-auto">
+            <div className="flex justify-center items-center border p-8 shadow-lg bg-neutral rounded-full w-12 h-12 mx-auto">
               <i className="fa-solid fa-user fa-2x " />
             </div>
             <p className="text-xs mt-2 mb-3 block">{userData.email}</p>
@@ -74,31 +77,38 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
             <label htmlFor="firstName">
               First name:
               <input
-                className="p-1 rounded-md border focus:outline-primary mx-2"
+                className="input input-sm input-bordered p-1 rounded-md mx-2"
                 value={firstName}
                 name="firstName"
                 onChange={(e) => setFirstName(e.target.value)}
                 type="text"
               />
             </label>
-
           </div>
           <div className="flex items-center">
             <label htmlFor="lastName">
               Last name:
               <input
-                className="p-1 rounded-md border focus:outline-primary mx-2"
+                className="input input-sm input-bordered p-1 rounded-md mx-2"
                 value={lastName}
+                name="lastName"
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
-                name="lastName"
                 placeholder={lastName}
               />
             </label>
           </div>
           {error && <div className="w-full max-w-[30ch] text-center border-rose-300 text-rose-300">{error}</div>}
           <div className="mt-3 text-center">
-            <button type="button" onClick={() => { updateUser(); }} className="btn-sm btn-primary text-white font-bold rounded-md justify-center">Confirm</button>
+            <button
+              type="button"
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onClick={updateUser}
+              className="btn-sm btn-primary text-neutral
+            font-bold rounded-md justify-center"
+            >
+              Confirm
+            </button>
           </div>
         </div>
       </div>

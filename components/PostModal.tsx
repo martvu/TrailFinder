@@ -52,12 +52,12 @@ export default function PostModal({
     );
   }
   return (
-    <div>
+    <div className="bg-neutral">
       <input type="checkbox" id={modalId} className="modal-toggle" />
       <div className="modal">
         {' '}
         {/* Opprett innlegg boks */}
-        <div className="modal-box relative h-4/5 w-full max-w-5xl">
+        <div className="modal-box bg-neutral relative h-4/5 w-full max-w-5xl">
           <h1>
             {' '}
             {title}
@@ -77,11 +77,11 @@ export default function PostModal({
               </div>
             </div>
             <div className="flex flex-col w-3/5">
-              <div className="flex">
+              <div className="mb-1">
                 <label htmlFor="title">
                   Title:
                   <input
-                    className="border mx-2 mb-1"
+                    className="input input-sm input-bordered rounded-md mx-2"
                     onChange={(e) => setPost({
                       ...post,
                       title: e.target.value,
@@ -93,15 +93,12 @@ export default function PostModal({
                   />
                 </label>
               </div>
-              <div className="flex">
+              <div className="mb-1">
                 <label htmlFor="length">
                   Trip length:
                   <input
-                    className="border mx-2 mb-1"
-                    onChange={(e) => setPost({
-                      ...post,
-                      length: e.target.value,
-                    })}
+                    className="input input-sm input-bordered rounded-md mx-2"
+                    onChange={(e) => setPost({ ...post, length: e.target.value })}
                     name="length"
                     value={post.length}
                     type="text"
@@ -109,15 +106,12 @@ export default function PostModal({
                   />
                 </label>
               </div>
-              <div className="flex">
+              <div className="mb-1">
                 <label htmlFor="price">
                   Price:
                   <input
-                    className="border mx-2 mb-1"
-                    onChange={(e) => setPost({
-                      ...post,
-                      price: e.target.value,
-                    })}
+                    className="input input-sm input-bordered rounded-md mx-2"
+                    onChange={(e) => setPost({ ...post, price: e.target.value })}
                     value={post.price}
                     type="text"
                     name="price"
@@ -125,7 +119,7 @@ export default function PostModal({
                   />
                 </label>
               </div>
-              <div className="flex">
+              <div className="mb-1">
                 <label htmlFor="rating-10">
                   Rating:
                   <div className="rating rating-lg rating-half">
@@ -158,29 +152,33 @@ export default function PostModal({
                     setNewStop('');
                   }}
                 >
-                  <label htmlFor="stop">
-                    Stops:
-                    <input
-                      className="mx-2 mb-1 mt-1"
-                      placeholder="Stop"
-                      value={newStop}
-                      type="text"
-                      name="stop"
-                      onChange={(e) => setNewStop(e.target.value)}
-                    />
-                  </label>
-                  {' '}
-                  <button
-                    type="submit"
-                    className="btn btn-xs btn-primary"
-                  >
-                    +
-                  </button>
+
+                  <div className="mb-1">
+                    <label htmlFor="stop">
+                      Stops:
+                      <input
+                        className="mx-2 mb-1 mt-1"
+                        placeholder="Stop"
+                        value={newStop}
+                        type="text"
+                        name="stop"
+                        onChange={(e) => setNewStop(e.target.value)}
+                      />
+                    </label>
+                    {' '}
+                    <button
+                      type="submit"
+                      className="btn btn-xs btn-primary"
+                    >
+                      +
+                    </button>
+                  </div>
                 </form>
               </div>
               <ul>
                 {post.stops.map((stop, index) => (
-                  <li key={stop}>
+                  // eslint-disable-next-line react/no-array-index-key
+                  <li key={index}>
                     {`${stop} `}
                     <button
                       className="btn btn-xs btn-secondary"

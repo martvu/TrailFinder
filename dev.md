@@ -40,7 +40,7 @@ npm run dev
 
 If you are facing issues with EsLint, you can try to fix them by running the following command:
 ``` bash
-eslint . --fix
+npx eslint . --fix
 ```
 If that still does not fix it, the following states some common issues and how to fix them.
 ### __React must be in scope when using JSX__
