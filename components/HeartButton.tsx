@@ -11,10 +11,9 @@ interface Props {
   setIsLiked: React.Dispatch<React.SetStateAction<boolean>>;
   isLiked: boolean;
   post: PostData;
-  onLike: (post:any)=>void;
 }
 
-export default function HeartButton({ className, setIsLiked, isLiked, post, onLike }: Props) {
+export default function HeartButton({ className, setIsLiked, isLiked, post }: Props) {
   const { userData } = useFetchUser();
   const [likeCounter, setLikeCounter] = useState(post.likedBy?.length);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -80,7 +79,7 @@ export default function HeartButton({ className, setIsLiked, isLiked, post, onLi
         )}
 
         <div className='cursor-pointer flex flex-row justify-center items-center'
-          onClick={()=>{handleLike(); onLike(post);}}>
+          onClick={handleLike}>
           {/* <i className={`fa-regular fa-heart ${isLiked? " text-red-400": ""} 
           btn btn-sm btn-circle`}></i> */}
 

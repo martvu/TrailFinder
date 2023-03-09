@@ -10,61 +10,22 @@ import { PostData } from "hooks/PostData";
 
 export default function Profile({ setEdit }: any) {
   const { userData } = useFetchUser();
-  const { recentPostsList, likedPostsList, usersPostsList } = useFetchPosts();
-  //const usersList = useState(recentPostsList.filter(post => post.username == userData?.username));
-  //const likedPosts = recentPostsList.filter(post => post.likedBy.includes(userData?.username)); 
-  const [myPosts, setMyPosts] = useState(true);
-  const [likedPosts, setLikedPosts] = useState(false);
-  const [myPostsArray, setMyPostsArray] = useState([] as PostData[]);
-  const [likedPostsArray, setLikedPostsArray] = useState([] as PostData[]);
+  const { recentPostsList } = useFetchPosts();
+  const myPosts = recentPostsList.filter(post => post.username == userData?.username);
+  const likedPosts = recentPostsList.filter(post => post.likedBy.includes(userData?.username) && post.username != userData?.username); 
+  const [filterMyPosts, setFilterMyPosts] = useState(true);
+  const [filterLikedPosts, setFilterLikedPosts] = useState(false);
 
-  useEffect(() => {
-    setLikedPostsArray(likedPostsList);
-    setMyPostsArray(usersPostsList)
-  }, [likedPostsList, usersPostsList]);
-
-  function handleMyPostsClick() {
-    setMyPosts(true);
-    setLikedPosts(false);
+  function handleFilterMyPostsClick() {
+    setFilterMyPosts(true);
+    setFilterLikedPosts(false);
   }
 
-  function handleLikedPostsClick() {
-    setMyPosts(false);
-    setLikedPosts(true);
+  function handleFilterLikedPostsClick() {
+    setFilterMyPosts(false);
+    setFilterLikedPosts(true);
   }
 
-  /*Makes sure the likes update correctly in profile page */
-  function onLike(post: PostData) {
-
-    if (myPosts) {
-      if (post.likedBy.includes(userData.username)) {
-        const newLikedPostsList = likedPostsArray.filter((likedPost) => likedPost.id !== post.id);
-        setLikedPostsArray(newLikedPostsList);
-      } else {
-        const newLikedPostsList = likedPostsArray.concat(post);
-        setLikedPostsArray(newLikedPostsList);
-      }
-    }
-
-    if (likedPosts) {
-      if (post.likedBy.includes(userData.username)) {
-        const newLikedPostsList = likedPostsArray.filter((likedPost) => likedPost.id !== post.id);
-        setLikedPostsArray(newLikedPostsList);
-
-        const unLikePost = myPostsArray.find(oldPost => oldPost.id === post.id);
-        if (unLikePost) {
-          const userIndex = unLikePost.likedBy.indexOf(userData.username);
-          if (userIndex !== -1) unLikePost.likedBy.splice(userIndex, 1);
-          const postIndex = myPostsArray.findIndex(p => p.id === post.id);
-
-          if (postIndex !== -1) {
-            const updatedPosts = [...myPostsArray.slice(0, postIndex), unLikePost, ...myPostsArray.slice(postIndex + 1)];
-            setMyPostsArray(updatedPosts);
-          }
-        }
-      }
-    }
-  }
   return (
     <>
       <Header />
@@ -115,27 +76,26 @@ export default function Profile({ setEdit }: any) {
           <div className="flex w-full flex-col sm:w-3/5">
             <div className="mt-3 mb-3 justify-between flex">
 
-              <button onClick={handleMyPostsClick} className={`${myPosts ? 'btn-primary text-lg text-neutral font-extrabold' : ''} 
+              <button onClick={handleFilterMyPostsClick} className={`${filterMyPosts ? 'btn-primary text-lg text-neutral font-extrabold' : ''} 
               btn flex-1 text-center p-3 justify-center font-bold cursor-pointer`}>
                 My posts  <i className="mx-2 mb-1 fa-solid fa-user"></i>
               </button>
 
-              <button onClick={handleLikedPostsClick} className={`${likedPosts ? 'btn-accent text-lg text-neutral font-extrabold' : ''} 
+              <button onClick={handleFilterLikedPostsClick} className={`${filterLikedPosts ? 'btn-accent text-lg text-neutral font-extrabold' : ''} 
               btn flex-1 text-center p-3 font-bold cursor-pointer`}>
                 Liked posts <i className="mx-2 fa-solid fa-heart"></i>
               </button>
 
             </div>
 
-            {likedPosts && likedPostsArray.map((post) => (
+            {filterLikedPosts && likedPosts.map((post) => (
               <div key={post.id} className="mb-2">
-                <PostCard post={post} onLike={() => onLike(post)} />
+                <PostCard post={post} />
               </div>
             ))}
-
-            {myPosts && myPostsArray.map((post) => (
+            {filterMyPosts &&myPosts.map((post) => (
               <div key={post.id} className="mb-2">
-                <PostCard post={post} onLike={() => onLike(post)} />
+                <PostCard post={post} />
               </div>
             ))}
 

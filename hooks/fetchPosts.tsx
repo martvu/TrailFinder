@@ -35,7 +35,7 @@ export default function useFetchPosts() {
     fetchRecent()
   }, [currentUser]) 
 
-  useEffect(() => {
+  /* useEffect(() => {
     async function fetchLiked() {
       if (currentUser) {
         console.log(currentUser)
@@ -94,7 +94,7 @@ export default function useFetchPosts() {
       }
     }
     fetchUsersPosts()
-  }, [currentUser, userData.username]) 
+  }, [currentUser, userData.username])  */
   /* render */
 
   return { loading, error, recentPostsList , likedPostsList, setLikedPostsList , usersPostsList, setUsersPostsList};
