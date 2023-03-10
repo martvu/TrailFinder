@@ -39,7 +39,7 @@ export default function PostCard({ post, onLike }: PostProps) {
           </div>
           <div className="max-w-20 w-20 m-3">
             <Image
-              src="./images/bg_trailfinder.png"
+              src="/images/bg_trailfinder.png"
               alt="Picture of the trip"
               width={100}
               height={100}

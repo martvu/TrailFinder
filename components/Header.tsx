@@ -18,7 +18,7 @@ function Header() {
   return (
     <header className="p-2 sm:p-4">
       <div className="flex justify-between">
-        <button onClick={() => { router.push('/home'); }} type="button" className="text-center flex items-center duration-300 hover:opacity-40 cursor-pointer">
+        <button onClick={() => { router.push('/'); }} type="button" className="text-center flex items-center duration-300 hover:opacity-40 cursor-pointer">
           <Image
             src="/images/trailfinder_logo_simple.png"
             alt="Logo"
@@ -27,7 +27,7 @@ function Header() {
             className="h-20 duration-100 hover:opacity-40 mr-3"
           />
           <div
-            onClick={() => { router.push('/home'); }}
+            onClick={() => { router.push('/'); }}
             className="flex items-center
           text-3xl sm:text-5xl font-extrabold duration-100 hover:opacity-60 cursor-pointer"
           >
