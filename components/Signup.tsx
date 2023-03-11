@@ -74,7 +74,7 @@ export default function Signup() {
         {error !== '' ? <p className="text-red-500 mt-3">{error}</p> : null}
         <div className="flex justify-between">
           {/* eslint-disable-next-line @typescript-eslint/unbound-method */}
-          <button className="btn btn-secondary text-white font-bold py-2 px-4 mt-5 rounded-md justify-center" type="button" onClick={router.back}>Back</button>
+          <button className="btn btn-outline btn-secondary font-bold py-2 px-4 mt-5 rounded-md border-2 justify-center" type="button" onClick={router.back}>Back</button>
           <button className="btn btn-primary text-white font-bold py-2 px-4 mt-5 rounded-md justify-center" type="submit" disabled={!hasAllFieldsFilledOut()}>Sign-up</button>
         </div>
       </form>
