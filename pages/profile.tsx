@@ -3,17 +3,16 @@
 import EditProfile from 'components/EditProfile';
 import Profile from 'components/Profile';
 import React, { useState } from 'react';
-import AuthHoc from 'utils/HOC';
+import { LoggedInHoc } from 'utils/HOC';
 
 function ProfilePage() {
   const [edit, setEdit] = useState(false);
 
   return (
     <div>
-      {!edit && <Profile setEdit={setEdit} />}
-      {edit && <EditProfile setEdit={setEdit} />}
+      {edit ? <EditProfile setEdit={setEdit} /> : <Profile setEdit={setEdit} />}
     </div>
   );
 }
 
-export default AuthHoc(ProfilePage);
+export default LoggedInHoc(ProfilePage);

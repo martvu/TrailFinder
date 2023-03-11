@@ -2,10 +2,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { signOut } from 'firebase/auth';
 import React from 'react';
-import { useRouter } from 'next/navigation';
-import { auth } from 'firebase/firebase';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { auth } from '../firebase/firebase';
 import DarkModeButton from './ToggleDark';
+import logo from '../public/images/trailfinder_logo_simple.png';
 
 function Header() {
   const router = useRouter();
@@ -20,11 +21,9 @@ function Header() {
       <div className="flex justify-between">
         <button onClick={() => { router.push('/'); }} type="button" className="text-center flex items-center duration-300 hover:opacity-40 cursor-pointer">
           <Image
-            src="/images/trailfinder_logo_simple.png"
+            src={logo}
             alt="Logo"
-            width={100}
-            height={100}
-            className="h-20 duration-100 hover:opacity-40 mr-3"
+            className="h-20 w-14 duration-100 hover:opacity-40 mr-3"
           />
           <div
             onClick={() => { router.push('/'); }}

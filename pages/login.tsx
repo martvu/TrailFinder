@@ -1,19 +1,11 @@
 'use client';
 
 import React from 'react';
-import { useAuth } from 'context/AuthContext';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Login from '../components/Login';
+import { LoggedOutHoc } from '../utils/HOC';
 
-export default function LoginPage() {
-  const router = useRouter();
-  const { currentUser } = useAuth();
-
-  if (currentUser) {
-    router.push('/home');
-  }
-
+function LoginPage() {
   return (
     <div className="flex justify-center items-center h-screen">
       <Image
@@ -39,3 +31,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export default LoggedOutHoc(LoginPage);

@@ -2,13 +2,26 @@ import { useAuth } from 'context/AuthContext';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-export default function AuthHoc(Component: React.FC) {
-  return function AuthHocComponent() {
+export function LoggedInHoc(Component: React.FC) {
+  return function Wrapper() {
     const { currentUser } = useAuth();
     const router = useRouter();
     useEffect(() => {
       if (!currentUser) {
-        router.push('/login').catch((e) => console.log(e));
+        router.replace('/login').catch((e) => console.log(e));
+      }
+    }, [currentUser, router]);
+    return <Component />;
+  };
+}
+
+export function LoggedOutHoc(Component: React.FC) {
+  return function Wrapper() {
+    const { currentUser } = useAuth();
+    const router = useRouter();
+    useEffect(() => {
+      if (currentUser) {
+        router.replace('/').catch((e) => console.log(e));
       }
     }, [currentUser, router]);
     return <Component />;

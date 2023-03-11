@@ -25,7 +25,7 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, userEmail, password);
       console.log('Logged in');
-      router.push('/profile');
+      router.replace('/');
     } catch (e) {
       setError('Login failed. Try again.');
     }

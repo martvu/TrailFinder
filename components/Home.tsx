@@ -7,9 +7,6 @@ import Header from './Header';
 export default function Home() {
   const { recentPostsList } = useFetchPosts();
 
-  function empty() {
-
-  }
   return (
     <main className="flex flex-col ">
       <Header />
@@ -34,7 +31,7 @@ export default function Home() {
           </div>
           {recentPostsList.map((postData) => (
             // eslint-disable-next-line react/jsx-no-bind
-            <PostCard onLike={empty} key={postData.id} post={postData} />
+            <PostCard onLike={() => null} key={postData.id} post={postData} />
           ))}
         </div>
       </div>

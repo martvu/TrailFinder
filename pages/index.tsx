@@ -1,6 +1,6 @@
 import Home from 'components/Home';
 import React from 'react';
-import AuthHoc from 'utils/HOC';
+import { LoggedInHoc } from 'utils/HOC';
 
 function Index() {
   return (
@@ -10,4 +10,4 @@ function Index() {
   );
 }
 
-export default AuthHoc(Index);
+export default LoggedInHoc(Index);
