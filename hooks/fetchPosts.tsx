@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
-  collection, getDocs, query, orderBy, doc, getDoc, where,
+  collection, getDocs, query, orderBy,
 } from 'firebase/firestore';
-import { useAuth, useFetchUser } from 'context/AuthContext';
+import { useAuth } from 'context/AuthContext';
 import { firestore } from '../firebase/firebase';
 import { PostData } from './PostData';
 
@@ -11,9 +11,8 @@ export default function useFetchPosts() {
   const [error, setError] = useState('');
   const [recentPostsList, setRecentPostsList] = useState([] as PostData[]);
   const { currentUser } = useAuth();
-  const { userData } = useFetchUser();
-  
-  /** fetch posts ordered by most recent*/
+
+  /** fetch posts ordered by most recent */
   useEffect(() => {
     async function fetchRecent() {
       if (currentUser) {
@@ -37,10 +36,9 @@ export default function useFetchPosts() {
     fetchRecent();
   }, [currentUser]);
 
-
   return {
     loading,
     error,
-    recentPostsList
+    recentPostsList,
   };
 }

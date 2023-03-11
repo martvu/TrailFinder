@@ -86,9 +86,12 @@ export default function HeartButton({
           </div>
         )}
 
-        <div className="cursor-pointer flex flex-row justify-center items-center"
-          onClick={handleLike}>
-          {/* <i className={`fa-regular fa-heart ${isLiked? " text-red-400": ""} 
+        <div
+          className="cursor-pointer flex flex-row justify-center items-center"
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onClick={handleLike}
+        >
+          {/* <i className={`fa-regular fa-heart ${isLiked? " text-red-400": ""}
           btn btn-sm btn-circle`}></i> */}
 
           {/* alternative heart */}

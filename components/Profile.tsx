@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import 'firebase/firestore';
 import useFetchPosts from 'hooks/fetchPosts';
 import { useFetchUser } from 'context/AuthContext';
-import { PostData } from 'hooks/PostData';
 import PostCard from './PostCard';
 import Header from './Header';
 
@@ -13,8 +12,10 @@ type ProfileProps = {
 export default function Profile({ setEdit }: ProfileProps) {
   const { userData } = useFetchUser();
   const { recentPostsList } = useFetchPosts();
-  const myPosts = recentPostsList.filter(post => post.username == userData?.username);
-  const likedPosts = recentPostsList.filter(post => post.likedBy.includes(userData?.username) && post.username != userData?.username); 
+  const myPosts = recentPostsList.filter((post) => post.username === userData?.username);
+  const likedPosts = recentPostsList.filter(
+    (post) => post.likedBy.includes(userData?.username) && post.username !== userData?.username,
+  );
   const [filterMyPosts, setFilterMyPosts] = useState(true);
   const [filterLikedPosts, setFilterLikedPosts] = useState(false);
 
@@ -111,7 +112,7 @@ export default function Profile({ setEdit }: ProfileProps) {
                 <PostCard post={post} />
               </div>
             ))}
-            {filterMyPosts &&myPosts.map((post) => (
+            {filterMyPosts && myPosts.map((post) => (
               <div key={post.id} className="mb-2">
                 <PostCard post={post} />
               </div>

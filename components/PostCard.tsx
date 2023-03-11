@@ -7,7 +7,7 @@ import HeartButton from './HeartButton';
 
 type PostProps = {
   post: PostData,
-}
+};
 
 export default function PostCard({ post }: PostProps) {
   const [isDeleted, setIsDeleted] = useState(false);
@@ -99,7 +99,7 @@ export default function PostCard({ post }: PostProps) {
             <div>{length}</div>
           </div>
 
-          <HeartButton        
+          <HeartButton
             setIsLiked={setIsLiked}
             isLiked={isLiked}
             post={post}
