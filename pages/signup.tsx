@@ -1,13 +1,15 @@
-"use client"
+'use client';
 
-import React from "react";
-import Signup from "components/Signup";
+import React from 'react';
+import Signup from 'components/Signup';
+import { LoggedOutHoc } from 'utils/HOC';
 
-export default function SignupPage() {
-	return (
-		<div>
-      <Signup/>
+function SignupPage() {
+  return (
+    <div>
+      <Signup />
     </div>
-				
-	);
+  );
 }
+
+export default LoggedOutHoc(SignupPage);

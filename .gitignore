@@ -12,6 +12,11 @@
 /.next/
 /out/
 
+# jetbrains
+/.idea
+
+# command to remove files from git that are in .gitignore
+# git rm -r --cached .
 # production
 /build
 
