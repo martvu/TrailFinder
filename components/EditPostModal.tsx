@@ -1,24 +1,25 @@
-"use client";
-import { firestore } from "../firebase/firebase";
-import { doc, updateDoc } from "firebase/firestore";
-import { useState } from "react";
-import { PostModal } from "./PostModal";
-import { PostData } from "hooks/PostData";
+'use client';
+
+import { doc, updateDoc } from 'firebase/firestore';
+import { useState } from 'react';
+import { PostData } from 'hooks/PostData';
+import PostModal from './PostModal';
+import { firestore } from '../firebase/firebase';
 
 type Props = {
   postData: PostData;
 };
 
-export function EditPostModal({ postData }: Props) {
+export default function EditPostModal({ postData }: Props) {
   const [post, setPost] = useState(postData);
 
   async function updatePost() {
-    const docRef = doc(firestore, "posts", post.id);
+    const docRef = doc(firestore, 'posts', post.id);
 
     try {
       await updateDoc(docRef, post);
       window.location.reload();
-      console.log("Update successful");
+      console.log('Update successful');
     } catch (error) {
       console.log(error);
     }
@@ -26,11 +27,12 @@ export function EditPostModal({ postData }: Props) {
   return PostModal({
     post,
     setPost,
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     finish: updatePost,
     modalData: {
-      modalId: "edit-modal",
-      title: "Edit Post",
-      buttonName: "Update",
+      modalId: 'edit-modal',
+      title: 'Edit Post',
+      buttonName: 'Update',
     },
   });
 }

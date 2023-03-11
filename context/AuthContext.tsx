@@ -1,32 +1,42 @@
-import React, { useContext, useState, useEffect, createContext } from 'react'
-import { auth, firestore } from '../firebase/firebase'
-import { onAuthStateChanged, User } from 'firebase/auth'
-import { doc, getDoc } from 'firebase/firestore';
+import React, {
+  useContext, useState, useEffect, createContext, useMemo,
+} from 'react';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { doc, getDoc, Timestamp } from 'firebase/firestore';
+import { auth, firestore } from '../firebase/firebase';
 
 type UserType = {
   firstname: string;
   lastname: string;
   username: string;
-  birthdate: any;
+  birthdate: Timestamp;
   isAdmin: boolean;
   email: string;
   uid: string;
   userLikes: string[];
-}
+};
 
 const emptyUser: UserType = {
   firstname: '',
   lastname: '',
   username: '',
-  birthdate: '',
+  birthdate: Timestamp.now(),
   isAdmin: false,
   email: '',
   uid: '',
-  userLikes: []
+  userLikes: [],
 };
 
 type AuthContextType = {
   currentUser: User | null;
+};
+
+type FirebaseUserData = {
+  firstname: string;
+  lastname: string;
+  username: string;
+  birthdate: Timestamp;
+  isAdmin: boolean;
 };
 
 type UserContextType = {
@@ -43,77 +53,63 @@ const UserContext = createContext<UserContextType>({
   setUserData: () => {},
 });
 
-
 export function useAuth() {
-  return useContext(AuthContext)
+  return useContext(AuthContext);
 }
 
 export function useFetchUser() {
-  return useContext(UserContext)
+  return useContext(UserContext);
 }
-
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
-  const [userData, setUserData] = useState<UserType>(emptyUser)
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState<UserType>(emptyUser);
 
-
-  
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user)
-      setLoading(false)
-    })
-    return unsubscribe
-  }, [])
-
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
   useEffect(() => {
     async function fetchUserData() {
       if (currentUser) {
-        console.log(currentUser)
         try {
-          const docRef = doc(firestore, 'users', currentUser.uid)
-          const docSnap = await getDoc(docRef)
+          const docRef = doc(firestore, 'users', currentUser.uid);
+          const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
+            const firebaseData = docSnap.data() as FirebaseUserData;
             const userInfo: UserType = {
-              firstname: docSnap.data().firstname,
-              lastname: docSnap.data().lastname,
-              username: docSnap.data().username,
-              birthdate: docSnap.data().birthdate.toDate().toLocaleDateString(),
-              isAdmin: docSnap.data().isAdmin,
-              email: currentUser.email || "",
+              ...firebaseData,
+              email: currentUser.email || '',
               uid: currentUser.uid,
-              userLikes: []
-            }
-            setUserData(userInfo)
+              userLikes: [],
+            };
+            setUserData(userInfo);
           } else {
-            setUserData(emptyUser)
+            setUserData(emptyUser);
           }
         } catch (err) {
-          setError('Failed to load data')
-          console.log(err)
-
+          console.log(err);
         } finally {
-          setLoading(false)
-
+          setLoading(false);
         }
       }
     }
-    fetchUserData()
-    return () => {};
-  }, [currentUser])
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    fetchUserData();
+  }, [currentUser]);
 
-  const value = {
-    currentUser
+  const value = useMemo(() => ({
+    currentUser,
+  }), [currentUser]);
 
-  };
-
-  const userValue = {
+  const userValue = useMemo(() => ({
     userData,
     setUserData,
-  };
+  }), [userData]);
 
   return (
     <AuthContext.Provider value={value}>
@@ -121,5 +117,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         {!loading && children}
       </UserContext.Provider>
     </AuthContext.Provider>
-  )
+  );
 }

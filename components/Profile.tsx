@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import Header from "./Header";
-import 'firebase/firestore'
-import useFetchPosts from "hooks/fetchPosts";
-import PostCard from "./PostCard";
-import { useFetchUser } from "context/AuthContext";
-import { PostData } from "hooks/PostData";
+import React, { useEffect, useState } from 'react';
+import 'firebase/firestore';
+import useFetchPosts from 'hooks/fetchPosts';
+import { useFetchUser } from 'context/AuthContext';
+import { PostData } from 'hooks/PostData';
+import PostCard from './PostCard';
+import Header from './Header';
 
+type ProfileProps = {
+  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-
-export default function Profile({ setEdit }: any) {
+export default function Profile({ setEdit }: ProfileProps) {
   const { userData } = useFetchUser();
-  const { recentPostsList, likedPostsList, usersPostsList } = useFetchPosts();
-  //const usersList = useState(recentPostsList.filter(post => post.username == userData?.username));
-  //const likedPosts = recentPostsList.filter(post => post.likedBy.includes(userData?.username)); 
+  const { likedPostsList, usersPostsList } = useFetchPosts();
   const [myPosts, setMyPosts] = useState(true);
   const [likedPosts, setLikedPosts] = useState(false);
   const [myPostsArray, setMyPostsArray] = useState([] as PostData[]);
@@ -20,7 +20,7 @@ export default function Profile({ setEdit }: any) {
 
   useEffect(() => {
     setLikedPostsArray(likedPostsList);
-    setMyPostsArray(usersPostsList)
+    setMyPostsArray(usersPostsList);
   }, [likedPostsList, usersPostsList]);
 
   function handleMyPostsClick() {
@@ -33,9 +33,8 @@ export default function Profile({ setEdit }: any) {
     setLikedPosts(true);
   }
 
-  /*Makes sure the likes update correctly in profile page */
+  /* Makes sure the likes update correctly in profile page */
   function onLike(post: PostData) {
-
     if (myPosts) {
       if (post.likedBy.includes(userData.username)) {
         const newLikedPostsList = likedPostsArray.filter((likedPost) => likedPost.id !== post.id);
@@ -51,14 +50,18 @@ export default function Profile({ setEdit }: any) {
         const newLikedPostsList = likedPostsArray.filter((likedPost) => likedPost.id !== post.id);
         setLikedPostsArray(newLikedPostsList);
 
-        const unLikePost = myPostsArray.find(oldPost => oldPost.id === post.id);
+        const unLikePost = myPostsArray.find((oldPost) => oldPost.id === post.id);
         if (unLikePost) {
           const userIndex = unLikePost.likedBy.indexOf(userData.username);
           if (userIndex !== -1) unLikePost.likedBy.splice(userIndex, 1);
-          const postIndex = myPostsArray.findIndex(p => p.id === post.id);
+          const postIndex = myPostsArray.findIndex((p) => p.id === post.id);
 
           if (postIndex !== -1) {
-            const updatedPosts = [...myPostsArray.slice(0, postIndex), unLikePost, ...myPostsArray.slice(postIndex + 1)];
+            const updatedPosts = [
+              ...myPostsArray.slice(0, postIndex),
+              unLikePost,
+              ...myPostsArray.slice(postIndex + 1),
+            ];
             setMyPostsArray(updatedPosts);
           }
         }
@@ -77,13 +80,15 @@ export default function Profile({ setEdit }: any) {
             {userData && (
               <>
                 <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-20 h-20">
-                  <i className="fa-solid fa-user fa-3x"></i>
+                  <i className="fa-solid fa-user fa-3x" />
                 </div>
-                <div className="font-inter">
-                </div>
+                <div className="font-inter" />
+                <div className="font-inter" />
                 <div>
                   <div className="text-3xl pb-2 font-bold ">
-                    {userData.firstname} {userData.lastname}
+                    {userData.firstname}
+                    {' '}
+                    {userData.lastname}
                   </div>
                   <div className="mb-2">
                     <p className="text-m">{userData.username}</p>
@@ -92,15 +97,17 @@ export default function Profile({ setEdit }: any) {
                     <p className="text-m">{userData.email}</p>
                   </div>
                   <div className="mb-2 flex items-center">
-                    <i className="fa-solid fa-cake-candles mr-2"></i>
-                    <p className="text-sm">{userData.birthdate}</p>
+                    <i className="fa-solid fa-cake-candles mr-2" />
+                    <p className="text-sm">{userData.birthdate.toDate().toDateString()}</p>
                   </div>
                   <div className="flex items-center">
                     <div className="inline-flex mr-2">
                       <button
+                        type="button"
                         onClick={() => setEdit(true)}
                         className="btn btn-sm btn-outline border border-solid border-secondary text-base py-1 px-12 rounded text-xs flex items-center justify-center"
-                      >Edit
+                      >
+                        Edit
                       </button>
                     </div>
                   </div>
@@ -115,14 +122,26 @@ export default function Profile({ setEdit }: any) {
           <div className="flex w-full flex-col sm:w-3/5">
             <div className="mt-3 mb-3 justify-between flex">
 
-              <button onClick={handleMyPostsClick} className={`${myPosts ? 'btn-primary text-lg text-neutral font-extrabold' : ''} 
-              btn flex-1 text-center p-3 justify-center font-bold cursor-pointer`}>
-                My posts  <i className="mx-2 mb-1 fa-solid fa-user"></i>
+              <button
+                type="button"
+                onClick={handleMyPostsClick}
+                className={`${myPosts ? 'btn-primary text-lg text-neutral font-extrabold' : ''} 
+              btn flex-1 text-center p-3 justify-center font-bold cursor-pointer`}
+              >
+                My posts
+                {' '}
+                <i className="mx-2 mb-1 fa-solid fa-user" />
               </button>
 
-              <button onClick={handleLikedPostsClick} className={`${likedPosts ? 'btn-accent text-lg text-neutral font-extrabold' : ''} 
-              btn flex-1 text-center p-3 font-bold cursor-pointer`}>
-                Liked posts <i className="mx-2 fa-solid fa-heart"></i>
+              <button
+                type="button"
+                onClick={handleLikedPostsClick}
+                className={`${likedPosts ? 'btn-accent text-lg text-neutral font-extrabold' : ''} 
+              btn flex-1 text-center p-3 font-bold cursor-pointer`}
+              >
+                Liked posts
+                {' '}
+                <i className="mx-2 fa-solid fa-heart" />
               </button>
 
             </div>
