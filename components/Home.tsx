@@ -31,7 +31,7 @@ export default function Home() {
           </div>
           {recentPostsList.map((postData) => (
             // eslint-disable-next-line react/jsx-no-bind
-            <PostCard onLike={() => null} key={postData.id} post={postData} />
+            <PostCard key={postData.id} post={postData} />
           ))}
         </div>
       </div>
