@@ -12,11 +12,10 @@ interface Props {
   setIsLiked: React.Dispatch<React.SetStateAction<boolean>>;
   isLiked: boolean;
   post: PostData;
-  onLike: (post:any)=>void;
 }
 
 export default function HeartButton({
-  className, setIsLiked, isLiked, post, onLike,
+  className, setIsLiked, isLiked, post,
 }: Props) {
   const { userData } = useFetchUser();
   const [likeCounter, setLikeCounter] = useState(post.likedBy?.length);
@@ -89,8 +88,8 @@ export default function HeartButton({
 
         <div
           className="cursor-pointer flex flex-row justify-center items-center"
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          onClick={() => { handleLike(); onLike(post); }}
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onClick={handleLike}
         >
           {/* <i className={`fa-regular fa-heart ${isLiked? " text-red-400": ""}
           btn btn-sm btn-circle`}></i> */}

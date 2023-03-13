@@ -157,7 +157,7 @@ export default function PostModal({
                     <label htmlFor="stop">
                       Stops:
                       <input
-                        className="mx-2 mb-1 mt-1"
+                        className="input input-sm input-bordered rounded-md mx-2"
                         placeholder="Stop"
                         value={newStop}
                         type="text"

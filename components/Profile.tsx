@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import 'firebase/firestore';
 import useFetchPosts from 'hooks/fetchPosts';
 import { useFetchUser } from 'context/AuthContext';
-import { PostData } from 'hooks/PostData';
 import PostCard from './PostCard';
 import Header from './Header';
 
@@ -12,62 +11,19 @@ type ProfileProps = {
 
 export default function Profile({ setEdit }: ProfileProps) {
   const { userData } = useFetchUser();
-  const { likedPostsList, usersPostsList } = useFetchPosts();
-  const [myPosts, setMyPosts] = useState(true);
-  const [likedPosts, setLikedPosts] = useState(false);
-  const [myPostsArray, setMyPostsArray] = useState([] as PostData[]);
-  const [likedPostsArray, setLikedPostsArray] = useState([] as PostData[]);
+  const { recentPostsList } = useFetchPosts();
+  const myPosts = recentPostsList.filter((post) => post.username === userData?.username);
+  const likedPosts = recentPostsList.filter(
+    (post) => post.likedBy.includes(userData?.username) && post.username !== userData?.username,
+  );
+  const [filterMyPosts, setFilterMyPosts] = useState(true);
+  const [filterLikedPosts, setFilterLikedPosts] = useState(false);
 
-  useEffect(() => {
-    setLikedPostsArray(likedPostsList);
-    setMyPostsArray(usersPostsList);
-  }, [likedPostsList, usersPostsList]);
-
-  function handleMyPostsClick() {
-    setMyPosts(true);
-    setLikedPosts(false);
+  function handleFilterClick(setFilterMy: boolean, setFilterLiked: boolean) {
+    setFilterMyPosts(setFilterMy);
+    setFilterLikedPosts(setFilterLiked);
   }
 
-  function handleLikedPostsClick() {
-    setMyPosts(false);
-    setLikedPosts(true);
-  }
-
-  /* Makes sure the likes update correctly in profile page */
-  function onLike(post: PostData) {
-    if (myPosts) {
-      if (post.likedBy.includes(userData.username)) {
-        const newLikedPostsList = likedPostsArray.filter((likedPost) => likedPost.id !== post.id);
-        setLikedPostsArray(newLikedPostsList);
-      } else {
-        const newLikedPostsList = likedPostsArray.concat(post);
-        setLikedPostsArray(newLikedPostsList);
-      }
-    }
-
-    if (likedPosts) {
-      if (post.likedBy.includes(userData.username)) {
-        const newLikedPostsList = likedPostsArray.filter((likedPost) => likedPost.id !== post.id);
-        setLikedPostsArray(newLikedPostsList);
-
-        const unLikePost = myPostsArray.find((oldPost) => oldPost.id === post.id);
-        if (unLikePost) {
-          const userIndex = unLikePost.likedBy.indexOf(userData.username);
-          if (userIndex !== -1) unLikePost.likedBy.splice(userIndex, 1);
-          const postIndex = myPostsArray.findIndex((p) => p.id === post.id);
-
-          if (postIndex !== -1) {
-            const updatedPosts = [
-              ...myPostsArray.slice(0, postIndex),
-              unLikePost,
-              ...myPostsArray.slice(postIndex + 1),
-            ];
-            setMyPostsArray(updatedPosts);
-          }
-        }
-      }
-    }
-  }
   return (
     <>
       <Header />
@@ -124,9 +80,9 @@ export default function Profile({ setEdit }: ProfileProps) {
 
               <button
                 type="button"
-                onClick={handleMyPostsClick}
-                className={`${myPosts ? 'btn-primary text-lg text-neutral font-extrabold' : ''} 
-              btn flex-1 text-center p-3 justify-center font-bold cursor-pointer`}
+                onClick={() => { handleFilterClick(true, false); }}
+                className={`${filterMyPosts ? 'btn-primary text-lg text-neutral font-extrabold' : ''} 
+              btn flex-1 p-3 font-bold`}
               >
                 My posts
                 {' '}
@@ -135,29 +91,20 @@ export default function Profile({ setEdit }: ProfileProps) {
 
               <button
                 type="button"
-                onClick={handleLikedPostsClick}
-                className={`${likedPosts ? 'btn-accent text-lg text-neutral font-extrabold' : ''} 
-              btn flex-1 text-center p-3 font-bold cursor-pointer`}
+                onClick={() => { handleFilterClick(false, true); }}
+                className={`${filterLikedPosts ? 'btn-accent text-lg text-neutral font-extrabold' : ''} 
+              btn flex-1 p-3 font-bold`}
               >
                 Liked posts
                 {' '}
                 <i className="mx-2 fa-solid fa-heart" />
               </button>
-
             </div>
-
-            {likedPosts && likedPostsArray.map((post) => (
+            {(filterLikedPosts ? likedPosts : myPosts).map((post) => (
               <div key={post.id} className="mb-2">
-                <PostCard post={post} onLike={() => onLike(post)} />
+                <PostCard post={post} />
               </div>
             ))}
-
-            {myPosts && myPostsArray.map((post) => (
-              <div key={post.id} className="mb-2">
-                <PostCard post={post} onLike={() => onLike(post)} />
-              </div>
-            ))}
-
           </div>
         </div>
       </div>

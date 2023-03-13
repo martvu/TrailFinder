@@ -7,10 +7,9 @@ import HeartButton from './HeartButton';
 
 type PostProps = {
   post: PostData,
-  onLike: () => void
 };
 
-export default function PostCard({ post, onLike }: PostProps) {
+export default function PostCard({ post }: PostProps) {
   const [isDeleted, setIsDeleted] = useState(false);
   const {
     title, price, rating, date, username, length, stops, description, likedBy,
@@ -101,7 +100,6 @@ export default function PostCard({ post, onLike }: PostProps) {
           </div>
 
           <HeartButton
-            onLike={onLike}
             setIsLiked={setIsLiked}
             isLiked={isLiked}
             post={post}
