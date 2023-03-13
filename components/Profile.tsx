@@ -19,14 +19,9 @@ export default function Profile({ setEdit }: ProfileProps) {
   const [filterMyPosts, setFilterMyPosts] = useState(true);
   const [filterLikedPosts, setFilterLikedPosts] = useState(false);
 
-  function handleFilterMyPostsClick() {
-    setFilterMyPosts(true);
-    setFilterLikedPosts(false);
-  }
-
-  function handleFilterLikedPostsClick() {
-    setFilterMyPosts(false);
-    setFilterLikedPosts(true);
+  function handleFilterClick(setFilterMy: boolean, setFilterLiked: boolean) {
+    setFilterMyPosts(setFilterMy);
+    setFilterLikedPosts(setFilterLiked);
   }
 
   return (
@@ -85,9 +80,9 @@ export default function Profile({ setEdit }: ProfileProps) {
 
               <button
                 type="button"
-                onClick={handleFilterMyPostsClick}
+                onClick={() => { handleFilterClick(true, false); }}
                 className={`${filterMyPosts ? 'btn-primary text-lg text-neutral font-extrabold' : ''} 
-              btn flex-1 text-center p-3 justify-center font-bold cursor-pointer`}
+              btn flex-1 p-3 font-bold`}
               >
                 My posts
                 {' '}
@@ -96,28 +91,20 @@ export default function Profile({ setEdit }: ProfileProps) {
 
               <button
                 type="button"
-                onClick={handleFilterLikedPostsClick}
+                onClick={() => { handleFilterClick(false, true); }}
                 className={`${filterLikedPosts ? 'btn-accent text-lg text-neutral font-extrabold' : ''} 
-              btn flex-1 text-center p-3 font-bold cursor-pointer`}
+              btn flex-1 p-3 font-bold`}
               >
                 Liked posts
                 {' '}
                 <i className="mx-2 fa-solid fa-heart" />
               </button>
-
             </div>
-
-            {filterLikedPosts && likedPosts.map((post) => (
+            {(filterLikedPosts ? likedPosts : myPosts).map((post) => (
               <div key={post.id} className="mb-2">
                 <PostCard post={post} />
               </div>
             ))}
-            {filterMyPosts && myPosts.map((post) => (
-              <div key={post.id} className="mb-2">
-                <PostCard post={post} />
-              </div>
-            ))}
-
           </div>
         </div>
       </div>
