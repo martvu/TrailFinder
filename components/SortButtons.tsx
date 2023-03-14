@@ -2,33 +2,27 @@ import React, { useState } from 'react';
 
 interface SortOption {
   text: string;
-  onClick?: () => void;
-  isSelected: boolean;
+  icon: string;
 }
 
 export default function SortButtons() {
-  const [sortBy, setSortBy] = useState('Recent Posts');
-
+  const [selectedSortOption, setSelectedSortOption] = useState<SortOption>();
   /* Sorting options */
   const recommended: SortOption = {
     text: 'Recommended',
-    onClick: () => setSortBy('Recommended Posts'),
-    isSelected: sortBy === 'Recommended Posts',
+    icon: 'fa-solid fa-fire',
   };
   const mostLiked: SortOption = {
     text: 'Most Liked',
-    onClick: () => setSortBy('Most Liked'),
-    isSelected: sortBy === 'Most Liked',
+    icon: 'fa-solid fa-heart',
   };
   const recent: SortOption = {
     text: 'Recent',
-    onClick: () => setSortBy('Recent Posts'),
-    isSelected: sortBy === 'Recent Posts',
+    icon: 'fa-solid fa-clock',
   };
   const alphabetical: SortOption = {
-    text: 'Alphabetical',
-    onClick: () => setSortBy('Alphabetical'),
-    isSelected: sortBy === 'Alphabetical',
+    text: 'A-Z',
+    icon: 'fa-solid fa-sort-alpha-down',
   };
   const sortOptions = [recommended, recent, mostLiked, alphabetical];
 
@@ -38,20 +32,21 @@ export default function SortButtons() {
       <div className="">
         <div className="flex flex-row items-center z-10 rounded-lg">
           <span className="pr-2 font-bold">Sort by: </span>
-          {sortOptions.map((item) => (
+          {sortOptions.map((option) => (
             <div
-              key={item.text}
+              key={option.text}
               role="button"
               tabIndex={0}
-              onClick={item.onClick}
+              onClick={() => setSelectedSortOption(option)}
               onKeyDown={(e) => {
-                if ((e.key === 'Enter' || e.key === ' ') && item.onClick) {
-                  item.onClick();
+                if ((e.key === 'Enter' || e.key === ' ')) {
+                  setSelectedSortOption(option);
                 }
               }}
-              className={`btn btn-sm btn-outline btn-neutral justify-start px-2 mr-2 ${item.isSelected ? 'btn-active' : ''}`}
+              className={`btn btn-sm btn-outline btn-neutral justify-start px-2 mr-2 ${option === selectedSortOption ? 'btn-active' : ''}`}
             >
-              <h3 className="">{item.text}</h3>
+              <i className={option.icon} />
+              <h3 className="pl-2">{option.text}</h3>
             </div>
           ))}
         </div>
