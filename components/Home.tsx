@@ -3,6 +3,7 @@ import useFetchPosts from 'hooks/fetchPosts';
 import CreatePostModal from './CreatePostModal';
 import PostCard from './PostCard';
 import Header from './Header';
+import SortButtons from './SortButtons';
 
 export default function Home() {
   const { recentPostsList } = useFetchPosts();
@@ -26,12 +27,9 @@ export default function Home() {
               </label>
             </div>
           </div>
-          <div className="font-extrabold text-2xl">
-            Recent posts:
-          </div>
-          {recentPostsList.map((postData) => (
-            // eslint-disable-next-line react/jsx-no-bind
-            <PostCard key={postData.id} post={postData} />
+          <SortButtons />
+          {recentPostsList.map((post) => (
+            <PostCard key={post.id} post={post} />
           ))}
         </div>
       </div>
