@@ -24,13 +24,14 @@ export default function EditPostModal({ postData }: Props) {
       console.log(error);
     }
   }
+  const modalId = `edit-modal${post.id}`;
   return PostModal({
     post,
     setPost,
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     finish: updatePost,
     modalData: {
-      modalId: 'edit-modal',
+      modalId,
       title: 'Edit Post',
       buttonName: 'Update',
     },
