@@ -3,28 +3,38 @@ import React, { useState } from 'react';
 interface SortOption {
   text: string;
   icon: string;
+  onClick: () => void;
 }
 
-export default function SortButtons() {
+type SortButtonsProps = {
+  onSortBy: (value: string) => void;
+};
+
+export default function SortButtons({ onSortBy }: SortButtonsProps) {
   /* Sorting options */
   const recommended: SortOption = {
     text: 'Recommended',
     icon: 'fa-solid fa-fire',
+    onClick: () => { onSortBy('Recommended'); },
   };
   const mostLiked: SortOption = {
     text: 'Most Liked',
     icon: 'fa-solid fa-heart',
+    onClick: () => { onSortBy('Most Liked'); },
   };
   const recent: SortOption = {
     text: 'Recent',
     icon: 'fa-solid fa-clock',
+    onClick: () => { onSortBy('Recent Posts'); },
   };
   const alphabetical: SortOption = {
     text: 'A-Z',
     icon: 'fa-solid fa-sort-alpha-down',
+    onClick: () => { onSortBy('Alphabetical'); },
   };
+
   const sortOptions = [recommended, recent, mostLiked, alphabetical];
-  const [selectedSortOption, setSelectedSortOption] = useState<SortOption>(recommended);
+  const [selectedSortOption, setSelectedSortOption] = useState<SortOption>(recent);
 
   return (
     <div className=" flex items-center justify-between min-w-full max-w-full h-12">
@@ -37,7 +47,7 @@ export default function SortButtons() {
               key={option.text}
               role="button"
               tabIndex={0}
-              onClick={() => setSelectedSortOption(option)}
+              onClick={() => { option.onClick(); setSelectedSortOption(option); }}
               onKeyDown={(e) => {
                 if ((e.key === 'Enter' || e.key === ' ')) {
                   setSelectedSortOption(option);
