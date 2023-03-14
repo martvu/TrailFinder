@@ -6,7 +6,6 @@ interface SortOption {
 }
 
 export default function SortButtons() {
-  const [selectedSortOption, setSelectedSortOption] = useState<SortOption>();
   /* Sorting options */
   const recommended: SortOption = {
     text: 'Recommended',
@@ -25,6 +24,7 @@ export default function SortButtons() {
     icon: 'fa-solid fa-sort-alpha-down',
   };
   const sortOptions = [recommended, recent, mostLiked, alphabetical];
+  const [selectedSortOption, setSelectedSortOption] = useState<SortOption>(recommended);
 
   return (
     <div className=" flex items-center justify-between min-w-full max-w-full h-12">
@@ -43,7 +43,7 @@ export default function SortButtons() {
                   setSelectedSortOption(option);
                 }
               }}
-              className={`btn btn-sm btn-outline btn-neutral justify-start px-2 mr-2 ${option === selectedSortOption ? 'btn-active' : ''}`}
+              className={`btn btn-sm btn-outline btn-neutral justify-start px-2 mr-2 ${option.text === selectedSortOption.text ? 'btn-active' : ''}`}
             >
               <i className={option.icon} />
               <h3 className="pl-2">{option.text}</h3>
