@@ -1,30 +1,31 @@
-"use client";
-import { firestore } from "../firebase/firebase";
-import { Timestamp, doc, setDoc, addDoc, collection, updateDoc } from "firebase/firestore";
-import { useState } from "react";
-import { useFetchUser } from "context/AuthContext";
-import { PostData } from "hooks/PostData";
-import { PostModal } from "./PostModal";
+'use client';
 
+import {
+  addDoc, collection, Timestamp, updateDoc,
+} from 'firebase/firestore';
+import { useState } from 'react';
+import { useFetchUser } from 'context/AuthContext';
+import { PostData } from 'hooks/PostData';
+import { firestore } from '../firebase/firebase';
+import PostModal from './PostModal';
 
-export function CreatePostModal() {
-  const emptyPost: PostData= {
-    id: "",
+export default function CreatePostModal() {
+  const emptyPost: PostData = {
+    id: '',
     date: Timestamp.now(),
-    username: "",
-    title: "",
-    length: "",
-    price: "",
+    username: '',
+    title: '',
+    length: '',
+    price: '',
     rating: 5,
     stops: [],
-    description: "",
-    likedBy: []
+    description: '',
+    likedBy: [],
   };
   const [post, setPost] = useState<PostData>(emptyPost);
   const { userData } = useFetchUser();
 
   function createPostData() {
-   
     if (userData) {
       const newPost: PostData = {
         ...post,
@@ -32,17 +33,16 @@ export function CreatePostModal() {
         username: userData.username,
       };
       return newPost;
-    }
+    } return false;
   }
 
   async function handleAddPost() {
     const newPost = createPostData();
     console.log(newPost);
     if (newPost) {
-      const postRef = collection(firestore, "posts");
-      const newDocRef = await addDoc(postRef, newPost);
+      const newDocRef = await addDoc(collection(firestore, 'posts'), newPost);
       await updateDoc(newDocRef, { ...newPost, id: newDocRef.id });
-      console.log("Successful");
+      console.log('Successful');
       window.location.reload();
     }
   }
@@ -50,11 +50,12 @@ export function CreatePostModal() {
   return PostModal({
     post,
     setPost,
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     finish: handleAddPost,
     modalData: {
-      modalId: "create-modal",
-      title: "New Post",
-      buttonName: "Publish",
+      modalId: 'create-modal',
+      title: 'New Post',
+      buttonName: 'Publish',
     },
   });
 }
