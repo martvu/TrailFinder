@@ -21,6 +21,7 @@ export default function CreatePostModal() {
     stops: [],
     description: '',
     likedBy: [],
+    reports: [],
   };
   const [post, setPost] = useState<PostData>(emptyPost);
   const { userData } = useFetchUser();
