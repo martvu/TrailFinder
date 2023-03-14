@@ -50,7 +50,7 @@ function UtilityButtons({ setIsDeleted, post }: Props) {
           <div className="mx-2">
             <EditPostModal postData={post} />
             {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label htmlFor="edit-modal">
+            <label htmlFor={`edit-modal${post.id}`}>
               <i className="fa-solid fa-pen-to-square cursor-pointer duration-100 hover:scale-110" />
             </label>
           </div>
