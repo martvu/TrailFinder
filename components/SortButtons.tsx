@@ -35,13 +35,13 @@ export default function SortButtons({ onSortBy }: SortButtonsProps) {
     icon: 'fa-solid fa-sort-alpha-down',
     onClick: () => { onSortBy('Alphabetical'); },
   };
-
   const reported: SortOption = {
     text: 'Reported',
-    icon: 'fa-solid fa-flag',
+    icon: 'fa-solid fa-flag text-error',
     onClick: () => { onSortBy('Reported'); },
   };
   const sortOptions = [recommended, recent, mostLiked, alphabetical];
+  if (adminState) sortOptions.push(reported);
   const [selectedSortOption, setSelectedSortOption] = useState<SortOption>(recent);
 
   return (
@@ -67,24 +67,6 @@ export default function SortButtons({ onSortBy }: SortButtonsProps) {
               <h3 className="pl-2">{option.text}</h3>
             </div>
           ))}
-          {adminState && (
-            <div
-              key={reported.text}
-              role="button"
-              tabIndex={0}
-              onClick={() => { reported.onClick(); setSelectedSortOption(reported); }}
-              onKeyDown={(e) => {
-                if ((e.key === 'Enter' || e.key === ' ')) {
-                  setSelectedSortOption(reported);
-                }
-              }}
-              className={`relative btn btn-sm btn-outline btn-neutral justify-start px-2 mr-2 ${reported.text === selectedSortOption.text ? 'btn-active' : ''}`}
-            >
-              <i className={reported.icon} />
-              <h3 className="pl-2">{reported.text}</h3>
-              <span className="absolute bg-error -top-2 font-bold rounded-md -right-5 px-1 text-neutral text-xs">Admin</span>
-            </div>
-          )}
         </div>
       </div>
     </div>

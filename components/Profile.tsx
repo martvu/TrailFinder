@@ -38,8 +38,6 @@ export default function Profile({ setEdit }: ProfileProps) {
                 <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-20 h-20">
                   <i className="fa-solid fa-user fa-3x" />
                 </div>
-                <div className="font-inter" />
-                <div className="font-inter" />
                 <div>
                   <div className="text-3xl pb-2 font-bold ">
                     {userData.firstname}

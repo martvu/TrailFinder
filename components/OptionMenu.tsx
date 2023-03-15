@@ -15,9 +15,8 @@ interface Props {
 
 interface Option {
   text: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  icon: any;
-  onClick: () => void | Promise<void> | number;
+  icon: string;
+  onClick: () => void
   visible?: boolean;
 }
 
@@ -39,25 +38,23 @@ export default function OptionMenu({ className, setIsDeleted, post }: Props) {
         setIsDeleted(true);
       }
     } else {
-      // eslint-disable-next-line no-alert
       alert("You don't have permission to delete that post..");
     }
   }
   async function reportPost() {
-    // eslint-disable-next-line no-alert
     const confirmReport = window.confirm('Are you sure you want to report this post?');
-    if (confirmReport) {
-      const postRef = doc(firestore, 'posts', post.id);
-      const postSnap = await getDoc(postRef);
-      if (postSnap.exists()) {
-        const reportSnap = postSnap.data().reports as string[] || [];
-        reportSnap.push(userData.uid);
-        await updateDoc(postRef, { reports: arrayUnion(...reportSnap) });
-        setIsOpen(false);
-        setIsReported(true);
-      }
-      setReportCounter(reportCounter + 1);
+    if (!confirmReport) return;
+
+    const postRef = doc(firestore, 'posts', post.id);
+    const postSnap = await getDoc(postRef);
+    if (postSnap.exists()) {
+      const reportSnap = postSnap.data().reports as string[] || [];
+      reportSnap.push(userData.uid);
+      await updateDoc(postRef, { reports: arrayUnion(...reportSnap) });
+      setIsOpen(false);
+      setIsReported(true);
     }
+    setReportCounter(reportCounter + 1);
   }
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | Event) => {
@@ -73,34 +70,29 @@ export default function OptionMenu({ className, setIsDeleted, post }: Props) {
 
   const deleteButton: Option = {
     text: 'Delete',
-    icon: <i className="fa-solid fa-trash" />,
+    icon: 'fa-solid fa-trash',
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     onClick: deletePost,
     visible: isOwner || adminState,
   };
   const editButton: Option = {
     text: 'Edit',
-    icon: <i className="fa-solid fa-pen-to-square" />,
+    icon: 'fa-solid fa-pen-to-square',
     onClick: () => { setIsOpen(false); setIsEdit(true); },
     visible: isOwner,
   };
   const reportButton: Option = {
     text: 'Report',
-    icon: <i className="fa-solid fa-flag" />,
+    icon: 'fa-solid fa-flag',
     onClick: () => {
       setIsEdit(false);
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      reportPost();
+      // eslint-disable-next-line no-void
+      void reportPost();
     },
     visible: !isReported,
   };
-  /* const isReportedButton: Option = {
-    text: 'unreport',
-    icon: <i className="fa-solid fa-flag" />,
-    onClick: () => { setIsEdit(false); setIsOpen(false); },
-    visible: isReported,
-  }; */
   const options = [deleteButton, editButton, reportButton];
-  // f (post.username != userData?.username && !adminState) return <></>
+  const visibleOptions = options.filter((item) => item.visible);
 
   return (
     <>
@@ -122,25 +114,22 @@ export default function OptionMenu({ className, setIsDeleted, post }: Props) {
             <i className={!isOpen ? 'fa-solid fa-ellipsis' : 'fa-solid fa-ellipsis-vertical'} />
           </button>
 
-          {isOpen && options.filter((item) => item.visible).length > 0 && (
+          {isOpen && visibleOptions.length > 0 && (
             <div className="absolute shadow-md top-0 left-8 z-10 bg-neutral px-2 py-1 rounded-md w-28">
-              {options
-                .filter((item) => item.visible)
-                .map((item) => (
-                  // eslint-disable-next-line max-len
-                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                  <div
-                    key={item.text}
-                    onClick={() => {
-                      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                      item.onClick();
-                    }}
-                    className="flex w-full flex-row text-left btn btn-xs btn-outline"
-                  >
-                    <h3>{item.icon}</h3>
-                    <h3 className="px-2">{item.text}</h3>
-                  </div>
-                ))}
+              {visibleOptions.map((option) => (
+                // eslint-disable-next-line max-len
+                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                <div
+                  key={option.text}
+                  onClick={() => {
+                    option.onClick();
+                  }}
+                  className="flex w-full flex-row text-left btn btn-xs btn-outline"
+                >
+                  <i className={option.icon} />
+                  <h3 className="px-2">{option.text}</h3>
+                </div>
+              ))}
             </div>
           )}
 
