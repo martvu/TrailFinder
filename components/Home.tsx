@@ -21,10 +21,15 @@ export default function Home() {
       setSortedPosts([...recentPostsList].sort((a, b) => b.likedBy.length - a.likedBy.length));
     } else if (sortedBy === 'Alphabetical') {
       setSortedPosts([...recentPostsList].sort((a, b) => a.title.localeCompare(b.title)));
-    } else {
+    } else if (sortedBy === 'Recommended') {
       /* Placeholder for recommended */
       const recommendedPostsList: React.SetStateAction<PostData[]> = [];
       setSortedPosts(recommendedPostsList);
+    } else if (sortedBy === 'Reported') {
+      /* Placeholder for reported */
+      const reportedPosts = [...recentPostsList].filter((post) => post.reports.length > 0);
+      reportedPosts.sort((postA, postB) => postB.reports.length - postA.reports.length);
+      setSortedPosts(reportedPosts);
     }
   }, [sortedBy, recentPostsList]);
 

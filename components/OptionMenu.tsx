@@ -29,7 +29,7 @@ export default function OptionMenu({ className, setIsDeleted, post }: Props) {
   const [isEdit, setIsEdit] = useState(false);
   const [isReported, setIsReported] = useState(post.reports?.includes(userData.uid));
   const adminState = userData?.isAdmin ?? false;
-  const reportCounter = post.reports?.length;
+  const [reportCounter, setReportCounter] = useState([...post.reports]?.length);
   async function deletePost() {
     if (adminState || post.username === userData?.username) {
       // eslint-disable-next-line no-alert
@@ -56,6 +56,7 @@ export default function OptionMenu({ className, setIsDeleted, post }: Props) {
         setIsOpen(false);
         setIsReported(true);
       }
+      setReportCounter(reportCounter + 1);
     }
   }
   useEffect(() => {
@@ -92,7 +93,6 @@ export default function OptionMenu({ className, setIsDeleted, post }: Props) {
     },
     visible: !isReported,
   };
-
   /* const isReportedButton: Option = {
     text: 'unreport',
     icon: <i className="fa-solid fa-flag" />,
@@ -104,7 +104,7 @@ export default function OptionMenu({ className, setIsDeleted, post }: Props) {
 
   return (
     <>
-      {(isReported || adminState)
+      {(isReported || adminState) && reportCounter > 0
         && (
           <div className="text-error absolute top-2 right-2">
             {adminState && <span>{reportCounter}</span>}
