@@ -47,9 +47,10 @@ export default function SortButtons({ onSortBy }: SortButtonsProps) {
   return (
     <div className=" flex items-center justify-between min-w-full max-w-full h-12">
       {/* Sort by Button */}
-      <div className="">
-        <div className="flex flex-row items-center z-10 rounded-lg">
-          <span className="pr-2 font-bold">Sort by: </span>
+      <div className="flex flex-row items-center justify-center">
+        <span className="pr-2 text-xs lg:text-base font-bold">Sort by: </span>
+        <div className="flex flex-wrap sm:flex-row items-center z-10 rounded-lg">
+
           {sortOptions.map((option) => (
             <div
               key={option.text}
@@ -61,7 +62,7 @@ export default function SortButtons({ onSortBy }: SortButtonsProps) {
                   setSelectedSortOption(option);
                 }
               }}
-              className={`btn btn-sm btn-outline btn-neutral justify-start px-2 mr-2 ${option.text === selectedSortOption.text ? 'btn-active' : ''}`}
+              className={`relative btn btn-xs my-1 lg:btn-sm btn-outline btn-neutral justify-start px-2 mr-2 ${option.text === selectedSortOption.text ? 'btn-active' : ''}`}
             >
               <i className={option.icon} />
               <h3 className="pl-2">{option.text}</h3>
