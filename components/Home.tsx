@@ -1,37 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import useFetchPosts from 'hooks/fetchPosts';
-import { PostData } from 'hooks/PostData';
+import { usePosts } from 'hooks/fetchPosts';
 import CreatePostModal from './CreatePostModal';
 import PostCard from './PostCard';
 import Header from './Header';
 import SortButtons from './SortButtons';
+import { PostData } from '../hooks/PostData';
 
 export default function Home() {
-  const { recentPostsList } = useFetchPosts();
-  const [sortedBy, setSortedBy] = useState('Recent Posts');
-  const [sortedPosts, setSortedPosts] = useState(recentPostsList);
-  const handleSortBy = (value: string) => {
-    setSortedBy(value);
-  };
-
-  useEffect(() => {
-    if (sortedBy === 'Recent Posts') {
-      setSortedPosts(recentPostsList);
-    } else if (sortedBy === 'Most Liked') {
-      setSortedPosts([...recentPostsList].sort((a, b) => b.likedBy.length - a.likedBy.length));
-    } else if (sortedBy === 'Alphabetical') {
-      setSortedPosts([...recentPostsList].sort((a, b) => a.title.localeCompare(b.title)));
-    } else if (sortedBy === 'Recommended') {
-      /* Placeholder for recommended */
-      const recommendedPostsList: React.SetStateAction<PostData[]> = [];
-      setSortedPosts(recommendedPostsList);
-    } else if (sortedBy === 'Reported') {
-      /* Placeholder for reported */
-      const reportedPosts = [...recentPostsList].filter((post) => post.reports.length > 0);
-      reportedPosts.sort((postA, postB) => postB.reports.length - postA.reports.length);
-      setSortedPosts(reportedPosts);
-    }
-  }, [sortedBy, recentPostsList]);
+  const [sortedPosts, setSortedPosts] = useState<PostData[]>([]);
 
   return (
     <main className="flex flex-col ">
@@ -52,7 +28,7 @@ export default function Home() {
               </label>
             </div>
           </div>
-          <SortButtons onSortBy={handleSortBy} />
+          <SortButtons setSortedPosts={setSortedPosts} />
           {sortedPosts?.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}

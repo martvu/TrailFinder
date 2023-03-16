@@ -37,7 +37,7 @@ export default function OptionMenu({ className, setIsDeleted, post }: Props) {
         await deleteDoc(doc(firestore, 'posts', `post: ${post.id}`));
         setIsDeleted(true);
       }
-    } else {
+    } else { // should never be called
       alert("You don't have permission to delete that post..");
     }
   }

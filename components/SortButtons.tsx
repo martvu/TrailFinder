@@ -1,5 +1,7 @@
 import { useFetchUser } from 'context/AuthContext';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { PostData } from '../hooks/PostData';
+import { usePosts } from '../hooks/fetchPosts';
 
 interface SortOption {
   text: string;
@@ -8,37 +10,43 @@ interface SortOption {
 }
 
 type SortButtonsProps = {
-  onSortBy: (value: string) => void;
+  setSortedPosts: React.Dispatch<React.SetStateAction<PostData[]>>;
 };
 
-export default function SortButtons({ onSortBy }: SortButtonsProps) {
+export default function SortButtons({ setSortedPosts }: SortButtonsProps) {
   const { userData } = useFetchUser();
+  const { recentPostsList, loading } = usePosts();
   const adminState = userData?.isAdmin ?? false;
-  /* Sorting options */
+
   const recommended: SortOption = {
     text: 'Recommended',
     icon: 'fa-solid fa-fire',
-    onClick: () => { onSortBy('Recommended'); },
+    onClick: () => { setSortedPosts([]); },
   };
   const mostLiked: SortOption = {
     text: 'Most Liked',
     icon: 'fa-solid fa-heart',
-    onClick: () => { onSortBy('Most Liked'); },
+    onClick: () => setSortedPosts([...recentPostsList].sort(
+      (a, b) => b.likedBy.length - a.likedBy.length,
+    )),
   };
   const recent: SortOption = {
     text: 'Recent',
     icon: 'fa-solid fa-clock',
-    onClick: () => { onSortBy('Recent Posts'); },
+    onClick: () => setSortedPosts(recentPostsList),
   };
   const alphabetical: SortOption = {
     text: 'A-Z',
     icon: 'fa-solid fa-sort-alpha-down',
-    onClick: () => { onSortBy('Alphabetical'); },
+    onClick: () => setSortedPosts([...recentPostsList].sort(
+      (a, b) => a.title.localeCompare(b.title),
+    )),
   };
   const reported: SortOption = {
     text: 'Reported',
     icon: 'fa-solid fa-flag text-error',
-    onClick: () => { onSortBy('Reported'); },
+    onClick: () => setSortedPosts([...recentPostsList].filter((post) => post.reports.length > 0)
+      .sort((postA, postB) => postB.reports.length - postA.reports.length)),
   };
   const sortOptions = [recommended, recent, mostLiked, alphabetical];
   if (adminState) sortOptions.push(reported);

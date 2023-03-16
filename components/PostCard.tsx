@@ -55,8 +55,10 @@ export default function PostCard({ post }: PostProps) {
             <div className="flex">
               <p className="font-bold mr-2">Stops:</p>
               <div>
-                {stops && stops.length > 0 && stops.map((stop) => (
-                  <span className="text-sm list-none pr-1" key={stop}>
+                { /* A user may want to stop at the same place multiple times */ }
+                {stops && stops.length > 0 && stops.map((stop, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <span className="text-sm list-none pr-1" key={index}>
                     <i className="fa-solid fa-map-pin mr-1 text-accent" />
                     {stop}
                   </span>
