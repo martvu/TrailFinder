@@ -21,7 +21,7 @@ export default function PostCard({ post }: PostProps) {
     return null;
   }
   return (
-    <div className="card card-side shadow-md min-w-full max-w-full max-h-64 min-h-64 bg-neutral">
+    <div className="card card-side shadow-md min-w-full max-w-full max-h-64 min-h-64 mb-2 bg-neutral">
 
       <div className="flex w-full">
 

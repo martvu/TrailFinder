@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { usePosts } from 'hooks/fetchPosts';
+import React from 'react';
 import CreatePostModal from './CreatePostModal';
-import PostCard from './PostCard';
 import Header from './Header';
-import SortButtons from './SortButtons';
-import { PostData } from '../hooks/PostData';
+import PostsList from './PostsList';
 
 export default function Home() {
-  const [sortedPosts, setSortedPosts] = useState<PostData[]>([]);
-
   return (
     <main className="flex flex-col ">
       <Header />
@@ -28,10 +23,7 @@ export default function Home() {
               </label>
             </div>
           </div>
-          <SortButtons setSortedPosts={setSortedPosts} />
-          {sortedPosts?.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
+          <PostsList />
         </div>
       </div>
     </main>
