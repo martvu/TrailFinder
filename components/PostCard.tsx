@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { PostData } from 'hooks/PostData';
 import { useFetchUser } from 'context/AuthContext';
 import Image from 'next/image';
-import UtilityButtons from './UtilityButtons';
 import HeartButton from './HeartButton';
+import OptionMenu from './OptionMenu';
 
 type PostProps = {
   post: PostData,
@@ -21,7 +21,7 @@ export default function PostCard({ post }: PostProps) {
     return null;
   }
   return (
-    <div className="card card-side shadow-md min-w-full max-w-full max-h-64 min-h-64 bg-neutral">
+    <div className="card card-side shadow-md min-w-full max-w-full max-h-64 min-h-64 mb-2 bg-neutral">
 
       <div className="flex w-full">
 
@@ -36,6 +36,7 @@ export default function PostCard({ post }: PostProps) {
           <div className="text-xs">
             {date.toDate().toLocaleDateString().replace(',', '')}
           </div>
+
           <div className="max-w-20 w-20 m-3">
             <Image
               src="/images/bg_trailfinder.png"
@@ -44,15 +45,9 @@ export default function PostCard({ post }: PostProps) {
               height={100}
             />
           </div>
-
         </div>
-
-        <UtilityButtons
-          setIsDeleted={setIsDeleted}
-          post={post}
-        />
-
-        <div className="card-body w-3/6">
+        <div className="relative card-body w-3/6">
+          <OptionMenu setIsDeleted={setIsDeleted} post={post} className="z-10 absolute bottom-0 right-0 m-2" />
           <h2 className="card-title font-extrabold absolute top-2">{title}</h2>
 
           {/* stops */}
@@ -60,8 +55,10 @@ export default function PostCard({ post }: PostProps) {
             <div className="flex">
               <p className="font-bold mr-2">Stops:</p>
               <div>
-                {stops && stops.length > 0 && stops.map((stop) => (
-                  <span className="text-sm list-none pr-1" key={stop}>
+                { /* A user may want to stop at the same place multiple times */ }
+                {stops && stops.length > 0 && stops.map((stop, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <span className="text-sm list-none pr-1" key={index}>
                     <i className="fa-solid fa-map-pin mr-1 text-accent" />
                     {stop}
                   </span>
