@@ -42,7 +42,7 @@ export default function FilterMenu() {
   }, []);
   return (
     <div
-      className="px-2 flex items-center justify-row rounded-xl shadow-md min-w-full max-w-full h-12 bg-neutral"
+      className="px-2 flex items-center justify-row rounded-xl shadow-md min-w-full max-w-full h-12"
     >
 
       {/** Sort by Button */}

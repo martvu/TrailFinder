@@ -4,6 +4,7 @@ import { PostData } from '../../hooks/PostData';
 import SortButtons from './SortButtons';
 import PostCard from '../PostCard';
 import { recent, SortOption } from './SortOption';
+import FilterMenu from './FilterMenu';
 
 export default function PostsList() {
   const { recentPostsList, loading } = usePosts();
@@ -20,6 +21,7 @@ export default function PostsList() {
         selectedSortOption={selectedSortOption}
         setSelectedSortOption={setSelectedSortOption}
       />
+      <FilterMenu />
       { loading ? <h1 className="">Loading...</h1>
         : sortedPosts.map((post) => <PostCard key={post.id} post={post} />)}
     </div>
