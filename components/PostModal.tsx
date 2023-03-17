@@ -214,13 +214,17 @@ export default function PostModal({
             >
               {buttonName}
             </button>
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label
-              htmlFor={modalId}
-              className="btn btn-sm btn-circle absolute right-2 top-2"
+            <button
+              type="button"
             >
-              ✕
-            </label>
+              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+              <label
+                htmlFor={modalId}
+                className="btn btn-sm btn-circle absolute right-2 top-2"
+              >
+                ✕
+              </label>
+            </button>
           </div>
         </div>
       </div>
