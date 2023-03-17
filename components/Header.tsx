@@ -36,22 +36,21 @@ function Header() {
         </button>
         <Searchbar />
 
-        <div className="absolute top-12 right-24 ">
-          <DarkModeButton />
-        </div>
-
-        <div className="text-center flex flex-col items-center justify-end mt-2">
-          <div
-            onClick={() => { router.push('/profile'); }}
-            className="bg-neutral
-          cursor-pointer border rounded-full p-3 duration-100 hover:opacity-60"
-          >
-            <i className="fa-solid fa-user" />
-            <p className="text-xs">profile</p>
+        <div className="text-center flex flex-row items-center justify-end mt-2">
+        <DarkModeButton />
+          <div className='flex flex-col pl-4'>
+            <div
+              onClick={() => { router.push('/profile'); }}
+              className="bg-neutral
+            cursor-pointer border rounded-full p-3 duration-100 hover:opacity-60"
+            >
+              <i className="fa-solid fa-user" />
+              <p className="text-xs">profile</p>
+            </div>
+            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+            <button type="button" onClick={logout} className="btn btn-xs mt-1 rounded-full btn-primary text-white">Log out</button>
           </div>
-          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-          <button type="button" onClick={logout} className="btn btn-xs mt-1 rounded-full btn-primary text-white">Log out</button>
-        </div>
+          </div>
       </div>
     </header>
   );
