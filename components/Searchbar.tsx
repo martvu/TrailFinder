@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Searchbar () {
+export default function Searchbar() {
   return (
     <form className="flex items-center mx-auto ml-32 mr-32">
       <div className="relative">
@@ -11,9 +11,9 @@ export default function Searchbar () {
           className="bg-neutral border border-gray-400 rounded-full py-2 px-32 mr-4 pl-12 focus:border-green-500"
         />
       </div>
-      <button className="bg-green-500 text-white rounded-full py-2 px-4">
+      <button type="button" className="bg-green-500 text-white rounded-full py-2 px-4">
         Search
       </button>
-  </form>
+    </form>
   );
 }
