@@ -3,21 +3,26 @@ import { usePosts } from '../../hooks/fetchPosts';
 import { PostData } from '../../hooks/PostData';
 import SortButtons from './SortButtons';
 import PostCard from '../PostCard';
-import GetRecommended, { recommended, recent, SortOption } from './SortOption';
+import GetRecommended, { recommended, SortOption } from './SortOption';
 
 export default function PostsList() {
   const { recentPostsList, loading } = usePosts();
   const [sortedPosts, setSortedPosts] = useState<PostData[]>([]);
   const [selectedSortOption, setSelectedSortOption] = useState<SortOption>(recommended);
   const recommendedPosts = GetRecommended();
+
   useEffect(() => {
     if (selectedSortOption === recommended) {
       setSortedPosts(recommendedPosts);
     } else {
       setSortedPosts(selectedSortOption.sort(recentPostsList));
     }
-  }, [recentPostsList, recommendedPosts, selectedSortOption]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recentPostsList, selectedSortOption]);
 
+  /* useEffect(() => {
+    setSortedPosts(selectedSortOption.sort(recentPostsList));
+  }, [recentPostsList, selectedSortOption]); */
   // eslint-disable-next-line max-len
   return (
     <div className="w-full h-full relative">
