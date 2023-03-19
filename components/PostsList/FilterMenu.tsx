@@ -1,31 +1,52 @@
+import { PostData } from 'hooks/PostData';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface FilterOption {
   text: string;
+  input?: JSX.Element;
+  filter?: () => void;
   onClick?: () => void;
 }
 
+const noFilter: FilterOption = {
+  text: '',
+};
+
 export default function FilterMenu() {
   const [filterIsOpen, setFilterIsOpen] = useState(false);
-  const [filterBy, setFilterBy] = useState('');
+  const [filterBy, setFilterBy] = useState<FilterOption>(noFilter);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [stopFilter, setStopFilter] = useState('');
 
   /** Sorting options */
   const stop: FilterOption = {
     text: 'Stop',
-    onClick: () => setFilterBy('Stop'),
+    input: <input type="text" onChange={(e) => { setStopFilter(e.target.value); }} className="input input-sm input-bordered mx-2 bg-neutral w-20" />,
+    filter: () => {
+      const filtered = posts.filter((post: PostData[]) => post.stops.includes(stopFilter));
+      setFilteredPosts(filtered);
+      setFilterBy(stop);
+    },
+    onClick: () => setFilterBy(stop),
   };
+
   const price: FilterOption = {
     text: 'Price',
-    onClick: () => setFilterBy('Price'),
+    input: <span>
+      <input type="number" placeholder="min" className="input input-sm input-bordered ml-2 bg-neutral w-20" />
+      {' '}
+      <input type="number" placeholder="max" className="input input-sm input-bordered ml-2 bg-neutral w-20" />
+           </span>,
+    onClick: () => setFilterBy(price),
   };
   const tripLength: FilterOption = {
     text: 'Length',
-    onClick: () => setFilterBy('Trip Length'),
+    input: <span><input type="text" placeholder="days" className="input input-sm input-bordered ml-2 bg-neutral w-20" /></span>,
+    onClick: () => setFilterBy(tripLength),
   };
   const rating: FilterOption = {
     text: 'Rating',
-    onClick: () => setFilterBy('Rating'),
+    onClick: () => setFilterBy(rating),
   };
   const filterOptions = [stop, price, tripLength, rating];
 
@@ -42,9 +63,8 @@ export default function FilterMenu() {
   }, []);
   return (
     <div
-      className="px-2 flex items-center justify-row rounded-xl shadow-md min-w-full max-w-full h-12"
+      className="px-2 flex items-center justify-row rounded-xl min-w-full max-w-full h-12"
     >
-
       {/** Sort by Button */}
       <div className="relative" ref={dropdownRef}>
         <button
@@ -75,7 +95,9 @@ export default function FilterMenu() {
 
       {/** Text  */}
       <div className="ml-2 font-bold">
-        {filterBy}
+        {filterBy.text}
+        <span>{filterBy.input}</span>
+        <button onClick={filterBy.filterFunc} type="button" className="btn btn-xs btn-primary mx-2">Add Filter</button>
       </div>
 
     </div>
