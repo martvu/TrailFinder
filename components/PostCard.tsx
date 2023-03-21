@@ -78,7 +78,7 @@ export default function PostCard({ post }: PostProps) {
             </a>
           </div> */}
           <FullPost
-            post={post}
+            posto={post}
             className="absolute bottom-2 right-20 m-2"
           />
         </div>
