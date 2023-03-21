@@ -12,4 +12,5 @@ export type PostData = {
   length: string;
   likedBy: string[];
   reports: string[];
+  uid: string;
 };

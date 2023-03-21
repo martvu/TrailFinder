@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { PostData } from 'hooks/PostData';
 import { useFetchUser } from 'context/AuthContext';
 import Image from 'next/image';
@@ -12,10 +12,11 @@ type PostProps = {
 export default function PostCard({ post }: PostProps) {
   const [isDeleted, setIsDeleted] = useState(false);
   const {
-    title, price, rating, date, username, length, stops, description, likedBy,
+    title, price, rating, date, username, length, stops, description, likedBy, uid
   } = post;
   const { userData } = useFetchUser();
   const [isLiked, setIsLiked] = useState(likedBy?.includes(userData.username));
+  const profilePic = useFetchProfilePic(uid);
 
   if (isDeleted) {
     return null;
@@ -27,8 +28,15 @@ export default function PostCard({ post }: PostProps) {
 
         {/* left section */}
         <div className="h-64 min-h-full w-1/6 flex items-center flex-col pt-5">
-          <div className="p-5 flex justify-center items-center border border-solid rounded-full w-12 h-12 ">
-            <i className="fa-solid fa-user fa-2x" />
+          <div className="avatar">
+            <div className="w-14 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 mb-2">
+              {profilePicture ? (
+                <img src={profilePicture} alt="Profile" className="rounded-full w-14 h-14 object-cover" />
+              ) : (
+                <i className="fa-solid fa-user fa-2x object-cover ml-3.5 mt-3" />
+              )}
+
+            </div>
           </div>
           <p className="card-title flex text-sm opacity-90 ">
             {username}
