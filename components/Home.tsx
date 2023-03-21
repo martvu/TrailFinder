@@ -1,33 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import useFetchPosts from 'hooks/fetchPosts';
-import { PostData } from 'hooks/PostData';
+import React from 'react';
 import CreatePostModal from './CreatePostModal';
-import PostCard from './PostCard';
 import Header from './Header';
-import SortButtons from './SortButtons';
+import PostsList from './PostsList';
 
 export default function Home() {
-  const { recentPostsList } = useFetchPosts();
-  const [sortedBy, setSortedBy] = useState('Recent Posts');
-  const [sortedPosts, setSortedPosts] = useState(recentPostsList);
-  const handleSortBy = (value: string) => {
-    setSortedBy(value);
-  };
-
-  useEffect(() => {
-    if (sortedBy === 'Recent Posts') {
-      setSortedPosts(recentPostsList);
-    } else if (sortedBy === 'Most Liked') {
-      setSortedPosts([...recentPostsList].sort((a, b) => b.likedBy.length - a.likedBy.length));
-    } else if (sortedBy === 'Alphabetical') {
-      setSortedPosts([...recentPostsList].sort((a, b) => a.title.localeCompare(b.title)));
-    } else {
-      /* Placeholder for recommended */
-      const recommendedPostsList: React.SetStateAction<PostData[]> = [];
-      setSortedPosts(recommendedPostsList);
-    }
-  }, [sortedBy, recentPostsList]);
-
   return (
     <main className="flex flex-col ">
       <Header />
@@ -47,10 +23,7 @@ export default function Home() {
               </label>
             </div>
           </div>
-          <SortButtons onSortBy={handleSortBy} />
-          {sortedPosts?.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
+          <PostsList />
         </div>
       </div>
     </main>

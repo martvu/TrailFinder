@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { auth } from '../firebase/firebase';
 import DarkModeButton from './ToggleDark';
 import logo from '../public/images/trailfinder_logo_simple.png';
+import Searchbar from './Searchbar';
 
 function Header() {
   const router = useRouter();
@@ -33,35 +34,22 @@ function Header() {
             TrailFinder
           </div>
         </button>
-        <form className="flex items-center mx-auto ml-32 mr-32">
-          <div className="relative">
-            <img src="/searchicon.png" alt="search" className="w-6 h-6 absolute top-0 left-0 mt-2 ml-2" />
-            <input
-              type="text"
-              placeholder="Search for desired travel..."
-              className="bg-white border border-gray-400 rounded-full py-2 px-32 mr-4 pl-12 focus:border-green-500"
-            />
-          </div>
-          <button className="bg-green-500 text-white rounded-full py-2 px-4">
-            Search
-          </button>
-        </form>
+        <Searchbar />
 
-        <div className="absolute top-12 right-24 ">
+        <div className="text-center flex flex-row items-center justify-end mt-2">
           <DarkModeButton />
-        </div>
-
-        <div className="text-center flex flex-col items-center justify-end mt-2">
-          <div
-            onClick={() => { router.push('/profile'); }}
-            className="bg-neutral
-          cursor-pointer border rounded-full p-3 duration-100 hover:opacity-60"
-          >
-            <i className="fa-solid fa-user" />
-            <p className="text-xs">profile</p>
+          <div className="flex flex-col pl-4">
+            <div
+              onClick={() => { router.push('/profile'); }}
+              className="bg-neutral
+            cursor-pointer border rounded-full p-3 duration-100 hover:opacity-60"
+            >
+              <i className="fa-solid fa-user" />
+              <p className="text-xs">profile</p>
+            </div>
+            {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+            <button type="button" onClick={logout} className="btn btn-xs mt-1 rounded-full btn-primary text-white">Log out</button>
           </div>
-          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-          <button type="button" onClick={logout} className="btn btn-xs mt-1 rounded-full btn-primary text-white">Log out</button>
         </div>
       </div>
     </header>

@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, {
+  useState, useEffect, useContext, createContext, useMemo,
+} from 'react';
 import {
   collection, getDocs, query, orderBy,
 } from 'firebase/firestore';
@@ -6,10 +8,26 @@ import { useAuth } from 'context/AuthContext';
 import { firestore } from '../firebase/firebase';
 import { PostData } from './PostData';
 
-export default function useFetchPosts() {
+type PostsProps = {
+  loading : boolean;
+  error : string;
+  recentPostsList : PostData[];
+};
+
+const PostsContext = createContext<PostsProps>({
+  loading: true,
+  error: '',
+  recentPostsList: [],
+});
+
+export function usePosts() {
+  return useContext(PostsContext);
+}
+
+export function PostsProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [recentPostsList, setRecentPostsList] = useState([] as PostData[]);
+  const [recentPostsList, setRecentPostsList] = useState<PostData[]>([]);
   const { currentUser } = useAuth();
 
   /** fetch posts ordered by most recent */
@@ -36,9 +54,15 @@ export default function useFetchPosts() {
     fetchRecent();
   }, [currentUser]);
 
-  return {
+  const value : PostsProps = useMemo(() => ({
     loading,
     error,
     recentPostsList,
-  };
+  }), [error, loading, recentPostsList]);
+
+  return (
+    <PostsContext.Provider value={value}>
+      {children}
+    </PostsContext.Provider>
+  );
 }
