@@ -1,29 +1,53 @@
 import React, { useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch } from 'react-instantsearch-hooks-web';
+import { Hits, InstantSearch, SearchBox } from 'react-instantsearch-hooks-web';
+import { PostData } from 'hooks/PostData';
+import { connectStateResults } from 'react-instantsearch-dom';
+import PostCard from './PostCard';
 
-const searchClient = algoliasearch('YourApplicationID', 'YourSearchOnlyAPIKey');
+// Your component code goes here
 
-function App() {
+
+const searchClient = algoliasearch('UZZTXU7KCG', 'e27a723c64a44fa7673477f22a00675c');
+
+type Props={
+  hit: any;
+}
+
+type PostProps = {
+  post: PostData,
+}
+
+
+function Hit({ hit }: Props) {
+  /*({[hit.title, hit.price, hit.rating, hit.date, hit.username, hit.length, hit.stops, hit.description, hit.likedBy] }: PostProps*/
   return (
-    <InstantSearch searchClient={searchClient} indexName="instant_search">
-      {/* Widgets */}
-    </InstantSearch>
+    <article>
+      <PostCard post={hit}/>
+    </article>
   );
 }
 
 
-type SortButtonsProps = {
-  onSortBy: (value: string) => void;
-};
 
-export default function SortButtons({ onSortBy }: SortButtonsProps) {
+
+function App() {
+  return (
+    <InstantSearch searchClient={searchClient} indexName="posts">
+      <SearchBox />
+      <Hits hitComponent={Hit} />
+    </InstantSearch>
+  );
+}
+
+export default function SearchBar() {
   /* Sorting options */
 
 
   return (
-    <div className=" flex items-center justify-between min-w-full max-w-full h-12">
-      
-    </div>
+    
+    <form className="flex items-center mx-auto ml-32 mr-32">
+      <App/>
+    </form>
   );
 }

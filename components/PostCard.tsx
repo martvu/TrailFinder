@@ -34,7 +34,7 @@ export default function PostCard({ post }: PostProps) {
             {username}
           </p>
           <div className="text-xs">
-            {date.toDate().toLocaleDateString().replace(',', '')}
+            
           </div>
 
           <div className="max-w-20 w-20 m-3">
