@@ -1,19 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
+import algoliasearch from 'algoliasearch/lite';
+import { Hits, InstantSearch, SearchBox } from 'react-instantsearch-hooks-web';
+import { PostData } from 'hooks/PostData';
+import PostCard from './PostCard';
 
-export default function Searchbar() {
+const searchClient = algoliasearch('UZZTXU7KCG', 'e27a723c64a44fa7673477f22a00675c');
+
+function Hit({ hit }: Props) {
+  return (
+    <article>
+      <PostCard post={hit} />
+    </article>
+  );
+}
+
+function Search() {
+  return (
+    <div className="relative">
+      <InstantSearch searchClient={searchClient} indexName="posts">
+        <SearchBox
+          classNames={
+            {
+              root: 'w-full',
+              input: 'w-full border border-gray-300 rounded-md shadow-md',
+            }
+          }
+        />
+        <Hits
+          hitComponent={Hit}
+          // puts the hits in a list beneath the search box
+          classNames={
+            {
+              list: 'absolute w-full bg-neutral z-10 border border-gray-300 rounded-md shadow-md',
+              item: 'p-2',
+            }
+        }
+        />
+      </InstantSearch>
+    </div>
+  );
+}
+
+export default function SearchBar() {
   return (
     <form className="flex items-center mx-auto ml-32 mr-32">
-      <div className="relative">
-        <img src="/searchicon.png" alt="search" className="w-6 h-6 absolute top-0 left-0 mt-2 ml-2" />
-        <input
-          type="text"
-          placeholder="Search for desired travel..."
-          className="bg-neutral border border-gray-400 rounded-full py-2 px-32 mr-4 pl-12 focus:border-green-500"
-        />
-      </div>
-      <button type="button" className="bg-green-500 text-white rounded-full py-2 px-4">
-        Search
-      </button>
+      <Search />
     </form>
   );
 }

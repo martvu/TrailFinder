@@ -33,9 +33,7 @@ export default function PostCard({ post }: PostProps) {
           <p className="card-title flex text-sm opacity-90 ">
             {username}
           </p>
-          <div className="text-xs">
-            
-          </div>
+          <div className="text-xs" />
 
           <div className="max-w-20 w-20 m-3">
             <Image

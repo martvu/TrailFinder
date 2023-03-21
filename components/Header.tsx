@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { auth } from '../firebase/firebase';
 import DarkModeButton from './ToggleDark';
 import logo from '../public/images/trailfinder_logo_simple.png';
-import Searchbar from './Searchbar';
+import SearchBar from './SearchBar';
 
 function Header() {
   const router = useRouter();
@@ -34,7 +34,7 @@ function Header() {
             TrailFinder
           </div>
         </button>
-        <Searchbar />
+        <SearchBar />
 
         <div className="text-center flex flex-row items-center justify-end mt-2">
           <DarkModeButton />
