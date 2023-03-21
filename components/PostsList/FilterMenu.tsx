@@ -1,47 +1,51 @@
 import { PostData } from 'hooks/PostData';
 import React, { useEffect, useRef, useState } from 'react';
 
-interface FilterOption {
+export interface FilterOption {
   text: string;
-  input?: JSX.Element;
-  filter?: () => void;
+  placeholder: string;
+  filter: (posts: PostData[]) => PostData[];
   onClick?: () => void;
 }
 
-const noFilter: FilterOption = {
+export const noFilter: FilterOption = {
   text: '',
+  placeholder: '',
+  filter: (posts) => posts,
 };
 
-export default function FilterMenu() {
+type FilterMenuProps = {
+  selectedFilterOption: FilterOption;
+  setSelectedFilterOption: React.Dispatch<React.SetStateAction<FilterOption>>;
+};
+export default function FilterMenu({
+  selectedFilterOption,
+  setSelectedFilterOption,
+}: FilterMenuProps) {
   const [filterIsOpen, setFilterIsOpen] = useState(false);
   const [filterBy, setFilterBy] = useState<FilterOption>(noFilter);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [stopFilter, setStopFilter] = useState('');
+  const [stopFilter, setStopFilter] = useState('Oslo');
 
   /** Sorting options */
   const stop: FilterOption = {
     text: 'Stop',
-    input: <input type="text" onChange={(e) => { setStopFilter(e.target.value); }} className="input input-sm input-bordered mx-2 bg-neutral w-20" />,
-    filter: () => {
+    placeholder: 'stop',
+    filter: (posts) => [...posts].filter((post) => post.stops.includes(stopFilter)), /* () => {
       const filtered = posts.filter((post: PostData[]) => post.stops.includes(stopFilter));
       setFilteredPosts(filtered);
-      setFilterBy(stop);
-    },
+      setFilterBy(stop); */
     onClick: () => setFilterBy(stop),
   };
 
   const price: FilterOption = {
     text: 'Price',
-    input: <span>
-      <input type="number" placeholder="min" className="input input-sm input-bordered ml-2 bg-neutral w-20" />
-      {' '}
-      <input type="number" placeholder="max" className="input input-sm input-bordered ml-2 bg-neutral w-20" />
-           </span>,
+    placeholder: 'max price',
     onClick: () => setFilterBy(price),
   };
   const tripLength: FilterOption = {
     text: 'Length',
-    input: <span><input type="text" placeholder="days" className="input input-sm input-bordered ml-2 bg-neutral w-20" /></span>,
+    placeholder: 'max length',
     onClick: () => setFilterBy(tripLength),
   };
   const rating: FilterOption = {
@@ -65,7 +69,7 @@ export default function FilterMenu() {
     <div
       className="px-2 flex items-center justify-row rounded-xl min-w-full max-w-full h-12"
     >
-      {/** Sort by Button */}
+      {/** Filter */}
       <div className="relative" ref={dropdownRef}>
         <button
           className="flex justify-center items-center btn btn-xs btn-outline"
@@ -80,10 +84,16 @@ export default function FilterMenu() {
             <div className="absolute shadow-md top-7 z-10 bg-neutral border border-solid border-secondary rounded-lg w-34">
               {filterOptions.map((option) => (
                 // eslint-disable-next-line max-len
-                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                 <div
                   key={option.text}
-                  onClick={option.onClick}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => { setFilterBy(option); setFilterIsOpen(false); }}
+                  onKeyDown={(e) => {
+                    if ((e.key === 'Enter' || e.key === ' ')) {
+                      setSelectedFilterOption(option);
+                    }
+                  }}
                   className="btn btn-xs flex btn-outline border-none justify-start px-2"
                 >
                   <h3>{option.text}</h3>
@@ -96,10 +106,15 @@ export default function FilterMenu() {
       {/** Text  */}
       <div className="ml-2 font-bold">
         {filterBy.text}
-        <span>{filterBy.input}</span>
-        <button onClick={filterBy.filterFunc} type="button" className="btn btn-xs btn-primary mx-2">Add Filter</button>
+        {filterBy !== noFilter
+        && (
+        <span>
+          <input type="text" onChange={(e) => setStopFilter(e.target.value)} placeholder={filterBy.placeholder} className="input input-sm input-bordered ml-2 bg-neutral w-20" />
+          {stopFilter}
+          <button onClick={() => { setSelectedFilterOption(filterBy); }} type="button" className="btn btn-xs btn-primary mx-2">Add Filter</button>
+        </span>
+        )}
       </div>
-
     </div>
   );
 }
