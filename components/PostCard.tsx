@@ -3,6 +3,7 @@ import { PostData } from 'hooks/PostData';
 import { useFetchUser } from 'context/AuthContext';
 import Image from 'next/image';
 import HeartButton from './HeartButton';
+import FullPost from './FullPost';
 import OptionMenu from './OptionMenu';
 
 type PostProps = {
@@ -76,7 +77,10 @@ export default function PostCard({ post }: PostProps) {
               Read more
             </a>
           </div> */}
-
+          <FullPost
+            post={post}
+            className="absolute bottom-2 right-20 m-2"
+          />
         </div>
 
         {/* right section */}
@@ -102,6 +106,7 @@ export default function PostCard({ post }: PostProps) {
             post={post}
             className="absolute bottom-0 right-0 m-2"
           />
+
 
         </div>
       </div>
