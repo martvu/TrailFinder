@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useAuth, useFetchUser } from 'context/AuthContext';
 import {
-  getDownloadURL, ref, uploadBytesResumable, deleteObject,
+  getDownloadURL, ref, uploadBytesResumable, deleteObject, uploadBytes,
 } from 'firebase/storage';
 import useFetchPicture from 'hooks/fetchPictures';
 import { firestore, storage } from '../firebase/firebase';
@@ -25,7 +25,6 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
   const [error, setError] = useState('');
   const { profilePicture } = useFetchPicture();
   const [file, setFile] = useState<File | null>(null);
-  const [percent, setPercent] = useState(0);
 
   useEffect(() => {
     if (userData) {
@@ -83,36 +82,16 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
     } */
     if (currentUser && file) {
       const storageRef = ref(storage, `/profile-pictures/${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          // eslint-disable-next-line @typescript-eslint/no-shadow
-          const percent = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
-          );
-
-          setPercent(percent);
-        },
-        (err) => console.log(err),
-        () => {
-          // download url
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            console.log(url);
-          });
-          // setFile(null); // set file to null when the upload is finished
-        },
-      );
-      if (file) {
-        const fileUrl = `gs://gruppe64-hiking-app.appspot.com/profile-pictures/${file.name}`;
-        const newUserData = { ...userData, profilePicture: fileUrl };
-        console.log('uploader');
-        setUserData(newUserData);
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        await updateDoc(doc(firestore, 'users', currentUser.uid), { profilePicture: fileUrl });
-      }
+      await uploadBytes(storageRef, file)
+        .then(async () => {
+          const newUserData = {
+            ...userData,
+            profilePicture: storageRef.fullPath,
+          };
+          console.log('uploader');
+          setUserData(newUserData);
+          await updateDoc(doc(firestore, 'users', currentUser.uid), { profilePicture: storageRef.fullPath });
+        });
     }
   }
 
@@ -159,13 +138,6 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
               <input type="file" className="file-input file-input-bordered file-input-primary file-input-sm w-full max-w-xs mt-4 mb-2" accept="image/*" onChange={handleChange} />
             </div>
             <button type="button" className="btn btn-xs btn-outline" onClick={handleUpload}>Upload</button>
-            <p>
-              {percent}
-              {' '}
-              % done
-              {' '}
-            </p>
-
             <p className="text-xs mt-2 mb-3 block">{userData.email}</p>
           </div>
           <div className="flex mb-3 items-center">
