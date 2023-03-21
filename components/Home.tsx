@@ -5,6 +5,7 @@ import CreatePostModal from './CreatePostModal';
 import PostCard from './PostCard';
 import Header from './Header';
 import SortButtons from './SortButtons';
+import SearchBar from './SearchBar';
 
 export default function Home() {
   const { recentPostsList } = useFetchPosts();
@@ -47,10 +48,12 @@ export default function Home() {
               </label>
             </div>
           </div>
-          <SortButtons onSortBy={handleSortBy} />
+          <SortButtons onSortBy={handleSortBy} /> 
+          <SearchBar/>
           {sortedPosts?.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
+          
         </div>
       </div>
     </main>
