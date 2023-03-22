@@ -1,14 +1,12 @@
-import React, {use, useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { PostData } from 'hooks/PostData';
 import { useFetchUser } from 'context/AuthContext';
 import Image from 'next/image';
-import { useQuery } from 'react-query';
+import { doc, getDoc } from 'firebase/firestore';
+import { getDownloadURL, ref } from 'firebase/storage';
 import HeartButton from './HeartButton';
 import OptionMenu from './OptionMenu';
-import fetchProfilePicUrl from '../hooks/fetchProfilePic';
-import {doc, getDoc} from "firebase/firestore";
-import {firestore, storage} from "../firebase/firebase";
-import {getDownloadURL, ref} from "firebase/storage";
+import { firestore, storage } from '../firebase/firebase';
 
 type PostProps = {
   post: PostData,
@@ -42,7 +40,8 @@ export default function PostCard({ post }: PostProps) {
       const downloadUrl = await getDownloadURL(profilePictureRef);
       return downloadUrl;
     }
-    fetchProfilePic().then((url) => setProfilePicUrl(url));
+    // eslint-disable-next-line no-void
+    void fetchProfilePic().then((url) => setProfilePicUrl(url));
   }, [uid]);
 
   if (isDeleted) {
