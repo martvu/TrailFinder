@@ -79,7 +79,7 @@ export default function PostCard({ post }: PostProps) {
           </div> */}
           <FullPost
             posto={post}
-            className="absolute bottom-2 right-20 m-2"
+            className="absolute bottom-2 right-20 m-2 overflow-hidden no-scrollbar"
           />
         </div>
 

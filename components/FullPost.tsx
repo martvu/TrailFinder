@@ -7,7 +7,6 @@ interface Props {
   className?: string;
   posto: PostData;
 }
-
 export default function FullPost({
   className, posto,
 }: Props) {
@@ -16,49 +15,49 @@ export default function FullPost({
       <label htmlFor={`my-modal-3${posto.id}`} className={className}>
         see more
       </label>
-      <input type="checkbox" id={`my-modal-3${posto.id}`} className="modal-toggle" />
-      <div className="modal">
-        <div className="modal-box relative w-11/12 max-w-full max-h-full  h-4/5">
+      <input type="checkbox" id={`my-modal-3${posto.id}`} className="modal-toggle overflow-hidden no-scrollbar" />
+      <div className="modal overflow-hidden no-scrollbar">
+        <div className="modal-box relative w-11/12 max-w-full max-h-full no-scrollbar h-4/5">
           <label htmlFor={`my-modal-3${posto.id}`} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-          <div className="card card-side shadow-md min-w-full max-w-full h-full mb-2 bg-neutral">
+          <div className="card card-side shadow-md min-w-full max-w-full h-full mb-2 bg-neutral no-scrollbar relative">
 
-            <div className="flex w-full">
+            <div className="flex w-full relative">
 
               {/* left section */}
-              <div className="h-64 min-h-full w-1/6 flex justify-items-center flex-col pt-5 pl-40 ">
-                <div className="p-5 flex justify-center items-center border border-solid rounded-full w-12 h-12 ">
-                  <i className="fa-solid fa-user fa-2x" />
+              <div className="h-64 min-h-full w-1/6 flex items-center flex-col pt-10 pb-20">
+                <div className="p-5 flex justify-center items-center border border-solid rounded-full w-24 h-24 ">
+                  <i className="fa-solid fa-user fa-2x text-l" />
                 </div>
-                <p className="card-title flex text-xl opacity-90 h-1/5 ">
+                <p className="card-title flex text-sm opacity-90 ">
                   {posto.username}
                 </p>
-                <div className="text-xl">
+                <div className="text-xs">
                   {posto.date.toDate().toLocaleDateString().replace(',', '')}
                 </div>
 
-                <div className="max-w-20 w-20 m-3">
+                <div className="max-w-20 w-20 m-3 flex-1">
                   <Image
                     src="/images/bg_trailfinder.png"
                     alt="Picture of the trip"
-                    width={100}
-                    height={100}
+                    width={200}
+                    height={200}
                   />
                 </div>
               </div>
               <div className="relative card-body w-3/6">
 
-                <h2 className="card-title font-extrabold absolute text-3xl top-2">{posto.title}</h2>
+                <h2 className="card-title font-extrabold absolute top-2">{posto.title}</h2>
 
                 {/* stops */}
                 <div className="flex pt-6">
                   <div className="flex">
-                    <p className="font-bold mr-2 text-3xl">Stops:</p>
+                    <p className="font-bold mr-2">Stops:</p>
                     <div>
                       { /* A user may want to stop at the same place multiple times */ }
                       {posto.stops && posto.stops.length > 0 && posto.stops.map((stop, index) => (
                         // eslint-disable-next-line react/no-array-index-key
-                        <span className="text-2xl list-none pr-1" key={index}>
-                          <i className="fa-solid fa-map-pin mr-1 text-accent text-2xl" />
+                        <span className="text-sm list-none pr-1" key={index}>
+                          <i className="fa-solid fa-map-pin mr-1 text-accent" />
                           {stop}
                         </span>
                       ))}
@@ -66,8 +65,8 @@ export default function FullPost({
                   </div>
                 </div>
                 <div className="max-w-sm sm:max-w-full">
-                  <span className="font-bold text-3xl">Description</span>
-                  <div className="max-w-full break-words text-2xl">{posto.description}</div>
+                  <span className="font-bold">Description</span>
+                  <div className="max-w-full break-words">{posto.description}</div>
                 </div>
 
                 {/* <div className="card-actions bg-base300">
