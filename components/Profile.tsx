@@ -4,6 +4,7 @@ import { usePosts } from 'hooks/fetchPosts';
 import { useFetchUser } from 'context/AuthContext';
 import useFetchPicture from 'hooks/fetchPictures';
 import { getDownloadURL, ref } from 'firebase/storage';
+import Image from 'next/image';
 import PostCard from './PostCard';
 import Header from './Header';
 import { storage } from '../firebase/firebase';
@@ -46,9 +47,16 @@ export default function Profile({ setEdit }: ProfileProps) {
                 <div className="avatar pr-5">
                   <div className="w-28 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                     {profilePicture ? (
-                      <img src={profilePicture} alt="Profile" className="rounded-full w-28 h-28 object-cover" />
+                      <Image
+                        loader={() => profilePicture}
+                        src={profilePicture}
+                        alt="Profile"
+                        width={50}
+                        height={50}
+                        className="rounded-full w-28 h-28 object-cover"
+                      />
                     ) : (
-                      <i className="fa-solid fa-user fa-4x object-cover ml-7 mt-4" />
+                      <i className="fa-solid fa-user fa-4x object-cover ml-7 mt-5" />
                     )}
 
                   </div>

@@ -20,7 +20,7 @@ function Header() {
   }
 
   return (
-    <header className="p-2 sm:p-4">
+    <header className="p-2 md:p-4">
       <div className="flex justify-between">
         <button onClick={() => { router.push('/'); }} type="button" className="text-center flex items-center duration-300 hover:opacity-40 cursor-pointer">
           <Image
@@ -36,13 +36,13 @@ function Header() {
             TrailFinder
           </div>
         </button>
-        <Searchbar />
+        {/* <Searchbar /> */}
 
         <div className="text-center flex flex-row items-center justify-end mt-2">
           <DarkModeButton />
-          <div className="flex flex-col pl-2">
+          <div className="flex flex-col ml-3">
             <div
-              className="avatar mb-2 ml-2 duration-100 hover:opacity-60"
+              className="avatar cursor-pointer mb-2 ml-1 duration-100 hover:opacity-60"
               onClick={() => { router.push('/profile'); }}
             >
               <div className="w-14 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
@@ -56,7 +56,7 @@ function Header() {
               </div>
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-            <button type="button" onClick={logout} className="btn btn-xs mt-1 rounded-full btn-primary text-white">Log out</button>
+            <button type="button" onClick={logout} className="btn btn-xs mt-1 w-16 px-0 rounded-full btn-primary text-white">Log out</button>
           </div>
         </div>
       </div>

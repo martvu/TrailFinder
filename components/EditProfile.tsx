@@ -8,9 +8,10 @@ import React, { useEffect, useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useAuth, useFetchUser } from 'context/AuthContext';
 import {
-  getDownloadURL, ref, uploadBytesResumable, deleteObject, uploadBytes,
+  ref, uploadBytes,
 } from 'firebase/storage';
 import useFetchPicture from 'hooks/fetchPictures';
+import Image from 'next/image';
 import { firestore, storage } from '../firebase/firebase';
 
 type EditProfileProps = {
@@ -23,7 +24,7 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [error, setError] = useState('');
-  const { profilePicture } = useFetchPicture();
+  const { profilePicture, setProfilePictureUrl } = useFetchPicture();
   const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
@@ -62,6 +63,7 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
       setError('Field required');
       console.log('Error');
     }
+    window.location.reload();
   }
 
   if (!userData) {
@@ -81,6 +83,7 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
       alert('Please choose a file first!');
     } */
     if (currentUser && file) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const storageRef = ref(storage, `/profile-pictures/${file.name}`);
       await uploadBytes(storageRef, file)
         .then(async () => {
@@ -92,6 +95,14 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
           setUserData(newUserData);
           await updateDoc(doc(firestore, 'users', currentUser.uid), { profilePicture: storageRef.fullPath });
         });
+    }
+  }
+
+  async function removePicture() {
+    if (profilePicture && currentUser) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      setProfilePictureUrl('');
+      await updateDoc(doc(firestore, 'users', currentUser.uid), { profilePicture: null });
     }
   }
 
@@ -110,32 +121,31 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
             <i className="inline fa-solid fa-xmark" />
           </div>
           <div className="flex flex-col justify-center items-center mt-3 text-center">
-            <div className="avatar">
-              <div className="w-28 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+            <div className="avatar pr-5">
+              <div className="flex items-center justify-center w-28 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                 {profilePicture ? (
-                  <div className="relative">
-                    <img src={profilePicture} alt="Profile" className="rounded-full object-cover" />
-
-                  </div>
+                  <Image
+                    loader={() => profilePicture}
+                    src={profilePicture}
+                    alt="Profile"
+                    width={50}
+                    height={50}
+                    className="rounded-full w-28 h-28 object-cover"
+                  />
                 ) : (
-                  <i className="fa-solid fa-user fa-4x mt-4" />
+                  <i className="fa-solid fa-user fa-4x object-cover mt-5" />
                 )}
               </div>
               <button
                 type="button"
-                onClick={() => {
-                  if (profilePicture) {
-                    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                    setUserData({ ...userData, profilePicture: null });
-                  }
-                }}
-                className=" btn btn-error btn-outline btn-xs btn-circle absolute top-0 right-0 left-18"
+                onClick={removePicture}
+                className=" btn btn-error btn-xs btn-circle absolute top-0 right-4 left-18"
               >
                 <i className="fa-solid fa-times" />
               </button>
             </div>
             <div className="flex justify-end items-end">
-              <input type="file" className="file-input file-input-bordered file-input-primary file-input-sm w-full max-w-xs mt-4 mb-2" accept="image/*" onChange={handleChange} />
+              <input type="file" className="file-input file-input-bordered cursor-pointer file-input-primary file-input-sm w-full max-w-xs mt-4 mb-2" accept="image/*" onChange={handleChange} />
             </div>
             <button type="button" className="btn btn-xs btn-outline" onClick={handleUpload}>Upload</button>
             <p className="text-xs mt-2 mb-3 block">{userData.email}</p>
