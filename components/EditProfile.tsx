@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
@@ -6,7 +7,12 @@
 import React, { useEffect, useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useAuth, useFetchUser } from 'context/AuthContext';
-import { firestore } from '../firebase/firebase';
+import {
+  ref, uploadBytes,
+} from 'firebase/storage';
+import useFetchPicture from 'hooks/fetchPictures';
+import Image from 'next/image';
+import { firestore, storage } from '../firebase/firebase';
 
 type EditProfileProps = {
   setEdit: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,6 +24,8 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [error, setError] = useState('');
+  const { profilePicture, setProfilePictureUrl } = useFetchPicture();
+  const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (userData) {
@@ -40,6 +48,14 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
         .catch((e) => {
           console.log(e);
         });
+      setEdit(false);
+      if (!file && !profilePicture) {
+        await updateDoc(docRef, { profilePicture: null }).then(() => {
+          setUserData({ ...userData, profilePicture: null });
+        }).catch((pictureError) => {
+          console.log(pictureError);
+        });
+      }
       const newUserData = { ...userData, firstname: firstName, lastname: lastName };
       setUserData(newUserData);
       setEdit(false);
@@ -47,10 +63,47 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
       setError('Field required');
       console.log('Error');
     }
+    window.location.reload();
   }
 
   if (!userData) {
     return <div>Error: User does not exist.</div>;
+  }
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const fileList = event.target.files;
+    if (fileList && fileList.length > 0) {
+      const selectedFile = fileList[0];
+      setFile(selectedFile);
+    }
+  }
+
+  async function handleUpload() {
+    /* if (!file) {
+      alert('Please choose a file first!');
+    } */
+    if (currentUser && file) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      const storageRef = ref(storage, `/profile-pictures/${file.name}`);
+      await uploadBytes(storageRef, file)
+        .then(async () => {
+          const newUserData = {
+            ...userData,
+            profilePicture: storageRef.fullPath,
+          };
+          console.log('uploader');
+          setUserData(newUserData);
+          await updateDoc(doc(firestore, 'users', currentUser.uid), { profilePicture: storageRef.fullPath });
+        });
+    }
+  }
+
+  async function removePicture() {
+    if (profilePicture && currentUser) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      setProfilePictureUrl('');
+      await updateDoc(doc(firestore, 'users', currentUser.uid), { profilePicture: null });
+    }
   }
 
   return (
@@ -67,10 +120,34 @@ export default function EditProfile({ setEdit }: EditProfileProps) {
           <div onClick={() => { setEdit(false); }} className="btn btn-sm btn-circle absolute right-2 top-2">
             <i className="inline fa-solid fa-xmark" />
           </div>
-          <div className="mt-3 text-center">
-            <div className="flex justify-center items-center border p-8 shadow-lg bg-neutral rounded-full w-12 h-12 mx-auto">
-              <i className="fa-solid fa-user fa-2x " />
+          <div className="flex flex-col justify-center items-center mt-3 text-center">
+            <div className="avatar pr-5">
+              <div className="flex items-center justify-center w-28 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                {profilePicture ? (
+                  <Image
+                    loader={() => profilePicture}
+                    src={profilePicture}
+                    alt="Profile"
+                    width={50}
+                    height={50}
+                    className="rounded-full w-28 h-28 object-cover"
+                  />
+                ) : (
+                  <i className="fa-solid fa-user fa-4x object-cover mt-5" />
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={removePicture}
+                className=" btn btn-error btn-xs btn-circle absolute top-0 right-4 left-18"
+              >
+                <i className="fa-solid fa-times" />
+              </button>
             </div>
+            <div className="flex justify-end items-end">
+              <input type="file" className="file-input file-input-bordered cursor-pointer file-input-primary file-input-sm w-full max-w-xs mt-4 mb-2" accept="image/*" onChange={handleChange} />
+            </div>
+            <button type="button" className="btn btn-xs btn-outline" onClick={handleUpload}>Upload</button>
             <p className="text-xs mt-2 mb-3 block">{userData.email}</p>
           </div>
           <div className="flex mb-3 items-center">

@@ -5,7 +5,8 @@ import {
   collection, getDocs, query, orderBy,
 } from 'firebase/firestore';
 import { useAuth } from 'context/AuthContext';
-import { firestore } from '../firebase/firebase';
+import { get, ref } from 'firebase/database';
+import { firestore, db } from '../firebase/firebase';
 import { PostData } from './PostData';
 
 type PostsProps = {

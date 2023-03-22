@@ -34,7 +34,7 @@ export default function OptionMenu({ className, setIsDeleted, post }: Props) {
       // eslint-disable-next-line no-alert
       const confirmDelete = window.confirm('Are you sure you want to delete this post?');
       if (confirmDelete) {
-        await deleteDoc(doc(firestore, 'posts', `post: ${post.id}`));
+        await deleteDoc(doc(firestore, 'posts', `${post.id}`));
         setIsDeleted(true);
       }
     } else { // should never be called

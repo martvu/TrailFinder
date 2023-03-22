@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Searchbar() {
   return (
-    <form className="flex items-center mx-auto ml-32 mr-32">
+    <form className="hidden lg:flex items-center mx-auto ml-32 mr-32">
       <div className="relative">
         <img src="/searchicon.png" alt="search" className="w-6 h-6 absolute top-0 left-0 mt-2 ml-2" />
         <input
