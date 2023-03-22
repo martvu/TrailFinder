@@ -22,6 +22,7 @@ export default function CreatePostModal() {
     description: '',
     likedBy: [],
     reports: [],
+    uid: '',
   };
   const [post, setPost] = useState<PostData>(emptyPost);
   const { userData } = useFetchUser();
@@ -32,6 +33,7 @@ export default function CreatePostModal() {
         ...post,
         date: Timestamp.now(),
         username: userData.username,
+        uid: userData.uid,
       };
       return newPost;
     } return false;
