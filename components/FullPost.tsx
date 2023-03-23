@@ -3,50 +3,42 @@ import { PostData } from 'hooks/PostData';
 import Image from 'next/image';
 
 interface Props {
-  // eslint-disable-next-line react/require-default-props
-  className?: string;
-  posto: PostData;
+  post: PostData;
 }
-export default function FullPost({
-  className, posto,
-}: Props) {
+export default function FullPost({ post }: Props) {
   return (
     <>
-      <label htmlFor={`my-modal-3${posto.id}`} className={className}>
-        see more
-      </label>
-      <input type="checkbox" id={`my-modal-3${posto.id}`} className="modal-toggle overflow-hidden no-scrollbar" />
+      <input type="checkbox" id={`my-modal-3${post.id}`} className="modal-toggle overflow-hidden no-scrollbar" />
       <div className="modal overflow-hidden no-scrollbar">
         <div className="modal-box relative w-11/12 max-w-full max-h-full no-scrollbar h-4/5">
-          <label htmlFor={`my-modal-3${posto.id}`} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label htmlFor={`my-modal-3${post.id}`} className="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
           <div className="card card-side shadow-md min-w-full max-w-full h-full mb-2 bg-neutral no-scrollbar relative">
 
-            <div className="flex w-full relative">
+            <div className="flex relative">
 
               {/* left section */}
-              <div className="h-64 min-h-full w-1/6 flex items-center flex-col pt-10 pb-20">
+              <div className="w-1/6 h-1/2 flex flex-col space-x-2 items-center">
                 <div className="p-5 flex justify-center items-center border border-solid rounded-full w-24 h-24 ">
                   <i className="fa-solid fa-user fa-2x text-l" />
                 </div>
-                <p className="card-title flex text-sm opacity-90 ">
-                  {posto.username}
+                <p className="card-title text-sm opacity-90 ">
+                  {post.username}
                 </p>
                 <div className="text-xs">
-                  {posto.date.toDate().toLocaleDateString().replace(',', '')}
+                  {post.date.toDate().toLocaleDateString().replace(',', '')}
                 </div>
-
-                <div className="max-w-20 w-20 m-3 flex-1">
-                  <Image
-                    src="/images/bg_trailfinder.png"
-                    alt="Picture of the trip"
-                    width={200}
-                    height={200}
-                  />
-                </div>
+                <Image
+                  src="/images/bg_trailfinder.png"
+                  alt="Picture of the trip"
+                  width={200}
+                  height={200}
+                  className="pt-3"
+                />
               </div>
               <div className="relative card-body w-3/6">
 
-                <h2 className="card-title font-extrabold absolute top-2">{posto.title}</h2>
+                <h2 className="card-title font-extrabold absolute top-2">{post.title}</h2>
 
                 {/* stops */}
                 <div className="flex pt-6">
@@ -54,7 +46,7 @@ export default function FullPost({
                     <p className="font-bold mr-2">Stops:</p>
                     <div>
                       { /* A user may want to stop at the same place multiple times */ }
-                      {posto.stops && posto.stops.length > 0 && posto.stops.map((stop, index) => (
+                      {post.stops && post.stops.length > 0 && post.stops.map((stop, index) => (
                         // eslint-disable-next-line react/no-array-index-key
                         <span className="text-sm list-none pr-1" key={index}>
                           <i className="fa-solid fa-map-pin mr-1 text-accent" />
@@ -66,15 +58,8 @@ export default function FullPost({
                 </div>
                 <div className="max-w-sm sm:max-w-full">
                   <span className="font-bold">Description</span>
-                  <div className="max-w-full break-words">{posto.description}</div>
+                  <div className="max-w-full break-words">{post.description}</div>
                 </div>
-
-                {/* <div className="card-actions bg-base300">
-      <a href="#" className="font-bold text-green-500 hover:text-green-700 absolute bottom-2">
-        Read more
-      </a>
-    </div> */}
-
               </div>
 
               {/* right section */}
@@ -82,16 +67,16 @@ export default function FullPost({
                 <div>
                   <span className="font-bold">Price: </span>
                   {' '}
-                  {posto.price}
+                  {post.price}
                 </div>
                 <div>
                   <span className="font-bold">Rating: </span>
                   {' '}
-                  {posto.rating}
+                  {post.rating}
                 </div>
                 <div>
                   <span className="font-bold">Trip length: </span>
-                  <div>{posto.length}</div>
+                  <div>{post.length}</div>
                 </div>
 
               </div>

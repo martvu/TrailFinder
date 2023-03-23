@@ -8,7 +8,6 @@ import { firestore } from '../firebase/firebase';
 import EditPostModal from './EditPostModal';
 
 interface Props {
-  className: string;
   setIsDeleted: React.Dispatch<React.SetStateAction<boolean>>;
   post: PostData;
 }
@@ -20,7 +19,7 @@ interface Option {
   visible?: boolean;
 }
 
-export default function OptionMenu({ className, setIsDeleted, post }: Props) {
+export default function OptionMenu({ setIsDeleted, post }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const { userData } = useFetchUser();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -104,7 +103,7 @@ export default function OptionMenu({ className, setIsDeleted, post }: Props) {
             <i className="fa-solid fa-flag " />
           </div>
         )}
-      <div className={className} ref={dropdownRef}>
+      <div className="z-10" ref={dropdownRef}>
         <label htmlFor={isEdit ? `edit-modal${post.id}` : ''}>
           <button
             className="btn btn-sm btn-circle btn-outline"
@@ -115,7 +114,7 @@ export default function OptionMenu({ className, setIsDeleted, post }: Props) {
           </button>
 
           {isOpen && visibleOptions.length > 0 && (
-            <div className="absolute shadow-md top-0 left-8 z-10 bg-neutral px-2 py-1 rounded-md w-28">
+            <div className="absolute shadow-md bg-neutral px-1 py-1 rounded-md w-28 space-y-1">
               {visibleOptions.map((option) => (
                 // eslint-disable-next-line max-len
                 // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
