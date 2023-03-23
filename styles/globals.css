@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.modal-box {
+    position: relative;
+    overflow: hidden;
+}
+  
+.modal-box .btn-circle {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.modal {
+    overflow: hidden;
+}
+  

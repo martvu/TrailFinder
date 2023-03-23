@@ -14,6 +14,7 @@ type UserType = {
   email: string;
   uid: string;
   userLikes: string[];
+  profilePicture: string | null;
 };
 
 const emptyUser: UserType = {
@@ -25,6 +26,7 @@ const emptyUser: UserType = {
   email: '',
   uid: '',
   userLikes: [],
+  profilePicture: '',
 };
 
 type AuthContextType = {
@@ -65,6 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState<UserType>(emptyUser);
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string>('');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -86,6 +89,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               email: currentUser.email || '',
               uid: currentUser.uid,
               userLikes: [],
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              profilePicture: docSnap.data().profilePicture,
             };
             setUserData(userInfo);
           } else {

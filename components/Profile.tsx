@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import 'firebase/firestore';
 import { usePosts } from 'hooks/fetchPosts';
 import { useFetchUser } from 'context/AuthContext';
+import useFetchPicture from 'hooks/fetchPictures';
+import { getDownloadURL, ref } from 'firebase/storage';
+import Image from 'next/image';
 import PostCard from './PostCard';
 import Header from './Header';
+import { storage } from '../firebase/firebase';
 
 type ProfileProps = {
   setEdit: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,11 +15,16 @@ type ProfileProps = {
 
 export default function Profile({ setEdit }: ProfileProps) {
   const { userData } = useFetchUser();
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { recentPostsList } = usePosts();
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const myPosts = recentPostsList.filter((post) => post.username === userData?.username);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const likedPosts = recentPostsList.filter(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     (post) => post.likedBy.includes(userData?.username) && post.username !== userData?.username,
   );
+  const { profilePicture } = useFetchPicture();
   const [filterMyPosts, setFilterMyPosts] = useState(true);
   const [filterLikedPosts, setFilterLikedPosts] = useState(false);
 
@@ -35,8 +44,22 @@ export default function Profile({ setEdit }: ProfileProps) {
 
             {userData && (
               <>
-                <div className="p-5 mr-10 flex justify-center items-center border border-solid rounded-full grow-0 shrink-0 w-20 h-20">
-                  <i className="fa-solid fa-user fa-3x" />
+                <div className="avatar pr-5">
+                  <div className="w-28 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                    {profilePicture ? (
+                      <Image
+                        loader={() => profilePicture}
+                        src={profilePicture}
+                        alt="Profile"
+                        width={50}
+                        height={50}
+                        className="rounded-full w-28 h-28 object-cover"
+                      />
+                    ) : (
+                      <i className="fa-solid fa-user fa-4x object-cover ml-7 mt-5" />
+                    )}
+
+                  </div>
                 </div>
                 <div>
                   <div className="text-3xl pb-2 font-bold ">
@@ -59,7 +82,7 @@ export default function Profile({ setEdit }: ProfileProps) {
                       <button
                         type="button"
                         onClick={() => setEdit(true)}
-                        className="btn btn-sm btn-outline border border-solid border-secondary text-base py-1 px-12 rounded text-xs flex items-center justify-center"
+                        className="btn btn-sm btn-outline border border-solid border-secondary text-base py-1 px-12 rounded flex items-center justify-center"
                       >
                         Edit
                       </button>
@@ -71,7 +94,6 @@ export default function Profile({ setEdit }: ProfileProps) {
 
           </div>
         </div>
-
         <div className="flex w-full justify-center ">
           <div className="flex w-full flex-col sm:w-3/5">
             <div className="mt-3 mb-3 justify-between flex">
