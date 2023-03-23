@@ -4,16 +4,30 @@ import React, { useEffect, useRef, useState } from 'react';
 export interface FilterOption {
   text: string;
   placeholder: string;
-  filter: (posts: PostData[]) => PostData[];
-  onClick?: () => void;
 }
 
 export const noFilter: FilterOption = {
   text: '',
   placeholder: '',
-  filter: (posts) => posts,
 };
 
+export const stop: FilterOption = {
+  text: 'Stop',
+  placeholder: 'stop',
+};
+
+export const price: FilterOption = {
+  text: 'Price',
+  placeholder: 'max price',
+};
+export const tripLength: FilterOption = {
+  text: 'Length',
+  placeholder: 'max length',
+};
+export const rating: FilterOption = {
+  text: 'Rating',
+  placeholder: 'min rating',
+};
 type FilterMenuProps = {
   selectedFilterOption: FilterOption;
   setSelectedFilterOption: React.Dispatch<React.SetStateAction<FilterOption>>;
@@ -25,33 +39,7 @@ export default function FilterMenu({
   const [filterIsOpen, setFilterIsOpen] = useState(false);
   const [filterBy, setFilterBy] = useState<FilterOption>(noFilter);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [stopFilter, setStopFilter] = useState('Oslo');
 
-  /** Sorting options */
-  const stop: FilterOption = {
-    text: 'Stop',
-    placeholder: 'stop',
-    filter: (posts) => [...posts].filter((post) => post.stops.includes(stopFilter)), /* () => {
-      const filtered = posts.filter((post: PostData[]) => post.stops.includes(stopFilter));
-      setFilteredPosts(filtered);
-      setFilterBy(stop); */
-    onClick: () => setFilterBy(stop),
-  };
-
-  const price: FilterOption = {
-    text: 'Price',
-    placeholder: 'max price',
-    onClick: () => setFilterBy(price),
-  };
-  const tripLength: FilterOption = {
-    text: 'Length',
-    placeholder: 'max length',
-    onClick: () => setFilterBy(tripLength),
-  };
-  const rating: FilterOption = {
-    text: 'Rating',
-    onClick: () => setFilterBy(rating),
-  };
   const filterOptions = [stop, price, tripLength, rating];
 
   const handleClickOutside = (event: MouseEvent | Event) => {
@@ -67,7 +55,7 @@ export default function FilterMenu({
   }, []);
   return (
     <div
-      className="px-2 flex items-center justify-row rounded-xl min-w-full max-w-full h-12"
+      className="inline-block relative"
     >
       {/** Filter */}
       <div className="relative" ref={dropdownRef}>
@@ -88,7 +76,7 @@ export default function FilterMenu({
                   key={option.text}
                   role="button"
                   tabIndex={0}
-                  onClick={() => { setFilterBy(option); setFilterIsOpen(false); }}
+                  onClick={() => { setSelectedFilterOption(option); setFilterIsOpen(false); }}
                   onKeyDown={(e) => {
                     if ((e.key === 'Enter' || e.key === ' ')) {
                       setSelectedFilterOption(option);
@@ -101,19 +89,6 @@ export default function FilterMenu({
               ))}
             </div>
           )}
-      </div>
-
-      {/** Text  */}
-      <div className="ml-2 font-bold">
-        {filterBy.text}
-        {filterBy !== noFilter
-        && (
-        <span>
-          <input type="text" onChange={(e) => setStopFilter(e.target.value)} placeholder={filterBy.placeholder} className="input input-sm input-bordered ml-2 bg-neutral w-20" />
-          {stopFilter}
-          <button onClick={() => { setSelectedFilterOption(filterBy); }} type="button" className="btn btn-xs btn-primary mx-2">Add Filter</button>
-        </span>
-        )}
       </div>
     </div>
   );
