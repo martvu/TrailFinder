@@ -25,8 +25,8 @@ export default function SortButtons({
   if (adminState) sortOptions.push(reported);
 
   return (
-    <div className=" flex items-center justify-between min-w-full max-w-full h-12">
-      {/* Sort by Button */}
+    <div>
+      {/* Sort by Button */ }
       <div className="flex flex-row items-center justify-center">
         <span className="pr-2 text-xs lg:text-base font-bold">Sort by: </span>
         <div className="flex flex-wrap sm:flex-row items-center z-10 rounded-lg">

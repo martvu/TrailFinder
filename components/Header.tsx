@@ -8,7 +8,6 @@ import useFetchPicture from 'hooks/fetchPictures';
 import { auth } from '../firebase/firebase';
 import DarkModeButton from './ToggleDark';
 import logo from '../public/images/trailfinder_logo_simple.png';
-import Searchbar from './Searchbar';
 
 function Header() {
   const router = useRouter();
@@ -56,7 +55,7 @@ function Header() {
               </div>
             </div>
             {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-            <button type="button" onClick={logout} className="btn btn-xs mt-1 w-16 px-0 rounded-full btn-primary text-white">Log out</button>
+            <button type="button" onClick={logout} className="btn btn-xs mt-1 w-16 px-0 rounded-full btn-primary text-neutral">Log out</button>
           </div>
         </div>
       </div>

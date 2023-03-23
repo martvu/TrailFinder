@@ -57,7 +57,8 @@ export default function GetRecommended() {
     return intersection.size / union.size;
   }
 
-  const unLikedPosts = recentPostsList.filter((post) => !post.likedBy.includes(userData?.username));
+  // eslint-disable-next-line max-len
+  const unLikedPosts = recentPostsList.filter((post) => !post.likedBy.includes(userData?.username)).filter((post) => post.username !== userData?.username);
   const recommendedPosts = unLikedPosts.map((post) => {
     const postStops = new Set(post.stops);
     const similarity = jaccardSimilarity(

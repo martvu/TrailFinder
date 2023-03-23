@@ -6,42 +6,51 @@ export interface FilterOption {
   placeholder: string;
 }
 
-export const noFilter: FilterOption = {
+export const none: FilterOption = {
   text: '',
-  placeholder: '',
+  placeholder: 'Search',
 };
 
 export const stop: FilterOption = {
   text: 'Stop',
-  placeholder: 'stop',
+  placeholder: 'Stop',
 };
 
 export const price: FilterOption = {
   text: 'Price',
-  placeholder: 'max price',
+  placeholder: 'Max price',
 };
 export const tripLength: FilterOption = {
   text: 'Length',
-  placeholder: 'max length',
+  placeholder: 'Max trip length',
 };
 export const rating: FilterOption = {
   text: 'Rating',
-  placeholder: 'min rating',
+  placeholder: 'Min rating',
 };
 type FilterMenuProps = {
   selectedFilterOption: FilterOption;
   setSelectedFilterOption: React.Dispatch<React.SetStateAction<FilterOption>>;
+  sortedPosts: PostData[];
+  setApplyFilter: React.Dispatch<React.SetStateAction<boolean>>;
+  setFilteredPosts: React.Dispatch<React.SetStateAction<PostData[]>>;
 };
+
+export function GetFilteredPosts() {
+  return [];
+}
+
 export default function FilterMenu({
   selectedFilterOption,
   setSelectedFilterOption,
+  sortedPosts,
+  setApplyFilter,
+  setFilteredPosts,
 }: FilterMenuProps) {
   const [filterIsOpen, setFilterIsOpen] = useState(false);
-  const [filterBy, setFilterBy] = useState<FilterOption>(noFilter);
   const dropdownRef = useRef<HTMLDivElement>(null);
-
   const filterOptions = [stop, price, tripLength, rating];
-
+  const [search, setSearch] = useState('');
   const handleClickOutside = (event: MouseEvent | Event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event?.target as Node)) {
       setFilterIsOpen(false);
@@ -53,9 +62,34 @@ export default function FilterMenu({
       document.removeEventListener('click', handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    setSelectedFilterOption(none);
+  }, [setSelectedFilterOption]);
+
+  function handleSearch() {
+    if (search === '') {
+      return;
+    }
+    let filter:PostData[] = [];
+    if (selectedFilterOption === stop) {
+      filter = sortedPosts.filter((post) => post.stops.includes(search));
+    } else if (selectedFilterOption === price) {
+      filter = sortedPosts.filter((post) => parseInt(post.price, 10) <= parseInt(search, 10));
+    } else if (selectedFilterOption === rating) {
+      filter = sortedPosts.filter((post) => post.rating >= parseInt(search, 10));
+    } else if (selectedFilterOption === tripLength) {
+      filter = sortedPosts.filter((post) => parseInt(post.length, 10) <= parseInt(search, 10));
+    } else {
+      // eslint-disable-next-line max-len
+      filter = sortedPosts.filter((post) => post.stops.includes(search) || post.title.includes(search) || post.description.includes(search));
+    }
+    setFilteredPosts(filter);
+    setApplyFilter(true);
+  }
   return (
     <div
-      className="inline-block relative"
+      className="flex flex-row items-center justify-center w-full h-12 bg-neutral"
     >
       {/** Filter */}
       <div className="relative" ref={dropdownRef}>
@@ -90,6 +124,9 @@ export default function FilterMenu({
             </div>
           )}
       </div>
+      <span className="mx-3 font-bold">{selectedFilterOption.text}</span>
+      <input type="text" placeholder={selectedFilterOption.placeholder} className="input input-sm border border-solid border-secondary bg-neutral" onChange={(e) => setSearch(e.target.value)} />
+      <button type="button" onClick={handleSearch} className="btn btn-sm ml-3 btn-outline"> Search</button>
     </div>
   );
 }
