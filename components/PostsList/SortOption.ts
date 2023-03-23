@@ -11,7 +11,7 @@ export interface SortOption {
 export const recommended: SortOption = {
   text: 'Recommended',
   icon: 'fa-solid fa-fire',
-  sort: () => [],
+  sort: (posts) => posts,
 };
 
 export const mostLiked: SortOption = {

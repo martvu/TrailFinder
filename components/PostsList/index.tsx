@@ -12,18 +12,12 @@ export default function PostsList() {
   const recommendedPosts = GetRecommended();
 
   useEffect(() => {
-    if (selectedSortOption === recommended) {
-      setSortedPosts(recommendedPosts);
-    } else {
-      setSortedPosts(selectedSortOption.sort(recentPostsList));
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSortedPosts(selectedSortOption.sort(
+      selectedSortOption === recommended ? recommendedPosts : recentPostsList,
+    ));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recentPostsList, selectedSortOption]);
 
-  /* useEffect(() => {
-    setSortedPosts(selectedSortOption.sort(recentPostsList));
-  }, [recentPostsList, selectedSortOption]); */
-  // eslint-disable-next-line max-len
   return (
     <div className="w-full h-full relative">
       <SortButtons
