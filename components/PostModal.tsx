@@ -195,7 +195,7 @@ export default function PostModal({
                   Trip description:
                   <textarea
                     className="block textarea textarea-bordered w-full max-w-sm"
-                    maxLength={140}
+                    maxLength={500}
                     value={post.description}
                     name="description"
                     onChange={(e) => setPost({

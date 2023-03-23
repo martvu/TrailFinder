@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { doc, getDoc } from 'firebase/firestore';
 import { getDownloadURL, ref } from 'firebase/storage';
 import HeartButton from './HeartButton';
+import FullPost from './FullPost';
 import OptionMenu from './OptionMenu';
 import { firestore, storage } from '../firebase/firebase';
 
@@ -32,10 +33,12 @@ export default function PostCard({ post }: PostProps) {
   useEffect(() => {
     async function fetchProfilePic() {
       if (!uid || uid === '') return '';
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const docRef = doc(firestore, 'users', uid);
       const docSnap = await getDoc(docRef);
       const profilePicture = docSnap.data()?.profilePicture as string;
       if (!profilePicture || profilePicture === '') return '';
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const profilePictureRef = ref(storage, profilePicture);
       const downloadUrl = await getDownloadURL(profilePictureRef);
       return downloadUrl;
@@ -95,11 +98,19 @@ export default function PostCard({ post }: PostProps) {
           </div>
         </div>
         <div className="relative card-body w-3/6">
-          <OptionMenu
-            setIsDeleted={setIsDeleted}
-            post={post}
-            className="z-10 absolute bottom-0 right-0 m-2"
-          />
+
+          <div className="absolute bottom-0 right-10 m-2 flex flex-row">
+            { post.description.length > 110 ? (
+              <div>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                <label htmlFor={`my-modal-3${post.id}`} className="btn btn-xs btn-outline mr-2 mb-1 overflow-hidden">
+                  see more
+                </label>
+                <FullPost post={post} />
+              </div>
+            ) : null }
+          </div>
+          <OptionMenu setIsDeleted={setIsDeleted} post={post} />
           <h2 className="card-title font-extrabold absolute top-2">{title}</h2>
 
           {/* stops */}
@@ -120,14 +131,8 @@ export default function PostCard({ post }: PostProps) {
           </div>
           <div className="max-w-sm sm:max-w-full">
             <span className="font-bold">Description</span>
-            <div className="max-w-full break-words">{description}</div>
+            <p className="max-w-full break-words truncate">{description}</p>
           </div>
-
-          {/* <div className="card-actions bg-base300">
-            <a href="#" className="font-bold text-green-500 hover:text-green-700 absolute bottom-2">
-              Read more
-            </a>
-          </div> */}
 
         </div>
 
