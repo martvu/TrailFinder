@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { auth } from '../firebase/firebase';
 import DarkModeButton from './ToggleDark';
 import logo from '../public/images/trailfinder_logo_simple.png';
-import SearchBar from './SearchBar';
+import SearchBar from './SearchBar2';
 
 function Header() {
   const router = useRouter();
