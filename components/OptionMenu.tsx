@@ -103,7 +103,7 @@ export default function OptionMenu({ setIsDeleted, post }: Props) {
             <i className="fa-solid fa-flag " />
           </div>
         )}
-      <div className="z-10" ref={dropdownRef}>
+      <div className="absolute bottom-0 right-0 m-2 flex flex-row z-10" ref={dropdownRef}>
         <label htmlFor={isEdit ? `edit-modal${post.id}` : ''}>
           <button
             className="btn btn-sm btn-circle btn-outline"

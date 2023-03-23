@@ -1,11 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PostData } from 'hooks/PostData';
 import Image from 'next/image';
+import { doc, getDoc } from 'firebase/firestore';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { firestore, storage } from '../firebase/firebase';
 
 interface Props {
   post: PostData;
 }
 export default function FullPost({ post }: Props) {
+  const [profilePicUrl, setProfilePicUrl] = useState<string>('');
+  const { uid } = post;
+  useEffect(() => {
+    async function fetchProfilePic() {
+      if (!uid || uid === '') return '';
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      const docRef = doc(firestore, 'users', uid);
+      const docSnap = await getDoc(docRef);
+      const profilePicture = docSnap.data()?.profilePicture as string;
+      if (!profilePicture || profilePicture === '') return '';
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      const profilePictureRef = ref(storage, profilePicture);
+      const downloadUrl = await getDownloadURL(profilePictureRef);
+      return downloadUrl;
+    }
+    // eslint-disable-next-line no-void
+    void fetchProfilePic().then((url) => setProfilePicUrl(url));
+  }, [uid]);
   return (
     <>
       <input type="checkbox" id={`my-modal-3${post.id}`} className="modal-toggle overflow-hidden no-scrollbar" />
@@ -19,8 +40,23 @@ export default function FullPost({ post }: Props) {
 
               {/* left section */}
               <div className="w-1/6 h-1/2 flex flex-col space-x-2 items-center">
-                <div className="p-5 flex justify-center items-center border border-solid rounded-full w-24 h-24 ">
-                  <i className="fa-solid fa-user fa-2x text-l" />
+                <div className="avatar mt-4">
+                  <div
+                    className="w-14 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 mb-2"
+                  >
+                    {!profilePicUrl || profilePicUrl === '' ? (
+                      <i className="fa-solid fa-user fa-2x object-cover ml-3.5 mt-3" />
+                    ) : (
+                      <Image
+                        loader={() => profilePicUrl}
+                        src={profilePicUrl}
+                        alt="Profile"
+                        width={50}
+                        height={50}
+                        className="rounded-full w-14 h-14 object-cover"
+                      />
+                    )}
+                  </div>
                 </div>
                 <p className="card-title text-sm opacity-90 ">
                   {post.username}
