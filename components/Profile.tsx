@@ -3,11 +3,9 @@ import 'firebase/firestore';
 import { usePosts } from 'hooks/fetchPosts';
 import { useFetchUser } from 'context/AuthContext';
 import useFetchPicture from 'hooks/fetchPictures';
-import { getDownloadURL, ref } from 'firebase/storage';
 import Image from 'next/image';
 import PostCard from './PostCard';
 import Header from './Header';
-import { storage } from '../firebase/firebase';
 
 type ProfileProps = {
   setEdit: React.Dispatch<React.SetStateAction<boolean>>;
