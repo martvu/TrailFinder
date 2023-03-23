@@ -82,7 +82,7 @@ export default function Profile({ setEdit }: ProfileProps) {
                       <button
                         type="button"
                         onClick={() => setEdit(true)}
-                        className="btn btn-sm btn-outline border border-solid border-secondary text-base py-1 px-12 rounded text-xs flex items-center justify-center"
+                        className="btn btn-sm btn-outline border border-solid border-secondary text-base py-1 px-12 rounded flex items-center justify-center"
                       >
                         Edit
                       </button>
