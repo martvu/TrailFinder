@@ -29,7 +29,7 @@ export default function SortButtons({
       {/* Sort by Button */}
       <div className="flex flex-row items-center justify-center">
         <span className="pr-2 text-xs lg:text-base font-bold">Sort by: </span>
-        <div className="flex flex-wrap sm:flex-row items-center z-10 rounded-lg">
+        <div className="flex flex-wrap sm:flex-row items-center rounded-lg">
 
           {sortOptions.map((option) => (
             <div
