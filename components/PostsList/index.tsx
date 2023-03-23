@@ -32,6 +32,7 @@ export default function PostsList() {
       || post.description.toLowerCase().includes(search.toLowerCase())
       || post.length.toLowerCase().includes(search.toLowerCase())
       || post.price.toLowerCase().includes(search.toLowerCase())
+      || post.rating.toString().toLowerCase().includes(search.toLowerCase())
       || post.username.toLowerCase().includes(search.toLowerCase()),
     );
     setFilteredPosts(filter);
